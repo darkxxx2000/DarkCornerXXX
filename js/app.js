@@ -63,7 +63,7 @@ function renderVideos(videos) {
 /* =========================
    MODAL VIDEO PRO
 ========================= */
-function openVideoModal(url) {
+function openEmbedModal(url) {
 
   document.querySelector("#modal")?.remove();
 
@@ -72,13 +72,14 @@ function openVideoModal(url) {
 
   modal.innerHTML = `
     <div class="modal-box">
-
       <span id="close">&times;</span>
 
-      <video id="player" controls autoplay>
-        <source src="${url}" type="video/mp4">
-        Tu navegador no soporta video.
-      </video>
+      <iframe
+        src="${url}"
+        allowfullscreen
+        frameborder="0"
+        style="width:100%; height:70vh; border-radius:12px;">
+      </iframe>
 
     </div>
   `;
