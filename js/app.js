@@ -27,8 +27,8 @@ function renderVideos(videos) {
   videos.forEach(video => {
 
     const grid = document.querySelector(
-      `.grid[data-category="${video.category}"]`
-    );
+  `.grid[data-category="${video.category.toLowerCase().trim()}"]`
+);
 
     if (!grid) return;
 
