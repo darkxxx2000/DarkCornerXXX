@@ -19,30 +19,29 @@ fetch("data/videos.json")
    RENDER
 ========================= */
 function renderVideos(videos) {
-  document.querySelectorAll(".grid").forEach(grid => {
-    grid.innerHTML = "<p style='color:white'>GRID OK</p>";
-  });
 
-  console.log("VIDEOS:", videos);
+  const grid = document.getElementById("all-grid");
+  grid.innerHTML = "";
 
   videos.forEach(video => {
-    console.log("VIDEO:", video);
-
-    const grid = document.querySelector(
-      `.grid[data-category="${video.category.toLowerCase().trim()}"]`
-    );
-
-    console.log("GRID FOUND:", grid);
-
-    if (!grid) return;
 
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${video.image}" style="width:200px;border:2px solid red;">
-      <div>${video.title}</div>
+      <img src="${video.image}" loading="lazy">
+      <div class="card-content">
+        <div class="card-title">${video.title}</div>
+      </div>
     `;
+
+    card.onclick = () => {
+      if (video.type === "embed") {
+        openEmbedModal(video.url);
+      } else {
+        window.open(video.url, "_blank");
+      }
+    };
 
     grid.appendChild(card);
   });
@@ -75,14 +74,11 @@ function setupSearch() {
    FILTRO CATEGORÍA
 ========================= */
 function filterCategory(category) {
-
   const filtered = allVideos.filter(video =>
-    video.category.toLowerCase().trim() === category
-  );
+  video.title.toLowerCase().includes(value)
+);
 
-  renderVideos(filtered);
-
-}
+renderVideos(filtered);
 
 /* =========================
    CONTADORES
