@@ -52,7 +52,7 @@ function openModal(url) {
     modal.innerHTML = `
       <div class="modal-box">
         <span id="close">&times;</span>
-        <iframe src="${url}" allowfullscreen></iframe>
+        <iframe id="videoFrame" src="${url}" allowfullscreen></iframe>
       </div>
     `;
 
@@ -64,6 +64,10 @@ function openModal(url) {
       }
     });
 
+  } else {
+    // 🔥 si ya existe, solo cambia el video
+    document.getElementById("videoFrame").src = url;
+    modal.style.display = "flex";
   }
 
 }
