@@ -137,41 +137,33 @@ function updateCounters() {
 ========================= */
 function openModal(url) {
 
-  let modal = document.getElementById("modal");
+  const modal = document.createElement("div");
 
-  if (!modal) {
+  modal.id = "modal";
 
-    modal = document.createElement("div");
-    modal.id = "modal";
+  modal.innerHTML = `
+    <div class="modal-box">
+      <span id="close">&times;</span>
 
-    modal.innerHTML = `
-      <div class="modal-box">
-        <span id="close">&times;</span>
-        <iframe
-          id="videoFrame"
-          src="${url}"
-          allowfullscreen>
-        </iframe>
-      </div>
-    `;
+      <video
+        controls
+        autoplay
+        style="width:100%;border-radius:12px;">
+        <source src="${url}">
+      </video>
 
-    document.body.appendChild(modal);
+    </div>
+  `;
 
-    modal.addEventListener("click", e => {
+  document.body.appendChild(modal);
 
-      if (
-        e.target.id === "modal" ||
-        e.target.id === "close"
-      ) {
-        modal.remove();
-      }
-
-    });
-
-  } else {
-
-    document.getElementById("videoFrame").src = url;
-
-  }
+  modal.addEventListener("click", (e) => {
+    if (
+      e.target.id === "modal" ||
+      e.target.id === "close"
+    ) {
+      modal.remove();
+    }
+  });
 
 }
