@@ -1,8 +1,5 @@
 let allVideos = [];
 
-/* =========================
-   INIT
-========================= */
 fetch("data/videos.json")
   .then(res => res.json())
   .then(videos => {
@@ -11,25 +8,18 @@ fetch("data/videos.json")
 
     renderVideos(allVideos);
     setupSearch();
-    updateCounters();
 
   });
 
 /* =========================
-   RENDER (POR CATEGORÍA)
+   RENDER HOME GRID
 ========================= */
 function renderVideos(videos) {
 
-  // limpiar grids
-  document.querySelectorAll(".grid").forEach(g => g.innerHTML = "");
+  const grid = document.getElementById("homeGrid");
+  grid.innerHTML = "";
 
   videos.forEach(video => {
-
-    const grid = document.querySelector(
-      `.grid[data-category="${video.category}"]`
-    );
-
-    if (!grid) return;
 
     const card = document.createElement("div");
     card.className = "card";
@@ -60,8 +50,7 @@ function renderVideos(videos) {
 }
 
 /* =========================
-   BUSCADOR (CORREGIDO)
-   -> NO rompe categorías
+   BUSCADOR (HOME ONLY)
 ========================= */
 function setupSearch() {
 
@@ -78,17 +67,6 @@ function setupSearch() {
     renderVideos(filtered);
 
   });
-
-}
-
-/* =========================
-   FILTRO POR CATEGORÍA
-========================= */
-function filterCategory(cat) {
-
-  const filtered = allVideos.filter(v => v.category === cat);
-
-  renderVideos(filtered);
 
 }
 
@@ -121,26 +99,6 @@ function openModal(url) {
 
   } else {
     document.getElementById("videoFrame").src = url;
-    modal.style.display = "flex";
   }
-
-}
-
-/* =========================
-   CONTADORES (FIX UI)
-========================= */
-function updateCounters() {
-
-  const categories = ["machine","shibari","huge","vibrator","bbc"];
-
-  categories.forEach(cat => {
-
-    const count = allVideos.filter(v => v.category === cat).length;
-
-    const el = document.getElementById(`count-${cat}-nav`);
-
-    if (el) el.innerText = `(${count})`;
-
-  });
 
 }
