@@ -19,16 +19,20 @@ fetch("data/videos.json")
    RENDER
 ========================= */
 function renderVideos(videos) {
-
   document.querySelectorAll(".grid").forEach(grid => {
-    grid.innerHTML = "";
+    grid.innerHTML = "<p style='color:white'>GRID OK</p>";
   });
 
+  console.log("VIDEOS:", videos);
+
   videos.forEach(video => {
+    console.log("VIDEO:", video);
 
     const grid = document.querySelector(
       `.grid[data-category="${video.category.toLowerCase().trim()}"]`
     );
+
+    console.log("GRID FOUND:", grid);
 
     if (!grid) return;
 
@@ -36,28 +40,12 @@ function renderVideos(videos) {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${video.image}" alt="${video.title}" loading="lazy">
-      <div class="card-content">
-        <div class="card-title">${video.title}</div>
-      </div>
+      <img src="${video.image}" style="width:200px;border:2px solid red;">
+      <div>${video.title}</div>
     `;
 
-    card.addEventListener("click", () => {
-
-      if (video.type === "embed") {
-        openEmbedModal(video.url);
-      }
-
-      if (video.type === "link") {
-        window.open(video.url, "_blank");
-      }
-
-    });
-
     grid.appendChild(card);
-
   });
-
 }
 
 /* =========================
