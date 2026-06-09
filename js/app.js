@@ -29,7 +29,12 @@ function renderVideos(videos) {
     const grid = document.querySelector(
       `.grid[data-category="${video.category}"]`
     );
-
+console.log("Categoría:", video.category);
+console.log(
+  document.querySelector(
+    `.grid[data-category="${video.category}"]`
+  )
+);
     if (!grid) return;
 
     const card = document.createElement("div");
