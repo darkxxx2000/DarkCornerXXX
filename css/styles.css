@@ -102,7 +102,6 @@ nav a:hover{
     height:100vh;
     background:
         linear-gradient(to top, #000 5%, rgba(0,0,0,.4)),
-        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1600')
         center/cover;
     display:flex;
     align-items:center;
