@@ -12,5 +12,12 @@
     "image": "https://picsum.photos/400/250?2",
     "type": "modal",
     "url": "https://example.com"
+  },
+{
+    "title": "Machine Video 1",
+    "category": "machine",
+    "image": "https://i.xgroovy.com/contents/videos_screenshots/237000/237328/preview_1080p.mp4.jpg",
+    "type": "video",
+    "url": "https://xhamster.com/embed/9325350"
   }
-]
+],
