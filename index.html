@@ -6,10 +6,8 @@
 
     <title>Dark Corner</title>
 
-    <!-- FUENTE -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -18,13 +16,26 @@
 <header>
     <div class="logo">Dark Corner</div>
 
-    <!-- NAV + BUSCADOR + FILTROS -->
     <nav>
-        <a href="#machine" onclick="filterCategory('machine')">Machine <span id="count-machine"></span></a>
-        <a href="#shibari" onclick="filterCategory('shibari')">Shibari <span id="count-shibari"></span></a>
-        <a href="#huge" onclick="filterCategory('huge')">Huge <span id="count-huge"></span></a>
-        <a href="#vibrator" onclick="filterCategory('vibrator')">Vibrator <span id="count-vibrator"></span></a>
-        <a href="#bbc" onclick="filterCategory('bbc')">BBC <span id="count-bbc"></span></a>
+        <a href="#machine" onclick="filterCategory('machine')">
+            Machine <span class="count" id="count-machine-nav"></span>
+        </a>
+
+        <a href="#shibari" onclick="filterCategory('shibari')">
+            Shibari <span class="count" id="count-shibari-nav"></span>
+        </a>
+
+        <a href="#huge" onclick="filterCategory('huge')">
+            Huge <span class="count" id="count-huge-nav"></span>
+        </a>
+
+        <a href="#vibrator" onclick="filterCategory('vibrator')">
+            Vibrator <span class="count" id="count-vibrator-nav"></span>
+        </a>
+
+        <a href="#bbc" onclick="filterCategory('bbc')">
+            BBC <span class="count" id="count-bbc-nav"></span>
+        </a>
 
         <input type="text" id="searchInput" placeholder="Buscar videos...">
     </nav>
@@ -38,30 +49,29 @@
     </div>
 </section>
 
-<!-- SECCIONES (VACÍAS - SE LLENAN CON JS) -->
-
+<!-- GRID SECCIONES -->
 <section id="machine">
-    <h2 class="section-title">Machine <span id="count-machine"></span></h2>
+    <h2 class="section-title">Machine</h2>
     <div class="grid" data-category="machine"></div>
 </section>
 
 <section id="shibari">
-    <h2 class="section-title">Shibari <span id="count-shibari"></span></h2>
+    <h2 class="section-title">Shibari</h2>
     <div class="grid" data-category="shibari"></div>
 </section>
 
 <section id="huge">
-    <h2 class="section-title">Huge <span id="count-huge"></span></h2>
+    <h2 class="section-title">Huge</h2>
     <div class="grid" data-category="huge"></div>
 </section>
 
 <section id="vibrator">
-    <h2 class="section-title">Vibrator <span id="count-vibrator"></span></h2>
+    <h2 class="section-title">Vibrator</h2>
     <div class="grid" data-category="vibrator"></div>
 </section>
 
 <section id="bbc">
-    <h2 class="section-title">BBC <span id="count-bbc"></span></h2>
+    <h2 class="section-title">BBC</h2>
     <div class="grid" data-category="bbc"></div>
 </section>
 
@@ -69,7 +79,6 @@
     © 2026 Dark Corner XXX
 </footer>
 
-<!-- JS PRINCIPAL -->
 <script src="js/app.js"></script>
 
 </body>
