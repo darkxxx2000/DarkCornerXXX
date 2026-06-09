@@ -1,0 +1,25 @@
+[
+  {
+    "title": "Machine Video 1",
+    "category": "machine",
+    "image": "https://servidor.com/machine1.jpg",
+    "type": "link",
+    "url": "https://sitio.com/video1"
+  },
+
+  {
+    "title": "Machine Video 2",
+    "category": "machine",
+    "image": "https://servidor.com/machine2.jpg",
+    "type": "modal",
+    "url": "https://sitio.com/embed/456"
+  },
+
+  {
+    "title": "Shibari Video 1",
+    "category": "shibari",
+    "image": "https://servidor.com/shibari1.jpg",
+    "type": "link",
+    "url": "https://sitio.com/video789"
+  }
+]
