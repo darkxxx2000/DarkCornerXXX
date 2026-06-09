@@ -137,6 +137,8 @@ function updateCounters() {
 ========================= */
 function openModal(url) {
 
+  document.querySelector("#modal")?.remove();
+
   const modal = document.createElement("div");
   modal.id = "modal";
 
@@ -146,10 +148,8 @@ function openModal(url) {
 
       <iframe
         src="${url}"
-        width="100%"
-        height="600"
-        frameborder="0"
-        allowfullscreen>
+        allowfullscreen
+        style="width:100%; height:70vh; border:none;">
       </iframe>
 
     </div>
@@ -163,4 +163,5 @@ function openModal(url) {
     }
   });
 
+  console.log("MODAL ABIERTO:", url);
 }
