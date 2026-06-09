@@ -9,7 +9,7 @@
 }
 
 body{
-    background: #000;
+    background:#000;
     color:#fff;
     overflow-x:hidden;
 }
@@ -28,7 +28,7 @@ body::before{
     z-index:-1;
 }
 
-/* tipografía cruda */
+/* tipografía */
 h1, h2, h3, .logo{
     font-weight:800;
     letter-spacing:2px;
@@ -58,7 +58,7 @@ header{
     color:#ff0055;
 }
 
-/* NAV estilo 3D */
+/* NAV */
 nav{
     display:flex;
     gap:15px;
@@ -71,9 +71,6 @@ nav a{
     padding:10px 14px;
     border-radius:10px;
     background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-    box-shadow:
-        4px 4px 10px rgba(0,0,0,0.8),
-        -3px -3px 8px rgba(255,0,80,0.05);
     transition:0.3s;
     font-size:14px;
 }
@@ -81,7 +78,6 @@ nav a{
 nav a:hover{
     transform:scale(1.05);
     color:#ff0055;
-    box-shadow:0 0 15px rgba(255,0,80,0.35);
 }
 
 /* search */
@@ -96,109 +92,72 @@ nav a:hover{
 }
 
 /* =========================
-   HERO
-========================= */
-.hero-content{
-    max-width:700px;
-}
-
-.hero h1{
-    font-size:72px;
-    margin-bottom:20px;
-}
-
-.hero p{
-    font-size:18px;
-    color:#cfcfcf;
-    margin-bottom:30px;
-    line-height:1.6;
-}
-
-/* botones */
-.btn{
-    display:inline-block;
-    padding:14px 28px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:600;
-    transition:0.3s;
-}
-
-.btn-primary{
-    background:#ff0055;
-    color:#fff;
-}
-
-.btn-primary:hover{
-    box-shadow:0 0 20px rgba(255,0,80,0.4);
-}
-
-.btn-secondary{
-    background:#1f1f1f;
-    color:#fff;
-    margin-left:10px;
-}
-
-/* =========================
    SECCIONES
 ========================= */
 section{
     padding:90px 80px;
 }
 
-.section-title{
-    font-size:28px;
-    margin-bottom:25px;
-}
-
 /* =========================
-   GRID (MEJORADO)
+   GRID (CUADRÍCULA REAL)
 ========================= */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-    gap:24px;
-    align-items:start;
+    grid-template-columns:repeat(5, 1fr); /* fuerza columnas fijas */
+    gap:18px;
+}
+
+/* responsive */
+@media (max-width:1200px){
+    .grid{ grid-template-columns:repeat(4, 1fr); }
+}
+
+@media (max-width:900px){
+    .grid{ grid-template-columns:repeat(3, 1fr); }
+}
+
+@media (max-width:600px){
+    .grid{ grid-template-columns:repeat(2, 1fr); }
 }
 
 /* =========================
-   CARD (MEJORADA)
+   CARD (COMPACTA)
 ========================= */
 .card{
     background:linear-gradient(145deg,#141414,#0b0b0b);
-    border-radius:14px;
+    border-radius:10px;
     overflow:hidden;
     cursor:pointer;
-    transition:0.3s;
+    transition:0.25s;
     text-decoration:none;
     color:white;
     border:1px solid rgba(255,0,80,0.08);
-    display:flex;
-    flex-direction:column;
 }
 
 .card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.6);
+    transform:scale(1.03);
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
 
+/* IMAGEN MÁS PEQUEÑA */
 .card img{
     width:100%;
-    height:260px;
+    height:180px;   /* clave para que sea compacto */
     object-fit:cover;
     display:block;
 }
 
+/* TITULO LIMPIO */
 .card-content{
-    padding:12px;
+    padding:10px;
+    text-align:center;
     background:rgba(0,0,0,0.6);
-    backdrop-filter: blur(6px);
 }
 
 .card-title{
-    font-size:14px;
+    font-size:13px;
     font-weight:600;
-    text-align:center;
+    line-height:1.2;
 }
 
 /* =========================
@@ -224,20 +183,10 @@ section{
     height:70vh;
     border:none;
     border-radius:12px;
-    box-shadow:0 0 30px rgba(255,0,80,0.2);
-}
-
-#close{
-    display:block;
-    text-align:right;
-    font-size:40px;
-    cursor:pointer;
-    margin-bottom:10px;
-    color:#fff;
 }
 
 /* =========================
-   FOOTER GLOBAL
+   FOOTER
 ========================= */
 footer{
     text-align:center;
