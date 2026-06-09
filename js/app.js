@@ -16,7 +16,7 @@ fetch("data/videos.json")
   });
 
 /* =========================
-   RENDER POR CATEGORÍA
+   RENDER
 ========================= */
 function renderVideos(videos) {
 
@@ -29,12 +29,7 @@ function renderVideos(videos) {
     const grid = document.querySelector(
       `.grid[data-category="${video.category}"]`
     );
-console.log("Categoría:", video.category);
-console.log(
-  document.querySelector(
-    `.grid[data-category="${video.category}"]`
-  )
-);
+
     if (!grid) return;
 
     const card = document.createElement("div");
@@ -49,12 +44,12 @@ console.log(
 
     card.addEventListener("click", () => {
 
-      if (video.type === "link") {
-        window.open(video.url, "_blank");
+      if (video.type === "video") {
+        openVideoModal(video.url);
       }
 
-      if (video.type === "modal") {
-        openModal(video.url);
+      if (video.type === "link") {
+        window.open(video.url, "_blank");
       }
 
     });
@@ -66,76 +61,9 @@ console.log(
 }
 
 /* =========================
-   BUSCADOR
+   MODAL VIDEO PRO
 ========================= */
-function setupSearch() {
-
-  const input = document.getElementById("searchInput");
-
-  if (!input) return;
-
-  input.addEventListener("input", e => {
-
-    const value = e.target.value.toLowerCase();
-
-    const filtered = allVideos.filter(video =>
-      video.title.toLowerCase().includes(value)
-    );
-
-    renderVideos(filtered);
-
-  });
-
-}
-
-/* =========================
-   FILTRO CATEGORÍA
-========================= */
-function filterCategory(category) {
-
-  const filtered = allVideos.filter(
-    video => video.category === category
-  );
-
-  renderVideos(filtered);
-
-}
-
-/* =========================
-   CONTADORES
-========================= */
-function updateCounters() {
-
-  const categories = [
-    "machine",
-    "shibari",
-    "huge",
-    "vibrator",
-    "bbc"
-  ];
-
-  categories.forEach(category => {
-
-    const count = allVideos.filter(
-      video => video.category === category
-    ).length;
-
-    const element = document.getElementById(
-      `count-${category}-nav`
-    );
-
-    if (element) {
-      element.textContent = `(${count})`;
-    }
-
-  });
-
-}
-
-/* =========================
-   MODAL
-========================= */
-function openModal(url) {
+function openVideoModal(url) {
 
   document.querySelector("#modal")?.remove();
 
@@ -144,13 +72,13 @@ function openModal(url) {
 
   modal.innerHTML = `
     <div class="modal-box">
+
       <span id="close">&times;</span>
 
-      <iframe
-        src="${url}"
-        allowfullscreen
-        style="width:100%; height:70vh; border:none;">
-      </iframe>
+      <video id="player" controls autoplay>
+        <source src="${url}" type="video/mp4">
+        Tu navegador no soporta video.
+      </video>
 
     </div>
   `;
@@ -163,5 +91,4 @@ function openModal(url) {
     }
   });
 
-  console.log("MODAL ABIERTO:", url);
 }
