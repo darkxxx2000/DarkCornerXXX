@@ -138,12 +138,12 @@ function updateCounters() {
 function openModal(url) {
 
   const modal = document.createElement("div");
-
   modal.id = "modal";
 
   modal.innerHTML = `
     <div class="modal-box">
       <span id="close">&times;</span>
+
       <iframe
         src="${url}"
         width="100%"
@@ -151,9 +151,16 @@ function openModal(url) {
         frameborder="0"
         allowfullscreen>
       </iframe>
+
     </div>
   `;
 
   document.body.appendChild(modal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target.id === "modal" || e.target.id === "close") {
+      modal.remove();
+    }
+  });
 
 }
