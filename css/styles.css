@@ -68,6 +68,11 @@ nav a{
     font-size:14px;
 }
 
+nav a:hover{
+    transform:scale(1.05);
+    color:#ff0055;
+}
+
 /* =========================
    SECCIONES
 ========================= */
@@ -76,66 +81,52 @@ section{
 }
 
 /* =========================
-   GRID REAL (REJILLA)
+   GRID (CATÁLOGO REAL LIMPIO)
 ========================= */
 .grid{
     display:grid;
-    grid-template-columns:repeat(6, 1fr);
-    gap:12px;
-}
-
-@media (max-width:1200px){
-    .grid{ grid-template-columns:repeat(5, 1fr); }
-}
-
-@media (max-width:900px){
-    .grid{ grid-template-columns:repeat(4, 1fr); }
-}
-
-@media (max-width:700px){
-    .grid{ grid-template-columns:repeat(3, 1fr); }
-}
-
-@media (max-width:500px){
-    .grid{ grid-template-columns:repeat(2, 1fr); }
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:18px;
 }
 
 /* =========================
-   ITEM (IMAGEN + TITULO HORIZONTAL)
+   CARD (MÁS GRANDE Y LIMPIA)
 ========================= */
 .card{
+    background:#0b0b0b;
+    border-radius:12px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:0.25s;
+    border:1px solid rgba(255,0,80,0.08);
     display:flex;
     flex-direction:column;
-    background:#0b0b0b;
-    border:1px solid rgba(255,0,80,0.08);
-    border-radius:8px;
-    overflow:hidden;
-    transition:0.2s;
-    cursor:pointer;
 }
 
 .card:hover{
-    transform:scale(1.03);
-    box-shadow:0 5px 15px rgba(0,0,0,0.6);
+    transform:scale(1.04);
+    box-shadow:0 10px 25px rgba(0,0,0,0.6);
 }
 
-/* IMAGEN PEQUEÑA Y LIMPIA */
+/* IMAGEN MÁS GRANDE (LO QUE PEDISTE) */
 .card img{
     width:100%;
-    height:140px;
+    height:230px;
     object-fit:cover;
+    display:block;
 }
 
-/* TITULO ABAJO (COMPACTO) */
+/* TITULO */
 .card-content{
-    padding:6px 8px;
+    padding:10px;
     text-align:center;
     background:rgba(0,0,0,0.6);
 }
 
 .card-title{
-    font-size:12px;
+    font-size:13px;
     font-weight:600;
+    color:#fff;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
