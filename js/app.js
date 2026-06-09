@@ -27,8 +27,8 @@ function renderVideos(videos) {
   videos.forEach(video => {
 
     const grid = document.querySelector(
-  `.grid[data-category="${video.category.toLowerCase().trim()}"]`
-);
+      `.grid[data-category="${video.category.toLowerCase().trim()}"]`
+    );
 
     if (!grid) return;
 
@@ -44,8 +44,8 @@ function renderVideos(videos) {
 
     card.addEventListener("click", () => {
 
-      if (video.type === "video") {
-        openVideoModal(video.url);
+      if (video.type === "embed") {
+        openEmbedModal(video.url);
       }
 
       if (video.type === "link") {
@@ -61,7 +61,66 @@ function renderVideos(videos) {
 }
 
 /* =========================
-   MODAL VIDEO PRO
+   BUSCADOR
+========================= */
+function setupSearch() {
+
+  const input = document.getElementById("searchInput");
+
+  if (!input) return;
+
+  input.addEventListener("input", e => {
+
+    const value = e.target.value.toLowerCase();
+
+    const filtered = allVideos.filter(video =>
+      video.title.toLowerCase().includes(value)
+    );
+
+    renderVideos(filtered);
+
+  });
+
+}
+
+/* =========================
+   FILTRO CATEGORÍA
+========================= */
+function filterCategory(category) {
+
+  const filtered = allVideos.filter(video =>
+    video.category.toLowerCase().trim() === category
+  );
+
+  renderVideos(filtered);
+
+}
+
+/* =========================
+   CONTADORES
+========================= */
+function updateCounters() {
+
+  const categories = ["machine", "shibari", "huge", "vibrator", "bbc"];
+
+  categories.forEach(category => {
+
+    const count = allVideos.filter(video =>
+      video.category.toLowerCase().trim() === category
+    ).length;
+
+    const element = document.getElementById(`count-${category}-nav`);
+
+    if (element) {
+      element.textContent = `(${count})`;
+    }
+
+  });
+
+}
+
+/* =========================
+   MODAL EMBED (PROPIO)
 ========================= */
 function openEmbedModal(url) {
 
@@ -72,7 +131,8 @@ function openEmbedModal(url) {
 
   modal.innerHTML = `
     <div class="modal-box">
-      <span id="close">&times;</span>
+
+      <span id="close" style="cursor:pointer;font-size:30px;">&times;</span>
 
       <iframe
         src="${url}"
