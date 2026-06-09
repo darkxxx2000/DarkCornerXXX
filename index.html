@@ -6,211 +6,70 @@
 
     <title>Dark Corner</title>
 
+    <!-- FUENTE -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Inter',sans-serif;
-        }
-
-        body{
-            background:#0f0f0f;
-            color:#fff;
-        }
-
-        header{
-            position:fixed;
-            top:0;
-            width:100%;
-            height:80px;
-            background:rgba(0,0,0,.85);
-            backdrop-filter:blur(10px);
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:0 60px;
-            z-index:1000;
-            border-bottom:1px solid rgba(255,255,255,.08);
-        }
-
-        .logo{
-            font-size:32px;
-            font-weight:700;
-            color:#ff0055;
-        }
-
-        nav{
-            display:flex;
-            gap:30px;
-        }
-
-        nav a{
-            color:#ddd;
-            text-decoration:none;
-            transition:.3s;
-        }
-
-        nav a:hover{
-            color:#ff0055;
-        }
-
-        .hero{
-            height:100vh;
-            background:
-                linear-gradient(to top, #0f0f0f 5%, rgba(0,0,0,.3)),
-                url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1600')
-                center/cover;
-            display:flex;
-            align-items:center;
-            padding:0 80px;
-        }
-
-        .hero-content{
-            max-width:700px;
-        }
-
-        .hero h1{
-            font-size:72px;
-            margin-bottom:20px;
-        }
-
-        .hero p{
-            font-size:18px;
-            color:#d4d4d4;
-            margin-bottom:30px;
-            line-height:1.6;
-        }
-
-        .btn{
-            display:inline-block;
-            padding:15px 30px;
-            border-radius:10px;
-            text-decoration:none;
-            font-weight:600;
-        }
-
-        .btn-primary{
-            background:#ff0055;
-            color:#fff;
-        }
-
-        .btn-secondary{
-            background:#2a2a2a;
-            color:#fff;
-            margin-left:10px;
-        }
-
-        section{
-            padding:80px;
-        }
-
-        .section-title{
-            font-size:28px;
-            margin-bottom:30px;
-        }
-
-        .grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-            gap:20px;
-        }
-
-        .card{
-            background:#181818;
-            border-radius:15px;
-            overflow:hidden;
-            transition:.3s;
-            cursor:pointer;
-        }
-
-        .card:hover{
-            transform:translateY(-5px);
-        }
-
-        .card img{
-            width:100%;
-            height:320px;
-            object-fit:cover;
-        }
-
-        .card-content{
-            padding:15px;
-        }
-
-        .card-title{
-            font-size:16px;
-            font-weight:600;
-        }
-
-        footer{
-            text-align:center;
-            padding:40px;
-            border-top:1px solid rgba(255,255,255,.08);
-            color:#888;
-        }
-    </style>
-</head>
 <body>
 
 <header>
-    <div class="logo">Dark Corner</div>
+    <div class="logo">Mega X</div>
 
+    <!-- NAV + BUSCADOR + FILTROS -->
     <nav>
-    <a href="#machine">Machine</a>
-    <a href="#shibari">Shibari</a>
-    <a href="#huge">Huge</a>
-    <a href="#vibrator">Vibrator</a>
-    <a href="#bbc">BBC</a>
-</nav>
+        <a href="#machine" onclick="filterCategory('machine')">Machine <span id="count-machine"></span></a>
+        <a href="#shibari" onclick="filterCategory('shibari')">Shibari <span id="count-shibari"></span></a>
+        <a href="#huge" onclick="filterCategory('huge')">Huge <span id="count-huge"></span></a>
+        <a href="#vibrator" onclick="filterCategory('vibrator')">Vibrator <span id="count-vibrator"></span></a>
+        <a href="#bbc" onclick="filterCategory('bbc')">BBC <span id="count-bbc"></span></a>
+
+        <input type="text" id="searchInput" placeholder="Buscar videos...">
+    </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
     <div class="hero-content">
-        <h1>Mega X</h1>
-
-        <p>
-            Plataforma moderna con navegación rápida,
-            categorías organizadas y experiencia visual premium.
-        </p>
-
-        <a href="#" class="btn btn-primary">Explorar</a>
-        <a href="#" class="btn btn-secondary">Categorías</a>
+        <h1>Dark Corner</h1>
+        <p>Plataforma de videos organizada por categorías.</p>
     </div>
+</section>
+
+<!-- SECCIONES (VACÍAS - SE LLENAN CON JS) -->
+
 <section id="machine">
-    <h2 class="section-title">Machine</h2>
+    <h2 class="section-title">Machine <span id="count-machine"></span></h2>
     <div class="grid" data-category="machine"></div>
 </section>
 
 <section id="shibari">
-    <h2 class="section-title">Shibari</h2>
+    <h2 class="section-title">Shibari <span id="count-shibari"></span></h2>
     <div class="grid" data-category="shibari"></div>
 </section>
 
 <section id="huge">
-    <h2 class="section-title">Huge</h2>
+    <h2 class="section-title">Huge <span id="count-huge"></span></h2>
     <div class="grid" data-category="huge"></div>
 </section>
 
 <section id="vibrator">
-    <h2 class="section-title">Vibrator</h2>
+    <h2 class="section-title">Vibrator <span id="count-vibrator"></span></h2>
     <div class="grid" data-category="vibrator"></div>
 </section>
 
 <section id="bbc">
-    <h2 class="section-title">BBC</h2>
+    <h2 class="section-title">BBC <span id="count-bbc"></span></h2>
     <div class="grid" data-category="bbc"></div>
 </section>
 
 <footer>
-    © 2026 Dark Corner XXX - Copyright
+    © 2026 Dark Corner XXX
 </footer>
-    
+
+<!-- JS PRINCIPAL -->
 <script src="js/app.js"></script>
 
 </body>
