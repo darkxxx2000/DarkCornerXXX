@@ -212,39 +212,6 @@
 </footer>
     
 <script src="js/app.js"></script>
-    
-<script>
-fetch("data/videos.json")
-  .then(res => res.json())
-  .then(videos => {
-
-    videos.forEach(video => {
-
-      const grid = document.querySelector(
-        `.grid[data-category="${video.category}"]`
-      );
-
-      if (!grid) return;
-
-      const card = document.createElement("a");
-
-      card.className = "card";
-      card.href = video.url;
-      card.target = "_blank";
-
-      card.innerHTML = `
-        <img src="${video.image}">
-        <div class="card-content">
-          <div class="card-title">${video.title}</div>
-        </div>
-      `;
-
-      grid.appendChild(card);
-
-    });
-
-  });
-</script>
 
 </body>
 </html>
