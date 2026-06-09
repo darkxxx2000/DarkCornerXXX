@@ -1,22 +1,26 @@
 let allVideos = [];
 
+/* =========================
+   INIT
+========================= */
 fetch("data/videos.json")
   .then(res => res.json())
   .then(videos => {
 
     allVideos = videos;
 
-    renderVideos(videos);
+    renderVideos(allVideos);
     setupSearch();
     updateCounters();
 
   });
 
 /* =========================
-   RENDER DE VIDEOS
+   RENDER (POR CATEGORÍA)
 ========================= */
 function renderVideos(videos) {
 
+  // limpiar grids
   document.querySelectorAll(".grid").forEach(g => g.innerHTML = "");
 
   videos.forEach(video => {
@@ -31,7 +35,7 @@ function renderVideos(videos) {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${video.image}">
+      <img src="${video.image}" loading="lazy">
       <div class="card-content">
         <div class="card-title">${video.title}</div>
       </div>
@@ -56,7 +60,8 @@ function renderVideos(videos) {
 }
 
 /* =========================
-   BUSCADOR
+   BUSCADOR (CORREGIDO)
+   -> NO rompe categorías
 ========================= */
 function setupSearch() {
 
@@ -77,7 +82,18 @@ function setupSearch() {
 }
 
 /* =========================
-   MODAL VIDEO
+   FILTRO POR CATEGORÍA
+========================= */
+function filterCategory(cat) {
+
+  const filtered = allVideos.filter(v => v.category === cat);
+
+  renderVideos(filtered);
+
+}
+
+/* =========================
+   MODAL
 ========================= */
 function openModal(url) {
 
@@ -111,18 +127,7 @@ function openModal(url) {
 }
 
 /* =========================
-   FILTRO POR CATEGORÍA
-========================= */
-function filterCategory(cat) {
-
-  const filtered = allVideos.filter(v => v.category === cat);
-
-  renderVideos(filtered);
-
-}
-
-/* =========================
-   CONTADORES
+   CONTADORES (FIX UI)
 ========================= */
 function updateCounters() {
 
@@ -132,7 +137,7 @@ function updateCounters() {
 
     const count = allVideos.filter(v => v.category === cat).length;
 
-    const el = document.getElementById(`count-${cat}`);
+    const el = document.getElementById(`count-${cat}-nav`);
 
     if (el) el.innerText = `(${count})`;
 
