@@ -8,9 +8,13 @@ fetch("data/videos.json")
 
     renderVideos(videos);
     setupSearch();
+    updateCounters();
 
   });
 
+/* =========================
+   RENDER DE VIDEOS
+========================= */
 function renderVideos(videos) {
 
   document.querySelectorAll(".grid").forEach(g => g.innerHTML = "");
@@ -51,6 +55,9 @@ function renderVideos(videos) {
 
 }
 
+/* =========================
+   BUSCADOR
+========================= */
 function setupSearch() {
 
   const input = document.getElementById("searchInput");
@@ -68,6 +75,10 @@ function setupSearch() {
   });
 
 }
+
+/* =========================
+   MODAL VIDEO
+========================= */
 function openModal(url) {
 
   let modal = document.getElementById("modal");
@@ -98,6 +109,10 @@ function openModal(url) {
   }
 
 }
+
+/* =========================
+   FILTRO POR CATEGORÍA
+========================= */
 function filterCategory(cat) {
 
   const filtered = allVideos.filter(v => v.category === cat);
@@ -105,20 +120,10 @@ function filterCategory(cat) {
   renderVideos(filtered);
 
 }
-let index = 0;
-const step = 20;
 
-window.addEventListener("scroll", () => {
-
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-
-    const next = allVideos.slice(index, index + step);
-    renderVideos(next);
-
-    index += step;
-  }
-
-});
+/* =========================
+   CONTADORES
+========================= */
 function updateCounters() {
 
   const categories = ["machine","shibari","huge","vibrator","bbc"];
