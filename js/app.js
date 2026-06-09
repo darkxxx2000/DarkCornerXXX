@@ -1,73 +1,70 @@
+let allVideos = [];
+
 fetch("data/videos.json")
   .then(res => res.json())
   .then(videos => {
 
-    videos.forEach(video => {
+    allVideos = videos;
 
-      const grid = document.querySelector(
-        `.grid[data-category="${video.category}"]`
-      );
-
-      if (!grid) return;
-
-      const card = document.createElement("a");
-
-      card.className = "card";
-      card.href = "#";
-
-      card.innerHTML = `
-        <img src="${video.image}">
-        <div class="card-content">
-          <div class="card-title">${video.title}</div>
-        </div>
-      `;
-
-      card.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        if (video.type === "link") {
-          window.open(video.url, "_blank");
-        }
-
-        if (video.type === "modal") {
-          openModal(video.url);
-        }
-      });
-
-      grid.appendChild(card);
-
-    });
+    renderVideos(videos);
+    setupSearch();
 
   });
 
-function openModal(url) {
+function renderVideos(videos) {
 
-  let modal = document.getElementById("modal");
+  document.querySelectorAll(".grid").forEach(g => g.innerHTML = "");
 
-  if (!modal) {
+  videos.forEach(video => {
 
-    modal = document.createElement("div");
-    modal.id = "modal";
+    const grid = document.querySelector(
+      `.grid[data-category="${video.category}"]`
+    );
 
-    modal.innerHTML = `
-      <div class="modal-box">
-        <span id="close">&times;</span>
-        <iframe id="videoFrame" src="${url}" allowfullscreen></iframe>
+    if (!grid) return;
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${video.image}">
+      <div class="card-content">
+        <div class="card-title">${video.title}</div>
       </div>
     `;
 
-    document.body.appendChild(modal);
+    card.addEventListener("click", () => {
 
-    modal.addEventListener("click", (e) => {
-      if (e.target.id === "modal" || e.target.id === "close") {
-        modal.remove();
+      if (video.type === "link") {
+        window.open(video.url, "_blank");
       }
+
+      if (video.type === "modal") {
+        openModal(video.url);
+      }
+
     });
 
-  } else {
-    // 🔥 si ya existe, solo cambia el video
-    document.getElementById("videoFrame").src = url;
-    modal.style.display = "flex";
-  }
+    grid.appendChild(card);
+
+  });
+
+}
+
+function setupSearch() {
+
+  const input = document.getElementById("searchInput");
+
+  input.addEventListener("input", (e) => {
+
+    const value = e.target.value.toLowerCase();
+
+    const filtered = allVideos.filter(v =>
+      v.title.toLowerCase().includes(value)
+    );
+
+    renderVideos(filtered);
+
+  });
 
 }
