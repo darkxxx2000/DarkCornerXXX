@@ -144,26 +144,16 @@ function openModal(url) {
   modal.innerHTML = `
     <div class="modal-box">
       <span id="close">&times;</span>
-
-      <video
-        controls
-        autoplay
-        style="width:100%;border-radius:12px;">
-        <source src="${url}">
-      </video>
-
+      <iframe
+        src="${url}"
+        width="100%"
+        height="600"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
     </div>
   `;
 
   document.body.appendChild(modal);
-
-  modal.addEventListener("click", (e) => {
-    if (
-      e.target.id === "modal" ||
-      e.target.id === "close"
-    ) {
-      modal.remove();
-    }
-  });
 
 }
