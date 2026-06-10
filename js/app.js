@@ -1,57 +1,79 @@
-let videos = [];
+let data = [];
 
 fetch("data/videos.json")
 .then(r => r.json())
-.then(data => {
-  videos = data;
-  renderAll();
+.then(json => {
+  data = json;
+  renderHome();
 });
 
-function renderAll(){
-  renderHome();
-
-  ["machine","shibari","sybian","huge","bbc"]
-  .forEach(renderCategory);
-}
-
+/* =========================
+   HOME (CATEGORÍAS CON IMAGEN)
+========================= */
 function renderHome(){
+
   const home = document.getElementById("homeGrid");
-  videos.slice(0,10).forEach(v => home.appendChild(createCard(v)));
+  home.innerHTML = "";
+
+  data.forEach(cat => {
+
+    const card = document.createElement("div");
+    card.className = "home-card";
+
+    card.innerHTML = `
+      <img src="${cat.cover}">
+      <h3>${cat.category.toUpperCase()}</h3>
+    `;
+
+    card.onclick = () => openCategory(cat);
+
+    home.appendChild(card);
+  });
 }
 
-function renderCategory(cat){
-  const grid = document.querySelector(`[data-cat="${cat}"]`);
+/* =========================
+   CATEGORY VIEW
+========================= */
+function openCategory(cat){
 
-  videos
-  .filter(v => v.category === cat)
-  .forEach(v => grid.appendChild(createCard(v)));
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("category").classList.remove("hidden");
+
+  document.getElementById("categoryTitle").innerText =
+    cat.category.toUpperCase();
+
+  const grid = document.getElementById("categoryGrid");
+  grid.innerHTML = "";
+
+  cat.items.forEach(v => {
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${v.image}">
+      <h3>${v.title}</h3>
+    `;
+
+    card.onclick = () => openModal(v.url);
+
+    grid.appendChild(card);
+  });
 }
 
-function createCard(video){
-
-  const card = document.createElement("div");
-  card.className = "card";
-
-  card.innerHTML = `
-    <img src="${video.image}">
-    <h3>${video.title}</h3>
-  `;
-
-  card.onclick = () => openModal(video.url);
-
-  return card;
-}
-
+/* =========================
+   MODAL EMBED
+========================= */
 function openModal(url){
 
   const modal = document.getElementById("modal");
-  const frame = document.getElementById("videoFrame");
+  const frame = document.getElementById("frame");
 
-  frame.src = url;   // 👈 EMBED DIRECTO
+  frame.src = url;
   modal.classList.remove("hidden");
 }
 
 document.getElementById("close").onclick = () => {
   document.getElementById("modal").classList.add("hidden");
-  document.getElementById("videoFrame").src = "";
+  document.getElementById("frame").src = "";
 };
