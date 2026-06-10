@@ -1,20 +1,16 @@
-[
-  {
-    "title": "Silla 1",
-    "category": "SILLA",
-    "image": "https://s109.erome.com/4056/ZYIkO8pW/HkrG6s67.jpg?v=1774348765",
-    "embed": "spankbang.com/63d0n"
-  },
-  {
-    "title": "Silla 2",
-    "category": "SILLA",
-    "image": "https://...",
-    "embed": "https://..."
-  },
-  {
-    "title": "Mad 1",
-    "category": "MAD",
-    "image": "https://...",
-    "embed": "https://..."
-  }
-]
+ {
+  "name": "SILLA",
+  "cover": "https://s109.erome.com/4056/ZYIkO8pW/HkrG6s67.jpg?v=1774348765",
+  "items": [
+    {
+      "title": "Titulo 1",
+      "image": "https://s109.erome.com/4056/ZYIkO8pW/HkrG6s67.jpg?v=1774348765",
+      "embed": "https://spankbang.com/63d0n"
+    },
+    {
+      "title": "Titulo 2",
+      "image": "miniatura2.jpg",
+      "embed": "https://..."
+    }
+  ]
+}
