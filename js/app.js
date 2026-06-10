@@ -47,8 +47,16 @@ if (!home) {
 ========================= */
 function openCategory(cat){
 
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("category").classList.remove("hidden");
+  const home = document.getElementById("home");
+  const category = document.getElementById("category");
+
+  if (!home || !category) {
+    console.error("Faltan secciones home/category en HTML");
+    return;
+  }
+
+  home.classList.add("hidden");
+  category.classList.remove("hidden");
 
   document.getElementById("categoryTitle").innerText =
     cat.category.toUpperCase();
