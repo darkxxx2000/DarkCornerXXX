@@ -19,6 +19,11 @@ fetch("/DarkCornerXXX/data/videos.json")
 function renderHome(){
 
   const home = document.getElementById("homeGrid");
+
+if (!home) {
+  console.error("homeGrid no existe en el DOM");
+  return;
+}
   home.innerHTML = "";
 
   data.forEach(cat => {
