@@ -1,22 +1,21 @@
 let allVideos = [];
 
-/* =========================
-   CARGA JSON
-========================= */
-fetch("data/videos.json")
-  .then(res => res.json())
-  .then(videos => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    allVideos = videos;
+  fetch("data/videos.json")
+    .then(res => res.json())
+    .then(videos => {
 
-    renderVideos(allVideos);
-    setupSearch();
-    updateCounters();
+      allVideos = videos;
 
-  })
-  .catch(error => {
-    console.error("Error cargando videos.json:", error);
-  });
+      renderVideos(allVideos);
+      setupSearch();
+      updateCounters();
+
+    })
+    .catch(err => console.error("Error cargando JSON:", err));
+
+});
 
 /* =========================
    RENDER
@@ -61,8 +60,8 @@ function setupSearch() {
 
     const value = e.target.value.toLowerCase();
 
-    const filtered = allVideos.filter(video =>
-      video.title.toLowerCase().includes(value)
+    const filtered = allVideos.filter(v =>
+      v.title.toLowerCase().includes(value)
     );
 
     renderVideos(filtered);
@@ -70,12 +69,12 @@ function setupSearch() {
 }
 
 /* =========================
-   FILTRO CATEGORÍA
+   FILTRO
 ========================= */
 function filterCategory(category) {
 
-  const filtered = allVideos.filter(video =>
-    video.category.toLowerCase().trim() === category
+  const filtered = allVideos.filter(v =>
+    v.category.toLowerCase().trim() === category
   );
 
   renderVideos(filtered);
@@ -88,17 +87,15 @@ function updateCounters() {
 
   const categories = ["machine", "shibari", "huge", "vibrator", "bbc"];
 
-  categories.forEach(category => {
+  categories.forEach(cat => {
 
-    const count = allVideos.filter(video =>
-      video.category.toLowerCase().trim() === category
+    const count = allVideos.filter(v =>
+      v.category.toLowerCase().trim() === cat
     ).length;
 
-    const element = document.getElementById(`count-${category}-nav`);
+    const el = document.getElementById(`count-${cat}-nav`);
 
-    if (element) {
-      element.textContent = `(${count})`;
-    }
+    if (el) el.textContent = `(${count})`;
   });
 }
 
@@ -114,21 +111,16 @@ function openEmbedModal(url) {
 
   modal.innerHTML = `
     <div class="modal-box">
-      <span id="close" style="cursor:pointer;font-size:30px;">&times;</span>
-
-      <iframe
-        src="${url}"
-        allowfullscreen
-        frameborder="0">
-      </iframe>
+      <span id="close">&times;</span>
+      <iframe src="${url}" allowfullscreen></iframe>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  modal.addEventListener("click", (e) => {
+  modal.onclick = (e) => {
     if (e.target.id === "modal" || e.target.id === "close") {
       modal.remove();
     }
-  });
+  };
 }
