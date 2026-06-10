@@ -1,98 +1,96 @@
-let data = [];
+const gallery = document.getElementById("gallery");
+const modal = document.getElementById("videoModal");
+const closeModal = document.getElementById("closeModal");
+const videoContainer = document.getElementById("videoContainer");
 
-fetch("/DarkCornerXXX/data/videos.json")
-  .then(r => {
-    if (!r.ok) throw new Error("No se pudo cargar videos.json");
-    return r.json();
-  })
-  .then(json => {
-    data = json;
-    renderHome();
-  })
-  .catch(err => {
-    console.error("ERROR CARGANDO JSON:", err);
-  });
+let allVideos = [];
 
-/* =========================
-   HOME (CATEGORÍAS)
-========================= */
-function renderHome(){
+async function loadVideos(){
 
-  const home = document.getElementById("homeGrid");
+    const response = await fetch("data/videos.json");
 
-if (!home) {
-  console.error("homeGrid no existe en el DOM");
-  return;
-}
-  home.innerHTML = "";
+    allVideos = await response.json();
 
-  data.forEach(cat => {
-
-    const card = document.createElement("div");
-    card.className = "home-card";
-
-    card.innerHTML = `
-      <img src="${cat.cover}">
-      <h3>${cat.category.toUpperCase()}</h3>
-    `;
-
-    card.onclick = () => openCategory(cat);
-
-    home.appendChild(card);
-  });
+    renderGallery("HOME");
 }
 
-/* =========================
-   CATEGORY VIEW
-========================= */
-function openCategory(cat){
+function renderGallery(category){
 
-  const home = document.getElementById("home");
-  const category = document.getElementById("category");
+    gallery.innerHTML = "";
 
-  if (!home || !category) {
-    console.error("Faltan secciones home/category en HTML");
-    return;
-  }
+    let videos;
 
-  home.classList.add("hidden");
-  category.classList.remove("hidden");
+    if(category === "HOME"){
+        videos = allVideos;
+    }else{
+        videos = allVideos.filter(
+            item => item.category === category
+        );
+    }
 
-  document.getElementById("categoryTitle").innerText =
-    cat.category.toUpperCase();
+    videos.forEach(video => {
 
-  const grid = document.getElementById("categoryGrid");
-  grid.innerHTML = "";
+        const card = document.createElement("div");
 
-  cat.items.forEach(v => {
+        card.className = "card";
 
-    const card = document.createElement("div");
-    card.className = "card";
+        card.innerHTML = `
+            <img src="${video.image}" alt="${video.title}">
+            <div class="card-title">${video.title}</div>
+        `;
 
-    card.innerHTML = `
-      <img src="${v.image}">
-      <h3>${v.title}</h3>
-    `;
+        card.addEventListener("click",()=>{
 
-    card.onclick = () => openModal(v.url);
+            modal.style.display = "flex";
 
-    grid.appendChild(card);
-  });
+            videoContainer.innerHTML = `
+                <iframe
+                src="${video.video}?autoplay=1"
+                allowfullscreen
+                allow="autoplay">
+                </iframe>
+            `;
+
+        });
+
+        gallery.appendChild(card);
+
+    });
+
 }
 
-/* =========================
-   MODAL EMBED
-========================= */
-function openModal(url){
+document.querySelectorAll("nav a").forEach(link => {
 
-  const modal = document.getElementById("modal");
-  const frame = document.getElementById("frame");
+    link.addEventListener("click",(e)=>{
 
-  frame.src = url;
-  modal.classList.remove("hidden");
-}
+        e.preventDefault();
 
-document.getElementById("close").onclick = () => {
-  document.getElementById("modal").classList.add("hidden");
-  document.getElementById("frame").src = "";
-};
+        renderGallery(
+            link.dataset.category
+        );
+
+    });
+
+});
+
+closeModal.addEventListener("click",()=>{
+
+    modal.style.display="none";
+
+    videoContainer.innerHTML="";
+
+});
+
+window.addEventListener("click",(e)=>{
+
+    if(e.target===modal){
+
+        modal.style.display="none";
+
+        videoContainer.innerHTML="";
+
+    }
+
+});
+
+loadVideos();
