@@ -13,13 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCounters();
 
     })
-    .catch(err => console.error("Error cargando JSON:", err));
+    .catch(err => console.error("ERROR JSON:", err));
 
 });
 
-/* =========================
-   RENDER
-========================= */
 function renderVideos(videos) {
 
   const grid = document.getElementById("all-grid");
@@ -31,19 +28,19 @@ function renderVideos(videos) {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${video.image}" loading="lazy" alt="${video.title}">
+      <img src="${video.image}" loading="lazy">
       <div class="card-content">
         <div class="card-title">${video.title}</div>
       </div>
     `;
 
-    card.addEventListener("click", () => {
+    card.onclick = () => {
       if (video.type === "embed") {
         openEmbedModal(video.url);
       } else {
         window.open(video.url, "_blank");
       }
-    });
+    };
 
     grid.appendChild(card);
   });
