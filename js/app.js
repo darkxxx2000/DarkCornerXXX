@@ -1,6 +1,6 @@
 let data = [];
 
-fetch("./data/videos.json")
+fetch("/DarkCornerXXX/data/videos.json")
   .then(r => {
     if (!r.ok) throw new Error("No se pudo cargar videos.json");
     return r.json();
