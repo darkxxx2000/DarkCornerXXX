@@ -1,6 +1,7 @@
-  [
+[
   {
     "category": "machine",
+    "cover": "https://picsum.photos/400/700?1",
     "items": [
       {
         "title": "Machine 1",
@@ -9,17 +10,18 @@
       },
       {
         "title": "Machine 2",
-        "image": "https://picsum.photos/300/500?2",
+        "image": "https://s109.erome.com/4056/ZYIkO8pW/HkrG6s67.jpg?v=1774348765",
         "url": "https://www.eporner.com/embed/1BAtq4jChJE/"
       }
     ]
   },
   {
     "category": "shibari",
+    "cover": "https://picsum.photos/400/700?2",
     "items": [
       {
         "title": "Shibari 1",
-        "image": "https://picsum.photos/300/500?3",
+        "image": "https://picsum.photos/300/500?21",
         "url": "https://www.eporner.com/embed/1BAtq4jChJE/"
       }
     ]
