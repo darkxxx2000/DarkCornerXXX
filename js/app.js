@@ -1,28 +1,35 @@
 let allVideos = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+/* =========================
+   INIT
+========================= */
+fetch("data/videos.json")
+  .then(res => res.json())
+  .then(videos => {
 
-  fetch("data/videos.json")
-    .then(res => res.json())
-    .then(videos => {
+    allVideos = videos;
 
-      allVideos = videos;
+    renderVideos(allVideos);
+    setupSearch();
+    updateCounters();
 
-      renderVideos(allVideos);
-      setupSearch();
-      updateCounters();
+  });
 
-    })
-    .catch(err => console.error("ERROR JSON:", err));
-
-});
-
+/* =========================
+   RENDER (POR CATEGORÍA)
+========================= */
 function renderVideos(videos) {
 
-  const grid = document.getElementById("all-grid");
-  grid.innerHTML = "";
+  // limpiar grids
+  document.querySelectorAll(".grid").forEach(g => g.innerHTML = "");
 
   videos.forEach(video => {
+
+    const grid = document.querySelector(
+      `.grid[data-category="${video.category}"]`
+    );
+
+    if (!grid) return;
 
     const card = document.createElement("div");
     card.className = "card";
@@ -34,26 +41,33 @@ function renderVideos(videos) {
       </div>
     `;
 
-    card.onclick = () => {
-      if (video.type === "embed") {
-        openEmbedModal(video.url);
-      } else {
+    card.addEventListener("click", () => {
+
+      if (video.type === "link") {
         window.open(video.url, "_blank");
       }
-    };
+
+      if (video.type === "modal") {
+        openModal(video.url);
+      }
+
+    });
 
     grid.appendChild(card);
+
   });
+
 }
 
 /* =========================
-   BUSCADOR
+   BUSCADOR (CORREGIDO)
+   -> NO rompe categorías
 ========================= */
 function setupSearch() {
 
   const input = document.getElementById("searchInput");
 
-  input.addEventListener("input", e => {
+  input.addEventListener("input", (e) => {
 
     const value = e.target.value.toLowerCase();
 
@@ -62,62 +76,71 @@ function setupSearch() {
     );
 
     renderVideos(filtered);
+
   });
+
 }
 
 /* =========================
-   FILTRO
+   FILTRO POR CATEGORÍA
 ========================= */
-function filterCategory(category) {
+function filterCategory(cat) {
 
-  const filtered = allVideos.filter(v =>
-    v.category.toLowerCase().trim() === category
-  );
+  const filtered = allVideos.filter(v => v.category === cat);
 
   renderVideos(filtered);
-}
 
-/* =========================
-   CONTADORES
-========================= */
-function updateCounters() {
-
-  const categories = ["machine", "shibari", "huge", "vibrator", "bbc"];
-
-  categories.forEach(cat => {
-
-    const count = allVideos.filter(v =>
-      v.category.toLowerCase().trim() === cat
-    ).length;
-
-    const el = document.getElementById(`count-${cat}-nav`);
-
-    if (el) el.textContent = `(${count})`;
-  });
 }
 
 /* =========================
    MODAL
 ========================= */
-function openEmbedModal(url) {
+function openModal(url) {
 
-  document.querySelector("#modal")?.remove();
+  let modal = document.getElementById("modal");
 
-  const modal = document.createElement("div");
-  modal.id = "modal";
+  if (!modal) {
 
-  modal.innerHTML = `
-    <div class="modal-box">
-      <span id="close">&times;</span>
-      <iframe src="${url}" allowfullscreen></iframe>
-    </div>
-  `;
+    modal = document.createElement("div");
+    modal.id = "modal";
 
-  document.body.appendChild(modal);
+    modal.innerHTML = `
+      <div class="modal-box">
+        <span id="close">&times;</span>
+        <iframe id="videoFrame" src="${url}" allowfullscreen></iframe>
+      </div>
+    `;
 
-  modal.onclick = (e) => {
-    if (e.target.id === "modal" || e.target.id === "close") {
-      modal.remove();
-    }
-  };
+    document.body.appendChild(modal);
+
+    modal.addEventListener("click", (e) => {
+      if (e.target.id === "modal" || e.target.id === "close") {
+        modal.remove();
+      }
+    });
+
+  } else {
+    document.getElementById("videoFrame").src = url;
+    modal.style.display = "flex";
+  }
+
+}
+
+/* =========================
+   CONTADORES (FIX UI)
+========================= */
+function updateCounters() {
+
+  const categories = ["machine","shibari","huge","vibrator","bbc"];
+
+  categories.forEach(cat => {
+
+    const count = allVideos.filter(v => v.category === cat).length;
+
+    const el = document.getElementById(`count-${cat}-nav`);
+
+    if (el) el.innerText = `(${count})`;
+
+  });
+
 }
