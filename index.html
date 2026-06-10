@@ -1,73 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dark Corner</title>
+<title>Dark Corner</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-<header>
-    <div class="logo">Dark Corner</div>
+<header class="topbar">
+  <div class="logo">DARK CORNER</div>
 
-    <nav>
-        <a href="#machine" onclick="filterCategory('machine')">Machine <span id="count-machine"></span></a>
-        <a href="#shibari" onclick="filterCategory('shibari')">Shibari <span id="count-shibari"></span></a>
-        <a href="#huge" onclick="filterCategory('huge')">Huge <span id="count-huge"></span></a>
-        <a href="#vibrator" onclick="filterCategory('vibrator')">Vibrator <span id="count-vibrator"></span></a>
-        <a href="#bbc" onclick="filterCategory('bbc')">BBC <span id="count-bbc"></span></a>
-
-        <input type="text" id="searchInput" placeholder="Buscar videos...">
-    </nav>
+  <nav>
+    <a href="#home">HOME</a>
+    <a href="#machine">MACHINE</a>
+    <a href="#shibari">SHIBARI</a>
+    <a href="#sybian">SYBIAN</a>
+    <a href="#huge">HUGE</a>
+    <a href="#bbc">BBC</a>
+  </nav>
 </header>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Dark Corner</h1>
-        <p>Plataforma de videos organizada por categorías.</p>
-    </div>
+<!-- HOME -->
+<section id="home" class="section">
+  <h2>HOME</h2>
+  <div class="grid" id="homeGrid"></div>
 </section>
 
-<!-- 🔥 FIX REAL: UNA GRID GLOBAL OCULTA PARA EVITAR CRASH -->
-<div id="all-grid" style="display:none;"></div>
-
-<!-- SECCIONES VISUALES (YA NO SE USAN PARA RENDER, SOLO UI) -->
-
-<section id="machine">
-    <h2 class="section-title">Machine</h2>
-    <div class="grid" data-category="machine"></div>
+<section id="machine" class="section">
+  <h2>MACHINE</h2>
+  <div class="grid" data-cat="machine"></div>
 </section>
 
-<section id="shibari">
-    <h2 class="section-title">Shibari</h2>
-    <div class="grid" data-category="shibari"></div>
+<section id="shibari" class="section">
+  <h2>SHIBARI</h2>
+  <div class="grid" data-cat="shibari"></div>
 </section>
 
-<section id="huge">
-    <h2 class="section-title">Huge</h2>
-    <div class="grid" data-category="huge"></div>
+<section id="sybian" class="section">
+  <h2>SYBIAN</h2>
+  <div class="grid" data-cat="sybian"></div>
 </section>
 
-<section id="vibrator">
-    <h2 class="section-title">Vibrator</h2>
-    <div class="grid" data-category="vibrator"></div>
+<section id="huge" class="section">
+  <h2>HUGE</h2>
+  <div class="grid" data-cat="huge"></div>
 </section>
 
-<section id="bbc">
-    <h2 class="section-title">BBC</h2>
-    <div class="grid" data-category="bbc"></div>
+<section id="bbc" class="section">
+  <h2>BBC</h2>
+  <div class="grid" data-cat="bbc"></div>
 </section>
 
-<footer>
-    © 2026 Dark Corner XXX
-</footer>
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <iframe id="videoFrame" src="" allowfullscreen></iframe>
+  </div>
+</div>
 
 <script src="js/app.js"></script>
-
 </body>
 </html>
