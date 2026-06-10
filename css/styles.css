@@ -61,10 +61,16 @@ nav a:hover{
     transform:scale(1.03);
 }
 
-.card img{
-    width:100%;
-    height:340px;
-    object-fit:cover;
+/* default (HOME portadas) */
+.card img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+}
+
+/* cuando estás dentro de una sección */
+.section-active .card img {
+    height: 180px;
 }
 
 .card-title{
