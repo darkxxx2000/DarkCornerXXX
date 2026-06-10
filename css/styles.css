@@ -20,24 +20,20 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:0 30px;
-background:rgba(0,0,0,.85);
-backdrop-filter:blur(10px);
+background:rgba(0,0,0,.9);
 z-index:1000;
-border-bottom:1px solid #ff005544;
+border-bottom:1px solid #ff005533;
 }
 
 .logo{
 color:#ff0055;
 font-weight:800;
-letter-spacing:2px;
 }
 
 nav a{
 color:#aaa;
 margin-left:15px;
 text-decoration:none;
-font-size:14px;
-transition:.3s;
 }
 
 nav a:hover{
@@ -47,11 +43,6 @@ color:#ff0055;
 /* SECTIONS */
 .section{
 padding:100px 30px 40px;
-}
-
-.section h2{
-margin-bottom:20px;
-color:#ff0055;
 }
 
 /* GRID */
@@ -76,7 +67,7 @@ transform:scale(1.03);
 
 .card img{
 width:100%;
-height:260px; /* vertical style */
+height:260px;
 object-fit:cover;
 }
 
@@ -90,17 +81,18 @@ text-align:center;
 .modal{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.9);
+background:rgba(0,0,0,.95);
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
-.hidden{ display:none; }
+.hidden{display:none;}
 
 .modal-content{
 width:90%;
 max-width:900px;
+position:relative;
 }
 
 iframe{
@@ -111,8 +103,9 @@ border:none;
 
 #close{
 position:absolute;
-top:20px;
-right:30px;
-font-size:30px;
+top:-40px;
+right:0;
+font-size:35px;
 cursor:pointer;
+color:white;
 }
