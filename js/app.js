@@ -9,33 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(videos => {
 
-      console.log("VIDEOS OK:", videos);
-
       allVideos = videos;
 
       renderVideos(allVideos);
       setupSearch();
-      updateCounters();
 
     })
-    .catch(err => {
-      console.error("ERROR CARGA JSON:", err);
-    });
+    .catch(err => console.error("ERROR:", err));
 
 });
 
 /* =========================
-   RENDER
+   RENDER DE VIDEOS
 ========================= */
 function renderVideos(videos) {
 
   const grid = document.getElementById("all-grid");
-
-  if (!grid) {
-    console.error("NO EXISTE all-grid en HTML");
-    return;
-  }
-
   grid.innerHTML = "";
 
   videos.forEach(video => {
@@ -44,19 +33,15 @@ function renderVideos(videos) {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${video.image}" loading="lazy">
+      <img src="${video.image}" alt="${video.title}" loading="lazy">
       <div class="card-content">
         <div class="card-title">${video.title}</div>
       </div>
     `;
 
-    card.onclick = () => {
-      if (video.type === "embed") {
-        openEmbedModal(video.url);
-      } else {
-        window.open(video.url, "_blank");
-      }
-    };
+    card.addEventListener("click", () => {
+      openEmbed(video.url);
+    });
 
     grid.appendChild(card);
   });
@@ -69,55 +54,22 @@ function setupSearch() {
 
   const input = document.getElementById("searchInput");
 
-  if (!input) return;
-
   input.addEventListener("input", e => {
 
     const value = e.target.value.toLowerCase();
 
-    renderVideos(
-      allVideos.filter(v =>
-        v.title.toLowerCase().includes(value)
-      )
+    const filtered = allVideos.filter(v =>
+      v.title.toLowerCase().includes(value)
     );
+
+    renderVideos(filtered);
   });
 }
 
 /* =========================
-   FILTRO
+   EMBED MODAL
 ========================= */
-function filterCategory(category) {
-
-  renderVideos(
-    allVideos.filter(v =>
-      v.category.toLowerCase().trim() === category
-    )
-  );
-}
-
-/* =========================
-   CONTADORES
-========================= */
-function updateCounters() {
-
-  const categories = ["machine","shibari","huge","vibrator","bbc"];
-
-  categories.forEach(cat => {
-
-    const count = allVideos.filter(v =>
-      v.category.toLowerCase().trim() === cat
-    ).length;
-
-    const el = document.getElementById(`count-${cat}-nav`);
-    if (el) el.textContent = `(${count})`;
-
-  });
-}
-
-/* =========================
-   MODAL
-========================= */
-function openEmbedModal(url) {
+function openEmbed(url) {
 
   document.querySelector("#modal")?.remove();
 
@@ -133,9 +85,9 @@ function openEmbedModal(url) {
 
   document.body.appendChild(modal);
 
-  modal.onclick = (e) => {
+  modal.addEventListener("click", (e) => {
     if (e.target.id === "modal" || e.target.id === "close") {
       modal.remove();
     }
-  };
+  });
 }
