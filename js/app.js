@@ -8,52 +8,38 @@ fetch("data/videos.json")
 });
 
 function renderAll(){
-
   renderHome();
-  renderCategory("machine");
-  renderCategory("shibari");
-  renderCategory("sybian");
-  renderCategory("huge");
-  renderCategory("bbc");
 
+  ["machine","shibari","sybian","huge","bbc"]
+  .forEach(renderCategory);
 }
 
 function renderHome(){
-
   const home = document.getElementById("homeGrid");
-
-  videos.slice(0,10).forEach(v => {
-    const card = createCard(v);
-    home.appendChild(card);
-  });
-
+  videos.slice(0,10).forEach(v => home.appendChild(createCard(v)));
 }
 
 function renderCategory(cat){
-
   const grid = document.querySelector(`[data-cat="${cat}"]`);
 
-  videos.filter(v => v.category === cat)
-  .forEach(v => {
-    grid.appendChild(createCard(v));
-  });
-
+  videos
+  .filter(v => v.category === cat)
+  .forEach(v => grid.appendChild(createCard(v)));
 }
 
 function createCard(video){
 
-  const div = document.createElement("div");
-  div.className = "card";
+  const card = document.createElement("div");
+  card.className = "card";
 
-  div.innerHTML = `
+  card.innerHTML = `
     <img src="${video.image}">
     <h3>${video.title}</h3>
   `;
 
-  div.onclick = () => openModal(video.url);
+  card.onclick = () => openModal(video.url);
 
-  return div;
-
+  return card;
 }
 
 function openModal(url){
@@ -61,9 +47,8 @@ function openModal(url){
   const modal = document.getElementById("modal");
   const frame = document.getElementById("videoFrame");
 
-  frame.src = url;
+  frame.src = url;   // 👈 EMBED DIRECTO
   modal.classList.remove("hidden");
-
 }
 
 document.getElementById("close").onclick = () => {
