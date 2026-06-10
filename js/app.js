@@ -1,93 +1,72 @@
-let allVideos = [];
+let videos = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-
-  fetch("./data/videos.json")
-    .then(res => {
-      if (!res.ok) throw new Error("No se encontró videos.json");
-      return res.json();
-    })
-    .then(videos => {
-
-      allVideos = videos;
-
-      renderVideos(allVideos);
-      setupSearch();
-
-    })
-    .catch(err => console.error("ERROR:", err));
-
+fetch("data/videos.json")
+.then(r => r.json())
+.then(data => {
+  videos = data;
+  renderAll();
 });
 
-/* =========================
-   RENDER DE VIDEOS
-========================= */
-function renderVideos(videos) {
+function renderAll(){
 
-  const grid = document.getElementById("all-grid");
-  grid.innerHTML = "";
+  renderHome();
+  renderCategory("machine");
+  renderCategory("shibari");
+  renderCategory("sybian");
+  renderCategory("huge");
+  renderCategory("bbc");
 
-  videos.forEach(video => {
-
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <img src="${video.image}" alt="${video.title}" loading="lazy">
-      <div class="card-content">
-        <div class="card-title">${video.title}</div>
-      </div>
-    `;
-
-    card.addEventListener("click", () => {
-      openEmbed(video.url);
-    });
-
-    grid.appendChild(card);
-  });
 }
 
-/* =========================
-   BUSCADOR
-========================= */
-function setupSearch() {
+function renderHome(){
 
-  const input = document.getElementById("searchInput");
+  const home = document.getElementById("homeGrid");
 
-  input.addEventListener("input", e => {
-
-    const value = e.target.value.toLowerCase();
-
-    const filtered = allVideos.filter(v =>
-      v.title.toLowerCase().includes(value)
-    );
-
-    renderVideos(filtered);
+  videos.slice(0,10).forEach(v => {
+    const card = createCard(v);
+    home.appendChild(card);
   });
+
 }
 
-/* =========================
-   EMBED MODAL
-========================= */
-function openEmbed(url) {
+function renderCategory(cat){
 
-  document.querySelector("#modal")?.remove();
+  const grid = document.querySelector(`[data-cat="${cat}"]`);
 
-  const modal = document.createElement("div");
-  modal.id = "modal";
+  videos.filter(v => v.category === cat)
+  .forEach(v => {
+    grid.appendChild(createCard(v));
+  });
 
-  modal.innerHTML = `
-    <div class="modal-box">
-      <span id="close">&times;</span>
-      <iframe src="${url}" allowfullscreen></iframe>
-    </div>
+}
+
+function createCard(video){
+
+  const div = document.createElement("div");
+  div.className = "card";
+
+  div.innerHTML = `
+    <img src="${video.image}">
+    <h3>${video.title}</h3>
   `;
 
-  document.body.appendChild(modal);
+  div.onclick = () => openModal(video.url);
 
-  modal.addEventListener("click", (e) => {
-    if (e.target.id === "modal" || e.target.id === "close") {
-      modal.remove();
-    }
-  });
+  return div;
+
 }
+
+function openModal(url){
+
+  const modal = document.getElementById("modal");
+  const frame = document.getElementById("videoFrame");
+
+  frame.src = url;
+  modal.classList.remove("hidden");
+
+}
+
+document.getElementById("close").onclick = () => {
+  document.getElementById("modal").classList.add("hidden");
+  document.getElementById("videoFrame").src = "";
+};
