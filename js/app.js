@@ -1,11 +1,17 @@
 let data = [];
 
 fetch("./data/videos.json")
-.then(r => r.json())
-.then(json => {
-  data = json;
-  renderHome();
-});
+  .then(r => {
+    if (!r.ok) throw new Error("No se pudo cargar videos.json");
+    return r.json();
+  })
+  .then(json => {
+    data = json;
+    renderHome();
+  })
+  .catch(err => {
+    console.error("ERROR CARGANDO JSON:", err);
+  });
 
 /* =========================
    HOME (CATEGORÍAS)
