@@ -1,6 +1,6 @@
 let data = [];
 
-fetch("data/videos.json")
+fetch("./data/videos.json")
 .then(r => r.json())
 .then(json => {
   data = json;
@@ -8,7 +8,7 @@ fetch("data/videos.json")
 });
 
 /* =========================
-   HOME (CATEGORÍAS CON IMAGEN)
+   HOME (CATEGORÍAS)
 ========================= */
 function renderHome(){
 
