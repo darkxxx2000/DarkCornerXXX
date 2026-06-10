@@ -3,94 +3,109 @@ const modal = document.getElementById("videoModal");
 const closeModal = document.getElementById("closeModal");
 const videoContainer = document.getElementById("videoContainer");
 
-let allVideos = [];
+let categories = [];
 
-async function loadVideos(){
-
-    const response = await fetch("data/videos.json");
-
-    allVideos = await response.json();
-
-    renderGallery("HOME");
+async function loadVideos() {
+    try {
+        const response = await fetch("./data/videos.json");
+        categories = await response.json();
+        renderHome();
+    } catch (error) {
+        console.error("Error cargando JSON:", error);
+        gallery.innerHTML = "<p>Error cargando contenido.</p>";
+    }
 }
 
-function renderGallery(category){
+function renderHome() {
 
     gallery.innerHTML = "";
 
-    let videos;
-
-    if(category === "HOME"){
-        videos = allVideos;
-    }else{
-        videos = allVideos.filter(
-            item => item.category === category
-        );
-    }
-
-    videos.forEach(video => {
+    categories.forEach(category => {
 
         const card = document.createElement("div");
-
         card.className = "card";
 
         card.innerHTML = `
-            <img src="${video.image}" alt="${video.title}">
-            <div class="card-title">${video.title}</div>
+            <img src="${category.cover}" alt="${category.name}">
+            <div class="card-title">${category.name}</div>
         `;
 
-        card.addEventListener("click",()=>{
+        card.addEventListener("click", () => {
+            renderCategory(category.name);
+        });
+
+        gallery.appendChild(card);
+    });
+}
+
+function renderCategory(categoryName) {
+
+    gallery.innerHTML = "";
+
+    const category = categories.find(
+        c => c.name === categoryName
+    );
+
+    if (!category) {
+        gallery.innerHTML = "<p>Categoría no encontrada.</p>";
+        return;
+    }
+
+    category.items.forEach(item => {
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <img src="${item.image}" alt="${item.title}">
+            <div class="card-title">${item.title}</div>
+        `;
+
+        card.addEventListener("click", () => {
 
             modal.style.display = "flex";
 
             videoContainer.innerHTML = `
                 <iframe
-                src="${video.video}?autoplay=1"
-                allowfullscreen
-                allow="autoplay">
+                    src="${item.embed}"
+                    allowfullscreen
+                    loading="lazy">
                 </iframe>
             `;
-
         });
 
         gallery.appendChild(card);
-
     });
-
 }
 
 document.querySelectorAll("nav a").forEach(link => {
 
-    link.addEventListener("click",(e)=>{
+    link.addEventListener("click", e => {
 
         e.preventDefault();
 
-        renderGallery(
-            link.dataset.category
-        );
+        const category = link.dataset.category;
 
+        if (category === "HOME") {
+            renderHome();
+        } else {
+            renderCategory(category);
+        }
     });
-
 });
 
-closeModal.addEventListener("click",()=>{
+closeModal.addEventListener("click", () => {
 
-    modal.style.display="none";
-
-    videoContainer.innerHTML="";
-
+    modal.style.display = "none";
+    videoContainer.innerHTML = "";
 });
 
-window.addEventListener("click",(e)=>{
+window.addEventListener("click", e => {
 
-    if(e.target===modal){
-
-        modal.style.display="none";
-
-        videoContainer.innerHTML="";
-
+    if (e.target === modal) {
+        modal.style.display = "none";
+        videoContainer.innerHTML = "";
     }
-
 });
 
 loadVideos();
