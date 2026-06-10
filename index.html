@@ -1,45 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dark Corner</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+    <title>Dark Corner</title>
+
+    <!-- FUENTE -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
 <header>
-  <div class="logo">Dark Corner</div>
+    <div class="logo">Dark Corner</div>
 
-  <nav>
-    <a href="#" data-cat="machine">Machine <span id="count-machine-nav"></span></a>
-    <a href="#" data-cat="shibari">Shibari <span id="count-shibari-nav"></span></a>
-    <a href="#" data-cat="huge">Huge <span id="count-huge-nav"></span></a>
-    <a href="#" data-cat="vibrator">Vibrator <span id="count-vibrator-nav"></span></a>
-    <a href="#" data-cat="bbc">BBC <span id="count-bbc-nav"></span></a>
+    <!-- NAV + BUSCADOR + FILTROS -->
+    <nav>
+        <a href="#machine" onclick="filterCategory('machine')">Machine <span id="count-machine"></span></a>
+        <a href="#shibari" onclick="filterCategory('shibari')">Shibari <span id="count-shibari"></span></a>
+        <a href="#huge" onclick="filterCategory('huge')">Huge <span id="count-huge"></span></a>
+        <a href="#vibrator" onclick="filterCategory('vibrator')">Vibrator <span id="count-vibrator"></span></a>
+        <a href="#bbc" onclick="filterCategory('bbc')">BBC <span id="count-bbc"></span></a>
 
-    <input type="text" id="searchInput" placeholder="Buscar videos...">
-  </nav>
+        <input type="text" id="searchInput" placeholder="Buscar videos...">
+    </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <h1>Dark Corner</h1>
-    <p>Plataforma de videos organizada por categorías.</p>
-  </div>
+    <div class="hero-content">
+        <h1>Dark Corner</h1>
+        <p>Plataforma de videos organizada por categorías.</p>
+    </div>
 </section>
 
-<section>
-  <div class="grid" id="all-grid"></div>
+<!-- SECCIONES (VACÍAS - SE LLENAN CON JS) -->
+
+<section id="machine">
+    <h2 class="section-title">Machine <span id="count-machine"></span></h2>
+    <div class="grid" data-category="machine"></div>
+</section>
+
+<section id="shibari">
+    <h2 class="section-title">Shibari <span id="count-shibari"></span></h2>
+    <div class="grid" data-category="shibari"></div>
+</section>
+
+<section id="huge">
+    <h2 class="section-title">Huge <span id="count-huge"></span></h2>
+    <div class="grid" data-category="huge"></div>
+</section>
+
+<section id="vibrator">
+    <h2 class="section-title">Vibrator <span id="count-vibrator"></span></h2>
+    <div class="grid" data-category="vibrator"></div>
+</section>
+
+<section id="bbc">
+    <h2 class="section-title">BBC <span id="count-bbc"></span></h2>
+    <div class="grid" data-category="bbc"></div>
 </section>
 
 <footer>
-  © 2026 Dark Corner XXX
+    © 2026 Dark Corner XXX
 </footer>
 
+<!-- JS PRINCIPAL -->
 <script src="js/app.js"></script>
 
 </body>
