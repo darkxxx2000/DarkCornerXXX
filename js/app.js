@@ -1,5 +1,8 @@
 let allVideos = [];
 
+/* =========================
+   CARGA JSON
+========================= */
 fetch("data/videos.json")
   .then(res => res.json())
   .then(videos => {
@@ -29,19 +32,19 @@ function renderVideos(videos) {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${video.image}" loading="lazy">
+      <img src="${video.image}" loading="lazy" alt="${video.title}">
       <div class="card-content">
         <div class="card-title">${video.title}</div>
       </div>
     `;
 
-    card.onclick = () => {
+    card.addEventListener("click", () => {
       if (video.type === "embed") {
         openEmbedModal(video.url);
       } else {
         window.open(video.url, "_blank");
       }
-    };
+    });
 
     grid.appendChild(card);
   });
@@ -54,8 +57,6 @@ function setupSearch() {
 
   const input = document.getElementById("searchInput");
 
-  if (!input) return;
-
   input.addEventListener("input", e => {
 
     const value = e.target.value.toLowerCase();
@@ -65,20 +66,20 @@ function setupSearch() {
     );
 
     renderVideos(filtered);
-
   });
-
 }
 
 /* =========================
    FILTRO CATEGORÍA
 ========================= */
 function filterCategory(category) {
-  const filtered = allVideos.filter(video =>
-  video.title.toLowerCase().includes(value)
-);
 
-renderVideos(filtered);
+  const filtered = allVideos.filter(video =>
+    video.category.toLowerCase().trim() === category
+  );
+
+  renderVideos(filtered);
+}
 
 /* =========================
    CONTADORES
@@ -98,13 +99,11 @@ function updateCounters() {
     if (element) {
       element.textContent = `(${count})`;
     }
-
   });
-
 }
 
 /* =========================
-   MODAL EMBED (PROPIO)
+   MODAL
 ========================= */
 function openEmbedModal(url) {
 
@@ -115,16 +114,13 @@ function openEmbedModal(url) {
 
   modal.innerHTML = `
     <div class="modal-box">
-
       <span id="close" style="cursor:pointer;font-size:30px;">&times;</span>
 
       <iframe
         src="${url}"
         allowfullscreen
-        frameborder="0"
-        style="width:100%; height:70vh; border-radius:12px;">
+        frameborder="0">
       </iframe>
-
     </div>
   `;
 
@@ -135,5 +131,4 @@ function openEmbedModal(url) {
       modal.remove();
     }
   });
-
 }
