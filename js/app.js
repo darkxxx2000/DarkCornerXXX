@@ -1,35 +1,44 @@
 let allVideos = [];
 
+document.addEventListener("DOMContentLoaded", () => {
+
+  fetch("./data/videos.json")
+    .then(res => {
+      if (!res.ok) throw new Error("No se encontró videos.json");
+      return res.json();
+    })
+    .then(videos => {
+
+      console.log("VIDEOS OK:", videos);
+
+      allVideos = videos;
+
+      renderVideos(allVideos);
+      setupSearch();
+      updateCounters();
+
+    })
+    .catch(err => {
+      console.error("ERROR CARGA JSON:", err);
+    });
+
+});
+
 /* =========================
-   INIT
-========================= */
-fetch("data/videos.json")
-  .then(res => res.json())
-  .then(videos => {
-
-    allVideos = videos;
-
-    renderVideos(allVideos);
-    setupSearch();
-    updateCounters();
-
-  });
-
-/* =========================
-   RENDER (POR CATEGORÍA)
+   RENDER
 ========================= */
 function renderVideos(videos) {
 
-  // limpiar grids
-  document.querySelectorAll(".grid").forEach(g => g.innerHTML = "");
+  const grid = document.getElementById("all-grid");
+
+  if (!grid) {
+    console.error("NO EXISTE all-grid en HTML");
+    return;
+  }
+
+  grid.innerHTML = "";
 
   videos.forEach(video => {
-
-    const grid = document.querySelector(
-      `.grid[data-category="${video.category}"]`
-    );
-
-    if (!grid) return;
 
     const card = document.createElement("div");
     card.className = "card";
@@ -41,93 +50,53 @@ function renderVideos(videos) {
       </div>
     `;
 
-    card.addEventListener("click", () => {
-
-      if (video.type === "link") {
+    card.onclick = () => {
+      if (video.type === "embed") {
+        openEmbedModal(video.url);
+      } else {
         window.open(video.url, "_blank");
       }
-
-      if (video.type === "modal") {
-        openModal(video.url);
-      }
-
-    });
+    };
 
     grid.appendChild(card);
-
   });
-
 }
 
 /* =========================
-   BUSCADOR (CORREGIDO)
-   -> NO rompe categorías
+   BUSCADOR
 ========================= */
 function setupSearch() {
 
   const input = document.getElementById("searchInput");
 
-  input.addEventListener("input", (e) => {
+  if (!input) return;
+
+  input.addEventListener("input", e => {
 
     const value = e.target.value.toLowerCase();
 
-    const filtered = allVideos.filter(v =>
-      v.title.toLowerCase().includes(value)
+    renderVideos(
+      allVideos.filter(v =>
+        v.title.toLowerCase().includes(value)
+      )
     );
-
-    renderVideos(filtered);
-
   });
-
 }
 
 /* =========================
-   FILTRO POR CATEGORÍA
+   FILTRO
 ========================= */
-function filterCategory(cat) {
+function filterCategory(category) {
 
-  const filtered = allVideos.filter(v => v.category === cat);
-
-  renderVideos(filtered);
-
+  renderVideos(
+    allVideos.filter(v =>
+      v.category.toLowerCase().trim() === category
+    )
+  );
 }
 
 /* =========================
-   MODAL
-========================= */
-function openModal(url) {
-
-  let modal = document.getElementById("modal");
-
-  if (!modal) {
-
-    modal = document.createElement("div");
-    modal.id = "modal";
-
-    modal.innerHTML = `
-      <div class="modal-box">
-        <span id="close">&times;</span>
-        <iframe id="videoFrame" src="${url}" allowfullscreen></iframe>
-      </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    modal.addEventListener("click", (e) => {
-      if (e.target.id === "modal" || e.target.id === "close") {
-        modal.remove();
-      }
-    });
-
-  } else {
-    document.getElementById("videoFrame").src = url;
-    modal.style.display = "flex";
-  }
-
-}
-
-/* =========================
-   CONTADORES (FIX UI)
+   CONTADORES
 ========================= */
 function updateCounters() {
 
@@ -135,12 +104,38 @@ function updateCounters() {
 
   categories.forEach(cat => {
 
-    const count = allVideos.filter(v => v.category === cat).length;
+    const count = allVideos.filter(v =>
+      v.category.toLowerCase().trim() === cat
+    ).length;
 
     const el = document.getElementById(`count-${cat}-nav`);
-
-    if (el) el.innerText = `(${count})`;
+    if (el) el.textContent = `(${count})`;
 
   });
+}
 
+/* =========================
+   MODAL
+========================= */
+function openEmbedModal(url) {
+
+  document.querySelector("#modal")?.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "modal";
+
+  modal.innerHTML = `
+    <div class="modal-box">
+      <span id="close">&times;</span>
+      <iframe src="${url}" allowfullscreen></iframe>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.onclick = (e) => {
+    if (e.target.id === "modal" || e.target.id === "close") {
+      modal.remove();
+    }
+  };
 }
