@@ -282,3 +282,146 @@ iframe{
         padding:8px 10px;
     }
 }
+/* =========================
+   WRAPPER
+========================= */
+
+.site-wrapper{
+    max-width:1500px;
+    margin:auto;
+    border-left:1px solid rgba(212,175,55,.15);
+    border-right:1px solid rgba(212,175,55,.15);
+    background:rgba(0,0,0,.25);
+}
+
+/* =========================
+   HEADER PREMIUM
+========================= */
+
+.header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.join-btn{
+    background:linear-gradient(
+        135deg,
+        #f7dc8b,
+        #c49a2b
+    );
+
+    color:#000;
+    border:none;
+    padding:12px 24px;
+    font-weight:700;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.join-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 20px rgba(212,175,55,.3);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.content-layout{
+    display:flex;
+    align-items:flex-start;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:240px;
+    min-width:240px;
+    padding:30px 20px;
+    border-right:1px solid rgba(212,175,55,.15);
+}
+
+.sidebar h3{
+    color:#d4af37;
+    font-size:12px;
+    letter-spacing:2px;
+    margin-bottom:15px;
+}
+
+.sidebar ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.sidebar li{
+    padding:10px 0;
+    color:#cfcfcf;
+    font-size:14px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.sidebar li:hover{
+    color:#d4af37;
+}
+
+.sidebar-divider{
+    height:1px;
+    background:rgba(212,175,55,.2);
+    margin:25px 0;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    border-top:1px solid rgba(212,175,55,.15);
+    padding:25px;
+    text-align:center;
+}
+
+.footer-links{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.footer-links a{
+    color:#aaa;
+    text-decoration:none;
+    font-size:12px;
+}
+
+.footer-links a:hover{
+    color:#d4af37;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+    .content-layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        min-width:100%;
+        border-right:none;
+        border-bottom:1px solid rgba(212,175,55,.15);
+    }
+
+    .header-top{
+        flex-direction:column;
+    }
+}
