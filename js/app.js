@@ -4,30 +4,61 @@ const closeModal = document.getElementById("closeModal");
 const videoContainer = document.getElementById("videoContainer");
 
 let categories = [];
+let currentCategory = null;
+
+/* =========================
+   CARGA JSON
+========================= */
 
 async function loadVideos() {
+
     try {
+
         const response = await fetch("./data/videos.json");
+
         categories = await response.json();
+
         renderHome();
+
     } catch (error) {
-        console.error("Error cargando JSON:", error);
-        gallery.innerHTML = "<p>Error cargando contenido.</p>";
+
+        console.error(error);
+
+        gallery.innerHTML = `
+            <div class="error-message">
+                Error cargando contenido.
+            </div>
+        `;
     }
 }
 
+/* =========================
+   HOME
+========================= */
+
 function renderHome() {
 
+    currentCategory = null;
+
     gallery.innerHTML = "";
+
+    clearActiveMenu();
+
+    document
+        .querySelector('[data-category="HOME"]')
+        ?.classList.add("active-link");
 
     categories.forEach(category => {
 
         const card = document.createElement("div");
+
         card.className = "card";
 
         card.innerHTML = `
             <img src="${category.cover}" alt="${category.name}">
-            <div class="card-title">${category.name}</div>
+            <div class="card-title">
+                ${category.name}
+            </div>
         `;
 
         card.addEventListener("click", () => {
@@ -36,49 +67,164 @@ function renderHome() {
 
         gallery.appendChild(card);
     });
+
+    animateGallery();
 }
+
+/* =========================
+   CATEGORIA
+========================= */
 
 function renderCategory(categoryName) {
 
+    currentCategory = categoryName;
+
     gallery.innerHTML = "";
+
+    setActiveMenu(categoryName);
 
     const category = categories.find(
         c => c.name === categoryName
     );
 
     if (!category) {
-        gallery.innerHTML = "<p>Categoría no encontrada.</p>";
+
+        gallery.innerHTML = `
+            <div class="error-message">
+                Categoría no encontrada.
+            </div>
+        `;
+
         return;
     }
+
+    const backButton = document.createElement("div");
+
+    backButton.className = "back-button";
+
+    backButton.innerHTML = "← Volver";
+
+    backButton.addEventListener("click", renderHome);
+
+    gallery.appendChild(backButton);
 
     category.items.forEach(item => {
 
         const card = document.createElement("div");
+
         card.className = "card";
 
         card.innerHTML = `
             <img src="${item.image}" alt="${item.title}">
-            <div class="card-title">${item.title}</div>
+            <div class="card-title">
+                ${item.title}
+            </div>
         `;
 
         card.addEventListener("click", () => {
-
-            modal.style.display = "flex";
-
-            videoContainer.innerHTML = `
-                <iframe
-                    src="${item.embed}"
-                    allowfullscreen
-                    loading="lazy">
-                </iframe>
-            `;
+            openVideo(item.embed);
         });
 
         gallery.appendChild(card);
     });
+
+    animateGallery();
 }
 
-document.querySelectorAll("nav a").forEach(link => {
+/* =========================
+   VIDEO
+========================= */
+
+function openVideo(embedUrl) {
+
+    videoContainer.innerHTML = `
+        <iframe
+            src="${embedUrl}"
+            allowfullscreen
+            loading="lazy">
+        </iframe>
+    `;
+
+    modal.style.display = "flex";
+
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
+}
+
+function closeVideo() {
+
+    modal.classList.remove("show");
+
+    setTimeout(() => {
+
+        modal.style.display = "none";
+
+        videoContainer.innerHTML = "";
+
+    }, 250);
+}
+
+/* =========================
+   MENU
+========================= */
+
+function clearActiveMenu() {
+
+    document.querySelectorAll("nav a")
+        .forEach(link =>
+            link.classList.remove("active-link")
+        );
+}
+
+function setActiveMenu(categoryName) {
+
+    clearActiveMenu();
+
+    document.querySelectorAll("nav a")
+        .forEach(link => {
+
+            if (link.dataset.category === categoryName) {
+
+                link.classList.add("active-link");
+            }
+        });
+}
+
+/* =========================
+   ANIMACION
+========================= */
+
+function animateGallery() {
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach((card, index) => {
+
+        card.style.opacity = "0";
+
+        card.style.transform = "translateY(20px)";
+
+        setTimeout(() => {
+
+            card.style.transition =
+                "all .4s ease";
+
+            card.style.opacity = "1";
+
+            card.style.transform =
+                "translateY(0)";
+
+        }, index * 50);
+    });
+}
+
+/* =========================
+   NAV
+========================= */
+
+document.querySelectorAll("nav a")
+.forEach(link => {
 
     link.addEventListener("click", e => {
 
@@ -87,25 +233,35 @@ document.querySelectorAll("nav a").forEach(link => {
         const category = link.dataset.category;
 
         if (category === "HOME") {
+
             renderHome();
+
         } else {
+
             renderCategory(category);
         }
     });
 });
 
-closeModal.addEventListener("click", () => {
+/* =========================
+   MODAL EVENTS
+========================= */
 
-    modal.style.display = "none";
-    videoContainer.innerHTML = "";
-});
+closeModal.addEventListener(
+    "click",
+    closeVideo
+);
 
 window.addEventListener("click", e => {
 
     if (e.target === modal) {
-        modal.style.display = "none";
-        videoContainer.innerHTML = "";
+
+        closeVideo();
     }
 });
+
+/* =========================
+   INIT
+========================= */
 
 loadVideos();
