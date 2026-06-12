@@ -425,3 +425,34 @@ footer{
         flex-direction:column;
     }
 }
+.active-link{
+    color:#f2d57a !important;
+    background:rgba(212,175,55,.08);
+}
+
+.back-button{
+    grid-column:1/-1;
+    color:#d4af37;
+    cursor:pointer;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.back-button:hover{
+    color:#f2d57a;
+}
+
+.modal{
+    opacity:0;
+    transition:.25s;
+}
+
+.modal.show{
+    opacity:1;
+}
+
+.error-message{
+    color:#d4af37;
+    text-align:center;
+    padding:50px;
+}
