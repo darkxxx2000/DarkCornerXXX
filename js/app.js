@@ -135,15 +135,33 @@ function renderCategory(categoryName) {
    VIDEO
 ========================= */
 
-function openVideo(embedUrl) {
+function openVideo(url){
 
-    videoContainer.innerHTML = `
-        <iframe
-            src="${embedUrl}"
-            allowfullscreen
-            loading="lazy">
-        </iframe>
-    `;
+    if(url.includes(".mp4")){
+
+        videoContainer.innerHTML = `
+            <video
+                controls
+                autoplay
+                style="
+                    width:100%;
+                    max-height:80vh;
+                    background:black;
+                ">
+                <source src="${url}" type="video/mp4">
+            </video>
+        `;
+
+    }else{
+
+        videoContainer.innerHTML = `
+            <iframe
+                src="${url}"
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+        `;
+    }
 
     modal.style.display = "flex";
 
