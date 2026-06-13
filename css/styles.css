@@ -168,8 +168,7 @@ header{
 
 .content-layout{
     flex:1;
-    display:flex;
-    justify-content:center;
+    display:block;
     width:100%;
 }
 
@@ -184,13 +183,13 @@ header{
 
 .gallery{
     width:100%;
-    max-width:1400px;
+    max-width:1800px;
     margin:0 auto;
-    padding:40px;
+    padding:25px;
 
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-    gap:30px;
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:25px;
 }
 
 /* =========================
@@ -220,7 +219,7 @@ header{
 /* IMAGE */
 .card img{
     width:100%;
-    height:320px;
+    height:460px;
     object-fit:cover;
     display:block;
 
@@ -303,14 +302,6 @@ iframe{
 /* =========================
    FOOTER LEGAL (FIX FINAL)
 ========================= */
-
-footer{
-    margin-top:auto;
-    padding:40px 20px;
-    text-align:center;
-    border-top:1px solid rgba(255,43,85,.12);
-    background:rgba(0,0,0,.25);
-}
 
 /* SOLO LINKS REQUERIDOS */
 .footer-links{
