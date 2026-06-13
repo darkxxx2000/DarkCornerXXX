@@ -435,6 +435,29 @@ iframe{
 }
 
 /* textura gris suave */
+.legal-section{
+    min-height:40vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(circle at top,
+        rgba(255,255,255,.05),
+        transparent 40%),
+
+        radial-gradient(circle at bottom,
+        rgba(255,43,85,.08),
+        transparent 60%),
+
+        linear-gradient(180deg,#0a0a0a,#050505);
+
+    position:relative;
+    overflow:hidden;
+}
+
+/* textura gris suave */
 .legal-section::before{
     content:"";
     position:absolute;
