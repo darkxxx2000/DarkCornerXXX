@@ -360,3 +360,55 @@ iframe{
         padding:8px 10px;
     }
 }
+.top-nav{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:15px;
+}
+
+.nav-scroll{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding:10px 15px;
+    scrollbar-width:none;
+}
+
+.nav-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.nav-item{
+    flex:0 0 auto;
+
+    text-decoration:none;
+    color:#cfcfcf;
+
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+
+    padding:10px 16px;
+    border-radius:6px;
+
+    background:rgba(0,0,0,.25);
+
+    border:1px solid rgba(255,43,85,.12);
+
+    transition:.3s ease;
+}
+
+.nav-item:hover{
+    color:#fff;
+    background:rgba(255,43,85,.12);
+    border-color:rgba(255,43,85,.35);
+    box-shadow:0 0 12px rgba(255,43,85,.2);
+}
+
+.nav-item.active-link{
+    color:#ff5c7f;
+    background:rgba(255,43,85,.18);
+    border-color:rgba(255,43,85,.5);
+    box-shadow:0 0 15px rgba(255,43,85,.3);
+}
