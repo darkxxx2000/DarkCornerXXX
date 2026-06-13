@@ -4,13 +4,12 @@
     --red:#ff2b55;
     --red-light:#ff5c7f;
     --red-dark:#7a0018;
-
     --bg:#050505;
     --text:#f5f5f5;
 }
 
 /* =========================
-   RESET / BASE FIX
+   RESET
 ========================= */
 
 *{
@@ -19,14 +18,13 @@
 
 html, body{
     height:100%;
+    margin:0;
+    overflow-x:hidden;
 }
 
 body{
-    margin:0;
     font-family:'Montserrat',sans-serif;
     color:var(--text);
-    min-height:100vh;
-
     background:
         radial-gradient(circle at top left,
         rgba(120,0,24,.35),
@@ -51,10 +49,11 @@ body::before{
 }
 
 /* =========================
-   WRAPPER FIX (IMPORTANTE)
+   WRAPPER (FIX REAL)
 ========================= */
 
 .site-wrapper{
+    width:100%;
     min-height:100vh;
     display:flex;
     flex-direction:column;
@@ -72,17 +71,24 @@ header{
     backdrop-filter:blur(6px);
 }
 
-/* LOGO */
+/* =========================
+   LOGO (FIX PEDIDO)
+========================= */
+
 .logo{
-    font-size:48px;
-    font-weight:300;
-    letter-spacing:8px;
+    font-size:54px;
+    font-weight:700;
+    letter-spacing:6px;
     text-transform:uppercase;
+
     color:#fff;
 
+    white-space:nowrap; /* 🔥 1 SOLO RENGLÓN */
+
     text-shadow:
-        0 0 10px rgba(255,43,85,.45),
-        0 0 25px rgba(122,0,24,.75);
+        0 0 10px rgba(255,43,85,.55),
+        0 0 25px rgba(255,43,85,.75),
+        0 0 45px rgba(122,0,24,.9);
 
     animation:logoGlow 3s ease-in-out infinite;
 }
@@ -95,8 +101,8 @@ header{
     }
     50%{
         text-shadow:
-            0 0 18px rgba(255,43,85,.7),
-            0 0 40px rgba(122,0,24,.9);
+            0 0 20px rgba(255,43,85,.8),
+            0 0 50px rgba(122,0,24,.95);
     }
 }
 
@@ -156,29 +162,31 @@ header{
 }
 
 /* =========================
-   LAYOUT PRINCIPAL
+   LAYOUT (FIX CENTRADO REAL)
 ========================= */
 
 .content-layout{
     display:flex;
+    justify-content:center; /* 🔥 FIX CLAVE */
     align-items:flex-start;
-    gap:0;
-    flex:1;
+    width:100%;
 }
 
-/* SIDEBAR (VACÍA PERO LIMPIA) */
+/* SIDEBAR (neutralizada) */
 .sidebar{
-    width:240px;
-    flex-shrink:0;
+    width:0;
+    min-width:0;
+    flex:0;
 }
 
-/* GALERÍA */
-.gallery{
-    flex:1;
-    min-width:0;
+/* =========================
+   GALERÍA
+========================= */
 
+.gallery{
+    width:100%;
     max-width:1400px;
-    margin:auto;
+    margin:0 auto;
     padding:40px;
 
     display:grid;
@@ -187,7 +195,7 @@ header{
 }
 
 /* =========================
-   CARDS
+   CARD
 ========================= */
 
 .card{
@@ -195,7 +203,6 @@ header{
     padding:8px;
     border-radius:4px;
     cursor:pointer;
-    position:relative;
 
     border:1px solid rgba(255,43,85,.12);
 
@@ -212,7 +219,6 @@ header{
         0 20px 40px rgba(0,0,0,.8);
 }
 
-/* imagen */
 .card img{
     width:100%;
     height:320px;
@@ -220,14 +226,8 @@ header{
     display:block;
 
     border:1px solid rgba(255,43,85,.25);
-    transition:.3s;
 }
 
-.card:hover img{
-    filter:brightness(1.1);
-}
-
-/* titulo */
 .card-title{
     padding:12px;
     text-align:center;
@@ -267,18 +267,8 @@ iframe{
     border:1px solid rgba(255,43,85,.25);
 }
 
-/* close */
-#closeModal{
-    position:absolute;
-    top:20px;
-    right:30px;
-    font-size:42px;
-    cursor:pointer;
-    color:var(--red-light);
-}
-
 /* =========================
-   LEGAL SECTION (FIX FINAL)
+   LEGAL SECTION (UNIFICADA)
 ========================= */
 
 .legal-section{
@@ -316,19 +306,26 @@ iframe{
     z-index:2;
 }
 
+/* TITULO LEGAL */
 .brand-title{
     font-size:34px;
+    font-weight:400;
     letter-spacing:10px;
-    font-weight:300;
+
     display:flex;
     justify-content:center;
     gap:10px;
+
+    text-shadow:
+        0 0 10px rgba(255,43,85,.35),
+        0 0 25px rgba(122,0,24,.6);
 }
 
 .brand-title span{
     color:var(--red);
 }
 
+/* LINKS */
 .legal-links{
     margin-top:25px;
     display:flex;
@@ -346,7 +343,6 @@ iframe{
     padding:8px 12px;
     border:1px solid rgba(255,43,85,.12);
     border-radius:6px;
-    transition:.3s;
 }
 
 .legal-links a:hover{
@@ -362,7 +358,7 @@ iframe{
 @media(max-width:768px){
 
     .logo{
-        font-size:34px;
+        font-size:38px;
         letter-spacing:4px;
     }
 
