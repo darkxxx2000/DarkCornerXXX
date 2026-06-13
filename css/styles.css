@@ -412,3 +412,114 @@ iframe{
     border-color:rgba(255,43,85,.5);
     box-shadow:0 0 15px rgba(255,43,85,.3);
 }
+.legal-section{
+    min-height:40vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(circle at top,
+        rgba(255,255,255,.05),
+        transparent 40%),
+
+        radial-gradient(circle at bottom,
+        rgba(255,43,85,.08),
+        transparent 60%),
+
+        linear-gradient(180deg,#0a0a0a,#050505);
+
+    position:relative;
+    overflow:hidden;
+}
+
+/* textura gris suave */
+.legal-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background-image:url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+    opacity:.15;
+    pointer-events:none;
+}
+
+.legal-wrapper{
+    text-align:center;
+    z-index:2;
+}
+
+/* TITULO HORIZONTAL */
+.brand-title{
+    font-size:34px;
+    letter-spacing:10px;
+    font-weight:300;
+    color:#fff;
+
+    display:flex;
+    justify-content:center;
+    gap:10px;
+
+    text-shadow:
+        0 0 10px rgba(255,43,85,.35),
+        0 0 25px rgba(0,0,0,.8);
+}
+
+.brand-title span{
+    color:#ff2b55;
+    text-shadow:
+        0 0 12px rgba(255,43,85,.6);
+}
+
+/* LINKS */
+.legal-links{
+    margin-top:25px;
+
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+
+    gap:18px;
+}
+
+.legal-links a{
+    color:#cfcfcf;
+    text-decoration:none;
+    font-size:12px;
+    letter-spacing:2px;
+
+    padding:8px 12px;
+
+    border:1px solid rgba(255,43,85,.12);
+    border-radius:6px;
+
+    transition:.3s ease;
+}
+
+.legal-links a:hover{
+    color:#fff;
+    border-color:rgba(255,43,85,.4);
+    background:rgba(255,43,85,.08);
+    box-shadow:0 0 12px rgba(255,43,85,.15);
+}
+
+/* espacio inferior */
+.legal-space{
+    height:60px;
+}
+
+/* responsive */
+@media(max-width:600px){
+
+    .brand-title{
+        font-size:26px;
+        letter-spacing:6px;
+        flex-direction:column;
+        gap:5px;
+    }
+
+    .legal-links{
+        gap:10px;
+    }
+}
