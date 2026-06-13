@@ -141,7 +141,25 @@
         "title": "BLAD Video 2",
         "image": "https://picsum.photos/id/1062/500/800",
         "embed": "https://www.youtube.com/embed/fLexgOxsZu0"
+     }
+    ]
+  },
+
+  {
+    "name": "WEDGIE",
+    "cover": "images/wedgie-cover.jpg",
+    "items": [
+        {
+            "title": "Wedgie 1",
+            "image": "images/wedgie1.jpg",
+            "embed": "videos/wedgie1.mp4"
+        },
+        {
+             "title": "Wedgie 2",
+        "image": "images/wedgie2.jpg",
+        "embed": "videos/wedgie2.mp4"
       }
     ]
   }
+
 ]
