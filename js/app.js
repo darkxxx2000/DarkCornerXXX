@@ -92,7 +92,7 @@ function renderSubGallery(item) {
         `;
 
         card.addEventListener("click", () => {
-            openVideo(subItem.embed);
+            openVideo(subItem.embed, subItem.type);
         });
 
         gallery.appendChild(card);
@@ -245,6 +245,27 @@ function animateGallery() {
         }, index * 50);
     });
 }
+
+/* =========================
+   NAV EVENTS (FIX PRINCIPAL)
+========================= */
+
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+        e.preventDefault();
+
+        const category = item.dataset.category;
+
+        if (!category) return;
+
+        if (category === "HOME") {
+            renderHome();
+            return;
+        }
+
+        renderCategory(category);
+    });
+});
 
 /* =========================
    MODAL EVENTS
