@@ -122,8 +122,8 @@ function renderCategory(categoryName) {
         `;
 
         card.addEventListener("click", () => {
-            openVideo(item.embed);
-        });
+    openVideo(item.embed, item.type);
+});
 
         gallery.appendChild(card);
     });
@@ -135,9 +135,14 @@ function renderCategory(categoryName) {
    VIDEO
 ========================= */
 
-function openVideo(url){
+function openVideo(url, type = "embed") {
 
-    if(url.includes(".mp4")){
+    if (type === "link") {
+        window.open(url, "_blank");
+        return;
+    }
+
+    if (url.includes(".mp4")) {
 
         videoContainer.innerHTML = `
             <video
@@ -152,7 +157,7 @@ function openVideo(url){
             </video>
         `;
 
-    }else{
+    } else {
 
         videoContainer.innerHTML = `
             <iframe
@@ -169,7 +174,6 @@ function openVideo(url){
         modal.classList.add("show");
     }, 10);
 }
-
 function closeVideo() {
 
     modal.classList.remove("show");
