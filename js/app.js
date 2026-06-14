@@ -13,17 +13,11 @@ let currentCategory = null;
 async function loadVideos() {
 
     try {
-
         const response = await fetch("./data/videos.json");
-
         categories = await response.json();
-
         renderHome();
-
     } catch (error) {
-
         console.error(error);
-
         gallery.innerHTML = `
             <div class="error-message">
                 Error cargando contenido.
@@ -39,7 +33,6 @@ async function loadVideos() {
 function renderHome() {
 
     currentCategory = null;
-
     gallery.innerHTML = "";
 
     clearActiveMenu();
@@ -51,7 +44,6 @@ function renderHome() {
     categories.forEach(category => {
 
         const card = document.createElement("div");
-
         card.className = "card";
 
         card.innerHTML = `
@@ -72,36 +64,67 @@ function renderHome() {
 }
 
 /* =========================
+   SUB GALERÍA
+========================= */
+
+function renderSubGallery(item) {
+
+    gallery.innerHTML = "";
+
+    const backButton = document.createElement("div");
+    backButton.className = "back-button";
+    backButton.innerHTML = "← Volver";
+
+    backButton.addEventListener("click", () => {
+        renderCategory(currentCategory);
+    });
+
+    gallery.appendChild(backButton);
+
+    item.gallery.forEach(subItem => {
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <img src="${subItem.image}" alt="${subItem.title}">
+            <div class="card-title">${subItem.title}</div>
+        `;
+
+        card.addEventListener("click", () => {
+            openVideo(subItem.embed);
+        });
+
+        gallery.appendChild(card);
+    });
+
+    animateGallery();
+}
+
+/* =========================
    CATEGORIA
 ========================= */
 
 function renderCategory(categoryName) {
 
     currentCategory = categoryName;
-
     gallery.innerHTML = "";
 
     setActiveMenu(categoryName);
 
-    const category = categories.find(
-        c => c.name === categoryName
-    );
+    const category = categories.find(c => c.name === categoryName);
 
     if (!category) {
-
         gallery.innerHTML = `
             <div class="error-message">
                 Categoría no encontrada.
             </div>
         `;
-
         return;
     }
 
     const backButton = document.createElement("div");
-
     backButton.className = "back-button";
-
     backButton.innerHTML = "← Volver";
 
     backButton.addEventListener("click", renderHome);
@@ -111,7 +134,6 @@ function renderCategory(categoryName) {
     category.items.forEach(item => {
 
         const card = document.createElement("div");
-
         card.className = "card";
 
         card.innerHTML = `
@@ -122,8 +144,14 @@ function renderCategory(categoryName) {
         `;
 
         card.addEventListener("click", () => {
-    openVideo(item.embed, item.type);
-});
+
+            if (item.gallery) {
+                renderSubGallery(item);
+                return;
+            }
+
+            openVideo(item.embed, item.type);
+        });
 
         gallery.appendChild(card);
     });
@@ -142,17 +170,12 @@ function openVideo(url, type = "embed") {
         return;
     }
 
+    if (!url) return;
+
     if (url.includes(".mp4")) {
 
         videoContainer.innerHTML = `
-            <video
-                controls
-                autoplay
-                style="
-                    width:100%;
-                    max-height:80vh;
-                    background:black;
-                ">
+            <video controls autoplay style="width:100%;max-height:80vh;background:black;">
                 <source src="${url}" type="video/mp4">
             </video>
         `;
@@ -160,11 +183,7 @@ function openVideo(url, type = "embed") {
     } else {
 
         videoContainer.innerHTML = `
-            <iframe
-                src="${url}"
-                allowfullscreen
-                loading="lazy">
-            </iframe>
+            <iframe src="${url}" allowfullscreen loading="lazy"></iframe>
         `;
     }
 
@@ -174,16 +193,14 @@ function openVideo(url, type = "embed") {
         modal.classList.add("show");
     }, 10);
 }
+
 function closeVideo() {
 
     modal.classList.remove("show");
 
     setTimeout(() => {
-
         modal.style.display = "none";
-
         videoContainer.innerHTML = "";
-
     }, 250);
 }
 
@@ -192,11 +209,8 @@ function closeVideo() {
 ========================= */
 
 function clearActiveMenu() {
-
     document.querySelectorAll("nav a")
-        .forEach(link =>
-            link.classList.remove("active-link")
-        );
+        .forEach(link => link.classList.remove("active-link"));
 }
 
 function setActiveMenu(categoryName) {
@@ -205,9 +219,7 @@ function setActiveMenu(categoryName) {
 
     document.querySelectorAll("nav a")
         .forEach(link => {
-
             if (link.dataset.category === categoryName) {
-
                 link.classList.add("active-link");
             }
         });
@@ -224,54 +236,24 @@ function animateGallery() {
     cards.forEach((card, index) => {
 
         card.style.opacity = "0";
-
         card.style.transform = "translateY(20px)";
 
         setTimeout(() => {
-
-            card.style.transition =
-                "all .4s ease";
-
+            card.style.transition = "all .4s ease";
             card.style.opacity = "1";
-
-            card.style.transform =
-                "translateY(0)";
-
+            card.style.transform = "translateY(0)";
         }, index * 50);
     });
 }
 
 /* =========================
-   NAV
-========================= */
-
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', e => {
-    e.preventDefault();
-
-    const category = item.dataset.category;
-    console.log('Selected category:', category);
-
-    // Filter content based on category
-    filterContent(category);
-  });
-});
-
-/* =========================
    MODAL EVENTS
 ========================= */
 
-closeModal.addEventListener(
-    "click",
-    closeVideo
-);
+closeModal.addEventListener("click", closeVideo);
 
 window.addEventListener("click", e => {
-
-    if (e.target === modal) {
-
-        closeVideo();
-    }
+    if (e.target === modal) closeVideo();
 });
 
 /* =========================
