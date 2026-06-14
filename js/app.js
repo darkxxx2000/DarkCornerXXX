@@ -241,24 +241,16 @@ function animateGallery() {
    NAV
 ========================= */
 
-document.querySelectorAll("nav a")
-.forEach(link => {
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
 
-    link.addEventListener("click", e => {
+    const category = item.dataset.category;
+    console.log('Selected category:', category);
 
-        e.preventDefault();
-
-        const category = link.dataset.category;
-
-        if (category === "HOME") {
-
-            renderHome();
-
-        } else {
-
-            renderCategory(category);
-        }
-    });
+    // Filter content based on category
+    filterContent(category);
+  });
 });
 
 /* =========================
