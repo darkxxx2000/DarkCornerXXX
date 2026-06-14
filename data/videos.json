@@ -165,23 +165,6 @@
     ]
   },
   {
-    "name": "MODEL - CHANNELS (Machine)",
-    "cover": "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
-    "items": [
-      {
-        "title": "Masha Yang",
-        "image": "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
-        "link": "pornhub.com/pornstar/masha-yang/videos"
-      },
-      {
-        "title": "BLAD Video 2",
-        "image": "https://picsum.photos/id/1062/500/800",
-        "embed": "https://www.youtube.com/embed/fLexgOxsZu0"
-     }
-    ]
-  },
-
-  {
     "name": "WEDGIE",
     "cover": "https://ei.phncdn.com/videos/202503/20/466073825/original/(m=eaSaaTbaAaaaa)(mh=9GtXOyWJIUJJNaR8)11.jpg",
     "items": [
@@ -193,9 +176,36 @@
         {
              "title": "Wedgie 2",
         "image": "images/wedgie2.jpg",
-        "embed": "videos/wedgie2.mp4"
+        "embed": "videos/wedgie2.mp4"  
+           }
+    ]
+  },
+  
+  {
+    "name": "MODEL - CHANNELS (Machine)",
+    "cover": "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
+    "items": [
+      {
+        "title": "Masha Yang",
+        "image": "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
+        "gallery": [
+          {
+            "title": "Masha Yang",
+        "image": "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
+        "embed": "pornhub.com/pornstar/masha-yang/videos"
+          },
+          {
+            "title": "Modelo 2",
+            "image": "https://picsum.photos/400/600?22",
+            "embed": "https://spankbang.com/def/embed/"
+          },
+          {
+            "title": "Modelo 3",
+            "image": "https://picsum.photos/400/600?23",
+            "embed": "https://spankbang.com/ghi/embed/"
+         }
+        ]
       }
     ]
   }
-
 ]
