@@ -154,6 +154,22 @@
      }
     ]
   },
+  {
+    "name": "MODEL - CHANNELS (Machine)",
+    "cover": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTF0SHQ7vm_CBvPbWEF59J4hIavnR05XZddxyRS-kd4k_keM9MI",
+    "items": [
+      {
+        "title": "BLAD Video 1",
+        "image": "https://picsum.photos/id/1061/500/800",
+        "embed": "https://www.youtube.com/embed/9bZkp7q19f0"
+      },
+      {
+        "title": "BLAD Video 2",
+        "image": "https://picsum.photos/id/1062/500/800",
+        "embed": "https://www.youtube.com/embed/fLexgOxsZu0"
+     }
+    ]
+  },
 
   {
     "name": "WEDGIE",
