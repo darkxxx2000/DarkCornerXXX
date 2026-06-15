@@ -172,7 +172,7 @@ function openVideo(url, type = "embed") {
 
     if (!url) return;
 
-    if (url.includes(".mp4")) {
+    if (url.toLowerCase().includes(".mp4")) {
 
         videoContainer.innerHTML = `
             <video controls autoplay style="width:100%;max-height:80vh;background:black;">
