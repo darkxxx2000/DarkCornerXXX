@@ -165,25 +165,40 @@ function renderCategory(categoryName) {
 
 function openVideo(url, type = "embed") {
 
+    if (!url) return;
+
     if (type === "link") {
         window.open(url, "_blank");
         return;
     }
 
-    if (!url) return;
+    const isMp4 =
+        url.toLowerCase().includes(".mp4") ||
+        url.includes(".mp4?") ||
+        url.match(/\.mp4($|\/|\?)/i);
 
-    if (url.toLowerCase().includes(".mp4")) {
+    if (isMp4) {
 
         videoContainer.innerHTML = `
-            <video controls autoplay style="width:100%;max-height:80vh;background:black;">
+            <video
+                controls
+                autoplay
+                playsinline
+                preload="metadata"
+                style="width:100%;max-height:80vh;background:black;">
                 <source src="${url}" type="video/mp4">
+                Tu navegador no soporta video.
             </video>
         `;
 
     } else {
 
         videoContainer.innerHTML = `
-            <iframe src="${url}" allowfullscreen loading="lazy"></iframe>
+            <iframe
+                src="${url}"
+                allowfullscreen
+                loading="lazy">
+            </iframe>
         `;
     }
 
@@ -192,16 +207,6 @@ function openVideo(url, type = "embed") {
     setTimeout(() => {
         modal.classList.add("show");
     }, 10);
-}
-
-function closeVideo() {
-
-    modal.classList.remove("show");
-
-    setTimeout(() => {
-        modal.style.display = "none";
-        videoContainer.innerHTML = "";
-    }, 250);
 }
 
 /* =========================
