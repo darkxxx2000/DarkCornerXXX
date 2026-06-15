@@ -145,13 +145,15 @@ function renderCategory(categoryName) {
 
         card.addEventListener("click", () => {
 
-            if (item.gallery) {
-                renderSubGallery(item);
-                return;
-            }
+    if (item.gallery) {
+        renderSubGallery(item);
+        return;
+    }
 
-            openVideo(item.embed, item.type);
-        });
+    console.log(item.embed);
+
+    openVideo(item.embed, item.type);
+});
 
         gallery.appendChild(card);
     });
