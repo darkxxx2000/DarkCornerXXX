@@ -7,13 +7,13 @@ let categories = [];
 let currentCategory = null;
 
 /* =========================
-   CARGA JSON
+   CARGA CATEGORÍAS
 ========================= */
 
 async function loadVideos() {
 
     try {
-        const response = await fetch("./data/videos.json");
+        const response = await fetch("./data/categories.json");
         categories = await response.json();
         renderHome();
     } catch (error) {
@@ -54,13 +54,82 @@ function renderHome() {
         `;
 
         card.addEventListener("click", () => {
-            renderCategory(category.name);
+            renderCategory(category);
         });
 
         gallery.appendChild(card);
     });
 
     animateGallery();
+}
+
+/* =========================
+   CATEGORÍA (CARGA DINÁMICA JSON)
+========================= */
+
+async function renderCategory(category) {
+
+    currentCategory = category;
+    gallery.innerHTML = "";
+
+    setActiveMenu(category.name);
+
+    if (!category || !category.file) {
+        gallery.innerHTML = `
+            <div class="error-message">
+                Categoría no encontrada.
+            </div>
+        `;
+        return;
+    }
+
+    try {
+        const response = await fetch(category.file);
+        const items = await response.json();
+
+        const backButton = document.createElement("div");
+        backButton.className = "back-button";
+        backButton.innerHTML = "← Volver";
+
+        backButton.addEventListener("click", renderHome);
+
+        gallery.appendChild(backButton);
+
+        items.forEach(item => {
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <div class="card-title">
+                    ${item.title}
+                </div>
+            `;
+
+            card.addEventListener("click", () => {
+
+                if (item.gallery) {
+                    renderSubGallery(item);
+                    return;
+                }
+
+                openVideo(item.embed, item.type);
+            });
+
+            gallery.appendChild(card);
+        });
+
+        animateGallery();
+
+    } catch (error) {
+        console.error(error);
+        gallery.innerHTML = `
+            <div class="error-message">
+                Error cargando categoría.
+            </div>
+        `;
+    }
 }
 
 /* =========================
@@ -102,67 +171,7 @@ function renderSubGallery(item) {
 }
 
 /* =========================
-   CATEGORIA
-========================= */
-
-function renderCategory(categoryName) {
-
-    currentCategory = categoryName;
-    gallery.innerHTML = "";
-
-    setActiveMenu(categoryName);
-
-    const category = categories.find(c => c.name === categoryName);
-
-    if (!category) {
-        gallery.innerHTML = `
-            <div class="error-message">
-                Categoría no encontrada.
-            </div>
-        `;
-        return;
-    }
-
-    const backButton = document.createElement("div");
-    backButton.className = "back-button";
-    backButton.innerHTML = "← Volver";
-
-    backButton.addEventListener("click", renderHome);
-
-    gallery.appendChild(backButton);
-
-    category.items.forEach(item => {
-
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-            <img src="${item.image}" alt="${item.title}">
-            <div class="card-title">
-                ${item.title}
-            </div>
-        `;
-
-        card.addEventListener("click", () => {
-
-    if (item.gallery) {
-        renderSubGallery(item);
-        return;
-    }
-
-    console.log(item.embed);
-
-    openVideo(item.embed, item.type);
-});
-
-        gallery.appendChild(card);
-    });
-
-    animateGallery();
-}
-
-/* =========================
-   VIDEO
+   VIDEO PLAYER
 ========================= */
 
 function openVideo(url, type = "embed") {
@@ -205,6 +214,10 @@ function openVideo(url, type = "embed") {
     }, 10);
 }
 
+/* =========================
+   CERRAR MODAL
+========================= */
+
 function closeVideo() {
 
     modal.classList.remove("show");
@@ -237,7 +250,7 @@ function setActiveMenu(categoryName) {
 }
 
 /* =========================
-   ANIMACION
+   ANIMACIÓN
 ========================= */
 
 function animateGallery() {
@@ -258,23 +271,27 @@ function animateGallery() {
 }
 
 /* =========================
-   NAV EVENTS (FIX PRINCIPAL)
+   NAV EVENTS
 ========================= */
 
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', e => {
         e.preventDefault();
 
-        const category = item.dataset.category;
+        const categoryName = item.dataset.category;
 
-        if (!category) return;
+        if (!categoryName) return;
 
-        if (category === "HOME") {
+        if (categoryName === "HOME") {
             renderHome();
             return;
         }
 
-        renderCategory(category);
+        const category = categories.find(c => c.name === categoryName);
+
+        if (category) {
+            renderCategory(category);
+        }
     });
 });
 
