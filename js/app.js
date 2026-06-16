@@ -167,26 +167,35 @@ function renderCategory(categoryName) {
 
 function openVideo(url, type = "embed") {
 
-    if (type === "link") {
-        window.open(url, "_blank");
-        return;
-    }
-
     if (!url) return;
 
-    if (url.toLowerCase().includes(".mp4")) {
+    switch (type) {
 
-        videoContainer.innerHTML = `
-            <video controls autoplay style="width:100%;max-height:80vh;background:black;">
-                <source src="${url}" type="video/mp4">
-            </video>
-        `;
+        case "link":
+            window.open(url, "_blank");
+            return;
 
-    } else {
+        case "mp4":
+            videoContainer.innerHTML = `
+                <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+            break;
 
-        videoContainer.innerHTML = `
-            <iframe src="${url}" allowfullscreen loading="lazy"></iframe>
-        `;
+        case "embed":
+            videoContainer.innerHTML = `
+                <iframe
+                    src="${url}"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            `;
+            break;
+
+        default:
+            console.error("Tipo no soportado:", type);
+            return;
     }
 
     modal.style.display = "flex";
