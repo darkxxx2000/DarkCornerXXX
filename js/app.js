@@ -46,6 +46,7 @@ async function loadVideos() {
 ========================= */
 
 function handleRoute() {
+
     const route = getRoute();
 
     if (route === "home") {
@@ -58,10 +59,10 @@ function handleRoute() {
         return;
     }
 
-    // SUBCATEGORÍAS DE CHANNELS
-    const channelMatch = findChannel(route);
-    if (channelMatch) {
-        renderChannelContent(channelMatch.name, false);
+    /* 🔽 SUBCANALES (machine, vib, etc) */
+    if (route.includes("-")) {
+        const slug = route;
+        renderChannelContent("", slug, false);
         return;
     }
 
@@ -100,7 +101,7 @@ function renderHome(push = true) {
     channelsCard.className = "card";
 
     channelsCard.innerHTML = `
-        <img src="images/channels-cover.jpg" alt="CHANNELS">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWcrJaKXlGMfPIRmnTg5CVtzEdi8x4zbGAUh6L5STo67jObCz5EnkMDqs&s=10" alt="CHANNELS">
         <div class="card-title">CHANNELS</div>
     `;
 
@@ -143,30 +144,39 @@ function renderChannels(push = true) {
     gallery.innerHTML = "";
     clearActiveMenu();
 
-    document
-        .querySelector('[data-category="CHANNELS"]')
-        ?.classList.add("active-link");
-
     if (push) setRoute("channels");
 
     const channels = [
-        { name: "MACHINE", cover: "images/machine.jpg" },
-        { name: "VIB", cover: "images/vib.jpg" },
-        { name: "SHIB", cover: "images/shib.jpg" }
+        {
+            name: "FUCK MACHINE",
+            slug: "fuck-machine",
+            cover: "https://ic-vt-nss.xhcdn.com/a/NDk4OTlkMWJjZDQ0YmMxZWE3OTA0YWJiYTc0N2IxY2I/s(w:2560,h:1440),webp/025/010/176/v2/2560x1440.219.webp"
+        },
+        {
+            name: "HUGE DILDO CHANNEL",
+            slug: "huge-dildo-channel",
+            cover: "https://cdni.pornpics.com/460/1/137/54326842/54326842_001_8465.jpg"
+        },
+        {
+            name: "SHIBARI CHANNEL",
+            slug: "shibari-channel",
+            cover: "https://ic-vt-nss.xhcdn.com/a/NWVmNTQwOTNlOTYyYzZmZGExYzkwOTE2MDFhYWM3N2Y/s(w:2560,h:1440),webp/029/354/833/v2/2560x1440.225.webp"
+        }
     ];
 
     channels.forEach(ch => {
 
         const card = document.createElement("div");
+
         card.className = "card";
 
         card.innerHTML = `
-            <img src="${ch.cover}" alt="${ch.name}">
+            <img src="${ch.cover}">
             <div class="card-title">${ch.name}</div>
         `;
 
         card.addEventListener("click", () => {
-            renderChannelContent(ch.name, true);
+            renderChannelContent(ch.name, ch.slug, true);
         });
 
         gallery.appendChild(card);
@@ -179,18 +189,19 @@ function renderChannels(push = true) {
    CHANNEL CONTENT (LEVEL 2)
 ========================= */
 
-async function renderChannelContent(channelName, push = true) {
+async function renderChannelContent(channelName, channelSlug, push = true) {
 
-    currentChannel = channelName;
+    currentChannel = channelSlug;
+
     gallery.innerHTML = "";
 
     gallery.appendChild(
         createBackButton(() => renderChannels(false))
     );
 
-    if (push) setRoute(channelName.toLowerCase());
+    if (push) setRoute(channelSlug);
 
-    const file = `./data/channels/${channelName.toLowerCase()}.json`;
+    const file = `./data/channels/${channelSlug}.json`;
 
     try {
         const response = await fetch(file);
@@ -199,6 +210,7 @@ async function renderChannelContent(channelName, push = true) {
         items.forEach(item => {
 
             const card = document.createElement("div");
+
             card.className = "card";
 
             card.innerHTML = `
@@ -322,7 +334,7 @@ function renderSubGallery(item) {
 ========================= */
 
 function findChannel(name) {
-    const list = ["machine", "vib", "shib"];
+    const list = ["fuck machine", "huge dildo channel", "shibari channel"];
     if (list.includes(name)) return { name };
     return null;
 }
