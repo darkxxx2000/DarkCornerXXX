@@ -1,11 +1,56 @@
 {
-  "title": "Canal 1",
-  "mainImage": "https://sitio.com/main.jpg",
-  "mainLink": "https://otro-sitio.com",
+  "title": "Masha Yang (Machine)",
+  "mainImage": "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
+  "mainLink": "pornhub.com/pornstar/masha-yang/videos",
   "gallery": [
-    "https://sitio.com/1.jpg",
-    "https://sitio.com/2.jpg",
-    "https://sitio.com/3.jpg",
-    "https://sitio.com/4.jpg"
+    {
+      "thumb": "https://sitio.com/1.jpg",
+      "full": "https://sitio.com/1.jpg"
+    },
+    {
+      "thumb": "https://sitio.com/2.jpg",
+      "full": "https://sitio.com/2.jpg"
+    },
+    {
+      "thumb": "https://sitio.com/3.jpg",
+      "full": "https://sitio.com/3.jpg"
+    }
   ]
-}
+},
+
+  {
+    "title": "Canal 2 - Studio X",
+    "mainImage": "https://sitio.com/main2.jpg",
+    "mainLink": "https://sitio.com/enlace2",
+    "gallery": [
+      {
+        "thumb": "https://sitio.com/2-1.jpg",
+        "full": "https://sitio.com/2-1.jpg"
+      },
+      {
+        "thumb": "https://sitio.com/2-2.jpg",
+        "full": "https://sitio.com/2-2.jpg"
+      }
+    ]
+  },
+
+  {
+    "title": "Canal 3 - Model Zone",
+    "mainImage": "https://sitio.com/main3.jpg",
+    "mainLink": "https://sitio.com/enlace3",
+    "gallery": [
+      {
+        "thumb": "https://sitio.com/3-1.jpg",
+        "full": "https://sitio.com/3-1.jpg"
+      },
+      {
+        "thumb": "https://sitio.com/3-2.jpg",
+        "full": "https://sitio.com/3-2.jpg"
+      },
+      {
+        "thumb": "https://sitio.com/3-3.jpg",
+        "full": "https://sitio.com/3-3.jpg"
+      }
+    ]
+  }
+]
