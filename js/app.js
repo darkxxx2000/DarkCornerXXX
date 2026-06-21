@@ -4,11 +4,11 @@ const closeModal = document.getElementById("closeModal");
 const videoContainer = document.getElementById("videoContainer");
 
 let categories = [];
-let currentCategory = null;
 let currentChannel = null;
+let currentCategory = null;
 
 /* =========================
-   ROUTING (CLEAN URL)
+   ROUTING
 ========================= */
 
 function setRoute(route) {
@@ -24,20 +24,16 @@ function getRoute() {
    INIT
 ========================= */
 
-async function loadVideos() {
+async function loadApp() {
     try {
-        const response = await fetch("./data/categories.json");
-        categories = await response.json();
+        const res = await fetch("./data/categories.json");
+        categories = await res.json();
 
         handleRoute();
 
-    } catch (error) {
-        console.error(error);
-        gallery.innerHTML = `
-            <div class="error-message">
-                Error cargando contenido.
-            </div>
-        `;
+    } catch (err) {
+        console.error(err);
+        gallery.innerHTML = `<div class="error-message">Error cargando datos</div>`;
     }
 }
 
@@ -59,10 +55,8 @@ function handleRoute() {
         return;
     }
 
-    /* 🔽 SUBCANALES (machine, vib, etc) */
     if (route.includes("-")) {
-        const slug = route;
-        renderChannelContent("", slug, false);
+        renderArtistBySlug(route, false);
         return;
     }
 
@@ -84,24 +78,21 @@ function handleRoute() {
 
 function renderHome(push = true) {
 
-    currentCategory = null;
     currentChannel = null;
+    currentCategory = null;
+
     gallery.innerHTML = "";
-
     clearActiveMenu();
-
-    document
-        .querySelector('[data-category="HOME"]')
-        ?.classList.add("active-link");
 
     if (push) setRoute("home");
 
     /* CHANNELS CARD */
     const channelsCard = document.createElement("div");
+
     channelsCard.className = "card";
 
     channelsCard.innerHTML = `
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWcrJaKXlGMfPIRmnTg5CVtzEdi8x4zbGAUh6L5STo67jObCz5EnkMDqs&s=10" alt="CHANNELS">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWcrJaKXlGMfPIRmnTg5CVtzEdi8x4zbGAUh6L5STo67jObCz5EnkMDqs&s=10">
         <div class="card-title">CHANNELS</div>
     `;
 
@@ -112,18 +103,19 @@ function renderHome(push = true) {
     gallery.appendChild(channelsCard);
 
     /* CATEGORIES */
-    categories.forEach(category => {
+    categories.forEach(cat => {
 
         const card = document.createElement("div");
+
         card.className = "card";
 
         card.innerHTML = `
-            <img src="${category.cover}" alt="${category.name}">
-            <div class="card-title">${category.name}</div>
+            <img src="${cat.cover}">
+            <div class="card-title">${cat.name}</div>
         `;
 
         card.addEventListener("click", () => {
-            renderCategory(category, true);
+            renderCategory(cat, true);
         });
 
         gallery.appendChild(card);
@@ -133,13 +125,13 @@ function renderHome(push = true) {
 }
 
 /* =========================
-   CHANNELS (SUB MENU)
+   CHANNELS (LEVEL 2)
 ========================= */
 
-function renderChannels(push = true) {
+async function renderChannels(push = true) {
 
-    currentCategory = "CHANNELS";
-    currentChannel = null;
+    currentChannel = "channels";
+    currentCategory = null;
 
     gallery.innerHTML = "";
     clearActiveMenu();
@@ -148,84 +140,80 @@ function renderChannels(push = true) {
 
     const channels = [
         {
-            name: "FUCK MACHINE",
-            slug: "fuck-machine",
-            cover: "https://ic-vt-nss.xhcdn.com/a/NDk4OTlkMWJjZDQ0YmMxZWE3OTA0YWJiYTc0N2IxY2I/s(w:2560,h:1440),webp/025/010/176/v2/2560x1440.219.webp"
+            name: "MACHINE",
+            slug: "machine",
+            cover: "images/channels/machine.jpg"
         },
         {
-            name: "HUGE DILDO CHANNEL",
-            slug: "huge-dildo-channel",
-            cover: "https://cdni.pornpics.com/460/1/137/54326842/54326842_001_8465.jpg"
+            name: "VIB",
+            slug: "vib",
+            cover: "images/channels/vib.jpg"
         },
         {
-            name: "SHIBARI CHANNEL",
-            slug: "shibari-channel",
-            cover: "https://ic-vt-nss.xhcdn.com/a/NWVmNTQwOTNlOTYyYzZmZGExYzkwOTE2MDFhYWM3N2Y/s(w:2560,h:1440),webp/029/354/833/v2/2560x1440.225.webp"
+            name: "SHIBARI",
+            slug: "shibari",
+            cover: "images/channels/shibari.jpg"
         }
     ];
 
+    const wrapper = document.createElement("div");
+    wrapper.className = "channels-grid";
+
     channels.forEach(ch => {
 
-        const card = document.createElement("div");
+        const item = document.createElement("div");
 
-        card.className = "card";
+        item.className = "channel-circle";
 
-        card.innerHTML = `
+        item.innerHTML = `
             <img src="${ch.cover}">
-            <div class="card-title">${ch.name}</div>
+            <div class="channel-title">${ch.name}</div>
         `;
 
-        card.addEventListener("click", () => {
-            renderChannelContent(ch.name, ch.slug, true);
+        item.addEventListener("click", () => {
+            renderChannelCategory(ch.slug, true);
         });
 
-        gallery.appendChild(card);
+        wrapper.appendChild(item);
     });
+
+    gallery.appendChild(wrapper);
 
     animateGallery();
 }
 
 /* =========================
-   CHANNEL CONTENT (LEVEL 2)
+   CHANNEL CATEGORY (LEVEL 3)
 ========================= */
 
-async function renderChannelContent(channelName, channelSlug, push = true) {
+async function renderChannelCategory(slug, push = true) {
 
-    currentChannel = channelSlug;
-
+    currentCategory = slug;
     gallery.innerHTML = "";
 
     gallery.appendChild(
-        createBackButton(() => renderChannels(false))
+        createBackButton(() => renderChannels(true))
     );
 
-    if (push) setRoute(channelSlug);
-
-    const file = `./data/channels/${channelSlug}.json`;
+    if (push) setRoute(slug);
 
     try {
-        const response = await fetch(file);
-        const items = await response.json();
+        const res = await fetch(`./data/channels/${slug}.json`);
+        const artists = await res.json();
 
-        items.forEach(item => {
+        artists.forEach(artist => {
 
             const card = document.createElement("div");
 
             card.className = "card";
 
             card.innerHTML = `
-                <img src="${item.image}" alt="${item.title}">
-                <div class="card-title">${item.title}</div>
+                <img src="${artist.mainImage.src}">
+                <div class="card-title">${artist.title}</div>
             `;
 
             card.addEventListener("click", () => {
-
-                if (item.gallery) {
-                    renderSubGallery(item);
-                    return;
-                }
-
-                openVideo(item.embed, item.type);
+                renderArtist(artist);
             });
 
             gallery.appendChild(card);
@@ -233,23 +221,68 @@ async function renderChannelContent(channelName, channelSlug, push = true) {
 
         animateGallery();
 
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
     }
 }
 
 /* =========================
-   CATEGORY (LEVEL 1 OLD)
+   ARTIST VIEW (LEVEL 4)
+========================= */
+
+function renderArtist(artist) {
+
+    gallery.innerHTML = "";
+
+    gallery.appendChild(
+        createBackButton(() => renderChannels(true))
+    );
+
+    const block = document.createElement("div");
+
+    block.className = "artist-block";
+
+    block.innerHTML = `
+        <div class="channel-section">
+
+            <div class="big-image">
+                <img src="${artist.mainImage.src}" class="main-link">
+            </div>
+
+            <div class="mini-grid">
+                ${artist.items.map((i, index) => `
+                    <img src="${i.image}" data-index="${index}" class="mini-img">
+                `).join("")}
+            </div>
+
+        </div>
+    `;
+
+    gallery.appendChild(block);
+
+    /* LINK PRINCIPAL */
+    block.querySelector(".main-link")
+        .addEventListener("click", () => {
+            window.open(artist.mainImage.link, "_blank");
+        });
+
+    /* MINI GALERÍA */
+    block.querySelectorAll(".mini-img")
+        .forEach((img, index) => {
+            img.addEventListener("click", () => {
+                openImageModal(artist.items, index);
+            });
+        });
+}
+
+/* =========================
+   CATEGORY NORMAL (HOME LEVEL)
 ========================= */
 
 async function renderCategory(category, push = true) {
 
-    if (!category || !category.file) return;
-
-    currentCategory = category;
+    currentCategory = category.name;
     gallery.innerHTML = "";
-
-    setActiveMenu(category.name);
 
     if (push) setRoute(category.name.toLowerCase());
 
@@ -257,71 +290,19 @@ async function renderCategory(category, push = true) {
         createBackButton(renderHome)
     );
 
-    try {
-        const response = await fetch(category.file);
-        const items = await response.json();
+    const res = await fetch(category.file);
+    const items = await res.json();
 
-        items.forEach(item => {
-
-            const card = document.createElement("div");
-            card.className = "card";
-
-            card.innerHTML = `
-                <img src="${item.image}" alt="${item.title}">
-                <div class="card-title">${item.title}</div>
-            `;
-
-            card.addEventListener("click", () => {
-
-                if (item.gallery) {
-                    renderSubGallery(item);
-                    return;
-                }
-
-                openVideo(item.embed, item.type);
-            });
-
-            gallery.appendChild(card);
-        });
-
-        animateGallery();
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-/* =========================
-   SUB GALLERY
-========================= */
-
-function renderSubGallery(item) {
-
-    gallery.innerHTML = "";
-
-    gallery.appendChild(
-        createBackButton(() => {
-            if (currentChannel) {
-                renderChannelContent(currentChannel, false);
-            } else {
-                renderCategory(currentCategory, false);
-            }
-        })
-    );
-
-    item.gallery.forEach(subItem => {
+    items.forEach(item => {
 
         const card = document.createElement("div");
+
         card.className = "card";
 
         card.innerHTML = `
-            <img src="${subItem.image}" alt="${subItem.title}">
-            <div class="card-title">${subItem.title}</div>
+            <img src="${item.image}">
+            <div class="card-title">${item.title}</div>
         `;
-
-        card.addEventListener("click", () => {
-            openVideo(subItem.embed, subItem.type);
-        });
 
         gallery.appendChild(card);
     });
@@ -330,13 +311,47 @@ function renderSubGallery(item) {
 }
 
 /* =========================
-   HELPERS
+   MODAL IMAGE (LIGHTBOX)
 ========================= */
 
-function findChannel(name) {
-    const list = ["fuck machine", "huge dildo channel", "shibari channel"];
-    if (list.includes(name)) return { name };
-    return null;
+function openImageModal(images, start = 0) {
+
+    let current = start;
+
+    const modal = document.createElement("div");
+    modal.className = "img-modal";
+
+    function render() {
+
+        modal.innerHTML = `
+            <div class="img-modal-content">
+                <span class="close">&times;</span>
+
+                <img src="${images[current].image}" class="modal-img">
+
+                <div class="nav">
+                    <button class="prev">←</button>
+                    <button class="next">→</button>
+                </div>
+            </div>
+        `;
+
+        modal.querySelector(".close").onclick = () => modal.remove();
+
+        modal.querySelector(".prev").onclick = () => {
+            current = (current - 1 + images.length) % images.length;
+            render();
+        };
+
+        modal.querySelector(".next").onclick = () => {
+            current = (current + 1) % images.length;
+            render();
+        };
+    }
+
+    render();
+
+    document.body.appendChild(modal);
 }
 
 /* =========================
@@ -346,7 +361,9 @@ function findChannel(name) {
 function createBackButton(action) {
 
     const btn = document.createElement("div");
+
     btn.className = "back-button";
+
     btn.innerHTML = "← Volver";
 
     btn.addEventListener("click", action);
@@ -355,58 +372,12 @@ function createBackButton(action) {
 }
 
 /* =========================
-   VIDEO
-========================= */
-
-function openVideo(url, type = "embed") {
-
-    if (!url) return;
-
-    if (type === "link") {
-        window.open(url, "_blank");
-        return;
-    }
-
-    videoContainer.innerHTML = `
-        <iframe src="${url}" allowfullscreen></iframe>
-    `;
-
-    modal.style.display = "flex";
-    setTimeout(() => modal.classList.add("show"), 10);
-}
-
-/* =========================
-   CLOSE MODAL
-========================= */
-
-function closeVideo() {
-    modal.classList.remove("show");
-
-    setTimeout(() => {
-        modal.style.display = "none";
-        videoContainer.innerHTML = "";
-    }, 200);
-}
-
-/* =========================
-   MENU
+   UTIL
 ========================= */
 
 function clearActiveMenu() {
     document.querySelectorAll("nav a")
-        .forEach(l => l.classList.remove("active-link"));
-}
-
-function setActiveMenu(name) {
-
-    clearActiveMenu();
-
-    document.querySelectorAll("nav a")
-        .forEach(link => {
-            if (link.dataset.category === name) {
-                link.classList.add("active-link");
-            }
-        });
+        .forEach(a => a.classList.remove("active-link"));
 }
 
 /* =========================
@@ -415,68 +386,37 @@ function setActiveMenu(name) {
 
 function animateGallery() {
 
-    document.querySelectorAll(".card").forEach((card, i) => {
-        card.style.opacity = 0;
-        card.style.transform = "translateY(20px)";
+    document.querySelectorAll(".card").forEach((c, i) => {
+
+        c.style.opacity = 0;
+        c.style.transform = "translateY(20px)";
 
         setTimeout(() => {
-            card.style.transition = "0.4s ease";
-            card.style.opacity = 1;
-            card.style.transform = "translateY(0)";
+            c.style.transition = "0.4s ease";
+            c.style.opacity = 1;
+            c.style.transform = "translateY(0)";
         }, i * 50);
     });
 }
 
 /* =========================
-   NAV EVENTS
+   EVENTS
 ========================= */
 
-document.querySelectorAll('.nav-item').forEach(item => {
+window.addEventListener("popstate", handleRoute);
 
-    item.addEventListener('click', e => {
+document.querySelectorAll(".nav-item").forEach(item => {
 
-        if (item.dataset.external === "true") return;
+    item.addEventListener("click", e => {
 
         e.preventDefault();
 
-        const category = item.dataset.category;
+        const cat = item.dataset.category;
 
-        if (!category) return;
-
-        if (category === "HOME") {
-            renderHome(true);
-            return;
-        }
-
-        if (category === "CHANNELS") {
-            renderChannels(true);
-            return;
-        }
-
-        const found = categories.find(
-            c => c.name === category
-        );
-
-        if (found) renderCategory(found, true);
+        if (cat === "HOME") renderHome(true);
+        if (cat === "CHANNELS") renderChannels(true);
     });
 });
 
-/* =========================
-   MODAL EVENTS
-========================= */
-
-closeModal.addEventListener("click", closeVideo);
-
-window.addEventListener("click", e => {
-    if (e.target === modal) closeVideo();
-});
-
-window.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeVideo();
-});
-
-/* BACK BUTTON */
-window.addEventListener("popstate", handleRoute);
-
 /* INIT */
-loadVideos();
+loadApp();
