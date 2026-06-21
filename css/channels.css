@@ -8,104 +8,196 @@
 
 body{
 
-    background:#05050a;
-    color:#fff;
+    background:#050505;
+
+    color:white;
 
     font-family:Arial, Helvetica, sans-serif;
 
 }
 
 
-/* CONTENEDOR GENERAL */
+/* HEADER */
 
-.container{
+header{
 
-    max-width:1200px;
+    display:flex;
 
-    margin:auto;
+    justify-content:space-between;
 
-    padding:40px 20px;
+    align-items:center;
+
+    padding:25px 40px;
+
+    border-bottom:1px solid #222;
 
 }
 
 
-/* ===== CHANNEL ===== */
+.logo{
 
-.channel{
+    font-size:40px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+}
+
+
+.back{
+
+    color:white;
+
+    text-decoration:none;
+
+    opacity:.8;
+
+}
+
+.back:hover{
+
+    opacity:1;
+
+}
+
+
+/* CONTAINER */
+
+#channels{
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:40px;
+
+}
+
+
+/* CATEGORY CARDS */
+
+.channel-card{
+
+    width:280px;
+
+    display:inline-block;
+
+    margin:15px;
+
+    background:#111;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    border:1px solid #222;
+
+}
+
+
+.channel-card:hover{
+
+    transform:scale(1.04);
+
+}
+
+
+.channel-card img{
+
+    width:100%;
+
+    height:180px;
+
+    object-fit:cover;
+
+}
+
+
+.channel-card h2{
+
+    padding:15px;
+
+    font-size:18px;
+
+}
+
+
+/* BACK BUTTON */
+
+.back-btn{
+
+    background:#111;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    margin-bottom:30px;
+
+    cursor:pointer;
+
+}
+
+
+.back-btn:hover{
+
+    background:#222;
+
+}
+
+
+/* ARTIST CARD */
+
+.artist-card{
+
+    background:#470000;
 
     padding:35px;
 
-    border-radius:12px;
+    border-radius:15px;
 
-    margin-bottom:30px;
+    margin-bottom:35px;
 
     box-shadow:
 
     0 0 30px rgba(0,0,0,.5),
 
-    inset 0 0 20px rgba(255,255,255,.03);
+    inset 0 0 20px rgba(255,255,255,.04);
 
 }
 
 
-/* COLORES */
+.artist-card h2{
 
-.channel.red{
-
-    background:#620000;
-
-}
-
-.channel.purple{
-
-    background:#1d1248;
-
-}
-
-.channel.green{
-
-    background:#004b23;
-
-}
-
-
-/* TITULOS */
-
-.channel-title{
-
-    font-size:58px;
+    font-size:56px;
 
     font-weight:900;
+
+    margin-bottom:25px;
 
     text-transform:uppercase;
 
     letter-spacing:2px;
-
-    line-height:1;
-
-}
-
-
-.channel-subtitle{
-
-    margin-top:8px;
-
-    margin-bottom:25px;
-
-    color:#e6b6ff;
-
-    font-size:15px;
 
 }
 
 
 /* LAYOUT */
 
-.channel-layout{
+.artist-layout{
 
     display:flex;
 
-    gap:22px;
+    gap:20px;
 
 }
 
@@ -118,11 +210,12 @@ body{
 
 }
 
+
 .main img{
 
     width:100%;
 
-    height:400px;
+    height:420px;
 
     object-fit:cover;
 
@@ -136,6 +229,7 @@ body{
 
 }
 
+
 .main img:hover{
 
     transform:scale(1.01);
@@ -143,15 +237,17 @@ body{
 }
 
 
-/* GALLERY */
+/* THUMBS */
 
-.gallery{
+.thumbs{
 
     flex:1;
 
     display:grid;
 
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+
+    repeat(4,1fr);
 
     gap:10px;
 
@@ -160,7 +256,7 @@ body{
 }
 
 
-.gallery img{
+.thumbs img{
 
     width:100%;
 
@@ -176,56 +272,12 @@ body{
 
     transition:.2s;
 
-    opacity:.95;
-
-}
-
-.gallery img:hover{
-
-    transform:scale(1.06);
-
-    opacity:1;
-
 }
 
 
-/* FOOTER */
+.thumbs img:hover{
 
-.channel-footer{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:20px;
-
-    margin-top:25px;
-
-}
-
-
-.channel-footer::before,
-
-.channel-footer::after{
-
-    content:"";
-
-    flex:1;
-
-    height:3px;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.5);
-
-}
-
-
-.photo-count{
-
-    font-size:20px;
-
-    font-weight:bold;
+    transform:scale(1.07);
 
 }
 
@@ -234,13 +286,13 @@ body{
 
 .lightbox{
 
+    display:none;
+
     position:fixed;
 
     inset:0;
 
     background:rgba(0,0,0,.95);
-
-    display:none;
 
     justify-content:center;
 
@@ -269,27 +321,38 @@ body{
 }
 
 
+/* CLOSE */
+
+.close{
+
+    position:absolute;
+
+    top:20px;
+
+    right:35px;
+
+    font-size:50px;
+
+    cursor:pointer;
+
+}
+
+
 /* RESPONSIVE */
 
 @media(max-width:900px){
 
-    .channel-layout{
+    .artist-layout{
 
         flex-direction:column;
 
     }
 
-    .gallery{
+    .thumbs{
 
         grid-template-columns:
 
         repeat(4,1fr);
-
-    }
-
-    .main img{
-
-        height:300px;
 
     }
 
@@ -298,19 +361,13 @@ body{
 
 @media(max-width:600px){
 
-    .channel{
+    .artist-card h2{
 
-        padding:20px;
-
-    }
-
-    .channel-title{
-
-        font-size:38px;
+        font-size:36px;
 
     }
 
-    .gallery{
+    .thumbs{
 
         grid-template-columns:
 
