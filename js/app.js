@@ -26,7 +26,7 @@ function getRoute() {
 
 async function loadApp() {
     try {
-        const res = await fetch("./data/categories.json");
+        const res = await fetch("/data/categories.json");
         categories = await res.json();
 
         handleRoute();
@@ -198,7 +198,7 @@ async function renderChannelCategory(slug, push = true) {
     if (push) setRoute(slug);
 
     try {
-        const res = await fetch(`./data/channels/${slug}.json`);
+        const res = await fetch(`/data/channels/${slug}.json`);
         const artists = await res.json();
 
         artists.forEach(artist => {
