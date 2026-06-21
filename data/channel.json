@@ -1,0 +1,11 @@
+{
+  "title": "Canal 1",
+  "mainImage": "https://sitio.com/main.jpg",
+  "mainLink": "https://otro-sitio.com",
+  "gallery": [
+    "https://sitio.com/1.jpg",
+    "https://sitio.com/2.jpg",
+    "https://sitio.com/3.jpg",
+    "https://sitio.com/4.jpg"
+  ]
+}
