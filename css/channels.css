@@ -376,3 +376,14 @@ header{
     }
 
 }
+.artist-card.red{
+    background:#650000;
+}
+
+.artist-card.purple{
+    background:#25104d;
+}
+
+.artist-card.green{
+    background:#014b20;
+}
