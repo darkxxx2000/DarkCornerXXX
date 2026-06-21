@@ -74,7 +74,7 @@ async function loadChannelCategory(slug) {
         artists.forEach(artist => {
 
             const section = document.createElement("section");
-            section.className = "artist-card";
+            section.className = `artist-card ${artist.color || "red"}`;
 
             section.innerHTML = `
                 <h2>${artist.title}</h2>
