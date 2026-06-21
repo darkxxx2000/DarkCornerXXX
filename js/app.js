@@ -276,6 +276,12 @@ function animateGallery() {
 
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', e => {
+
+        // PERMITIR LINKS EXTERNOS O PÁGINAS
+        if (!item.dataset.category) {
+            return; // deja navegar normal (channels.html)
+        }
+
         e.preventDefault();
 
         const categoryName = item.dataset.category;
