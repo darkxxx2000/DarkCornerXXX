@@ -2,108 +2,138 @@ const container = document.getElementById("channels");
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
 
-let channelsData = [];
+let channelCategories = [];
 
 /* =========================
    INIT
 ========================= */
 
-async function loadChannels() {
+async function loadChannelCategories() {
+
     try {
-        const res = await fetch("./data/channels.json");
-        channelsData = await res.json();
-        renderChannels(channelsData);
+        const res = await fetch("./data/channelCategories.json");
+        channelCategories = await res.json();
+
+        renderChannelCategories(channelCategories);
+
     } catch (err) {
-        console.error("Error loading channels:", err);
-        container.innerHTML = "<p>Error loading channels</p>";
+        console.error("Error loading channel categories:", err);
     }
 }
 
-loadChannels();
+loadChannelCategories();
 
 /* =========================
-   RENDER CHANNELS
+   LEVEL 2: CHANNEL CATEGORIES
 ========================= */
 
-function renderChannels(data) {
+function renderChannelCategories(data) {
 
     container.innerHTML = "";
 
-    data.forEach((channel) => {
+    data.forEach(cat => {
 
-        const section = document.createElement("section");
-        section.className = "channel";
+        const card = document.createElement("div");
+        card.className = "channel-card";
 
-        section.innerHTML = `
-            <h2 class="channel-title">${channel.title}</h2>
-
-            <div class="channel-layout">
-
-                <!-- MAIN -->
-                <div class="channel-main">
-                    <img class="main-img" src="${channel.mainImage}" alt="${channel.title}">
-                </div>
-
-                <!-- THUMBS (NETFLIX ROW) -->
-                <div class="channel-thumbs">
-                    ${channel.gallery.map((img, index) => `
-                        <img 
-                            src="${img.thumb}" 
-                            data-full="${img.full}" 
-                            data-index="${index}"
-                        >
-                    `).join("")}
-                </div>
-
-            </div>
+        card.innerHTML = `
+            <img src="${cat.cover}">
+            <h2>${cat.name}</h2>
         `;
 
-        /* =========================
-           ELEMENTOS
-        ========================= */
-
-        const mainImg = section.querySelector(".main-img");
-        const thumbs = section.querySelectorAll(".channel-thumbs img");
-
-        /* =========================
-           CLICK MAIN → LINK EXTERNO
-        ========================= */
-
-        mainImg.addEventListener("click", () => {
-            window.open(channel.mainLink, "_blank");
+        card.addEventListener("click", () => {
+            loadChannelCategory(cat.slug);
         });
 
-        /* =========================
-           HOVER THUMB → PREVIEW (NETFLIX STYLE)
-        ========================= */
-
-        thumbs.forEach((thumb) => {
-
-            thumb.addEventListener("mouseenter", () => {
-                mainImg.src = thumb.dataset.full;
-            });
-
-            /* CLICK THUMB → LIGHTBOX */
-            thumb.addEventListener("click", () => {
-                openLightbox(thumb.dataset.full);
-            });
-        });
-
-        container.appendChild(section);
+        container.appendChild(card);
     });
 }
 
 /* =========================
-   LIGHTBOX
+   LEVEL 3: LOAD CATEGORY CONTENT
 ========================= */
 
-function openLightbox(src) {
-    lightboxImg.src = src;
-    lightbox.classList.add("active");
+async function loadChannelCategory(slug) {
+
+    container.innerHTML = "";
+
+    const back = document.createElement("button");
+    back.innerText = "← Back";
+    back.className = "back-btn";
+
+    back.addEventListener("click", () => {
+        renderChannelCategories(channelCategories);
+    });
+
+    container.appendChild(back);
+
+    try {
+        const res = await fetch(`./data/channels/${slug}.json`);
+        const artists = await res.json();
+
+        artists.forEach(artist => {
+
+            const section = document.createElement("section");
+            section.className = "artist-card";
+
+            section.innerHTML = `
+                <h2>${artist.title}</h2>
+
+                <div class="artist-layout">
+
+                    <div class="main">
+                        <img src="${artist.mainImage.src}">
+                    </div>
+
+                    <div class="thumbs">
+                        ${artist.items.map((img, i) => `
+                            <img src="${img.image}" data-index="${i}">
+                        `).join("")}
+                    </div>
+
+                </div>
+            `;
+
+            /* MAIN CLICK → LINK */
+            section.querySelector(".main img")
+                .addEventListener("click", () => {
+                    window.open(artist.mainImage.link, "_blank");
+                });
+
+            /* THUMBS → LIGHTBOX */
+            section.querySelectorAll(".thumbs img")
+                .forEach((img, index) => {
+                    img.addEventListener("click", () => {
+                        openLightbox(artist.items, index);
+                    });
+                });
+
+            container.appendChild(section);
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-/* CLOSE LIGHTBOX */
-lightbox.addEventListener("click", () => {
-    lightbox.classList.remove("active");
-    lightboxImg.src = "";
-});
+/* =========================
+   LIGHTBOX (GALERÍA)
+========================= */
+
+function openLightbox(images, start = 0) {
+
+    let current = start;
+
+    lightbox.classList.add("active");
+
+    function render() {
+        lightboxImg.src = images[current].image;
+    }
+
+    render();
+
+    lightbox.onclick = () => {
+        lightbox.classList.remove("active");
+        lightboxImg.src = "";
+    };
+}
