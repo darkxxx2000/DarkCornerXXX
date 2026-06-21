@@ -11,5 +11,16 @@
       { "image": "images/s3.jpg" },
       { "image": "images/s4.jpg" }
     ]
+ },
+  {
+    "title": "Creamy Sport",
+    "mainImage": {
+      "src": "https://yyy.jpg",
+      "link": "https://example.com"
+    },
+    "items": [
+      { "image": "https://yyy1.jpg" },
+      { "image": "https://yyy2.jpg" }
+    ]
   }
 ]
