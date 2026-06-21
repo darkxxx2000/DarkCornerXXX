@@ -1,0 +1,12 @@
+[
+  {
+    "name": "MACHINE",
+    "slug": "machine",
+    "cover": "images/machine.jpg"
+  },
+  {
+    "name": "VIB",
+    "slug": "vib",
+    "cover": "images/vib.jpg"
+  }
+]
