@@ -5,6 +5,7 @@ const videoContainer = document.getElementById("videoContainer");
 
 let categories = [];
 let currentCategory = null;
+let currentChannel = null;
 
 /* =========================
    ROUTING (CLEAN URL)
@@ -52,6 +53,18 @@ function handleRoute() {
         return;
     }
 
+    if (route === "channels") {
+        renderChannels(false);
+        return;
+    }
+
+    // SUBCATEGORÍAS DE CHANNELS
+    const channelMatch = findChannel(route);
+    if (channelMatch) {
+        renderChannelContent(channelMatch.name, false);
+        return;
+    }
+
     const category = categories.find(
         c => c.name.toLowerCase() === route.toLowerCase()
     );
@@ -71,6 +84,7 @@ function handleRoute() {
 function renderHome(push = true) {
 
     currentCategory = null;
+    currentChannel = null;
     gallery.innerHTML = "";
 
     clearActiveMenu();
@@ -91,7 +105,7 @@ function renderHome(push = true) {
     `;
 
     channelsCard.addEventListener("click", () => {
-        window.location.href = "channels.html";
+        renderChannels(true);
     });
 
     gallery.appendChild(channelsCard);
@@ -118,7 +132,102 @@ function renderHome(push = true) {
 }
 
 /* =========================
-   CATEGORY
+   CHANNELS (SUB MENU)
+========================= */
+
+function renderChannels(push = true) {
+
+    currentCategory = "CHANNELS";
+    currentChannel = null;
+
+    gallery.innerHTML = "";
+    clearActiveMenu();
+
+    document
+        .querySelector('[data-category="CHANNELS"]')
+        ?.classList.add("active-link");
+
+    if (push) setRoute("channels");
+
+    const channels = [
+        { name: "MACHINE", cover: "images/machine.jpg" },
+        { name: "VIB", cover: "images/vib.jpg" },
+        { name: "SHIB", cover: "images/shib.jpg" }
+    ];
+
+    channels.forEach(ch => {
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <img src="${ch.cover}" alt="${ch.name}">
+            <div class="card-title">${ch.name}</div>
+        `;
+
+        card.addEventListener("click", () => {
+            renderChannelContent(ch.name, true);
+        });
+
+        gallery.appendChild(card);
+    });
+
+    animateGallery();
+}
+
+/* =========================
+   CHANNEL CONTENT (LEVEL 2)
+========================= */
+
+async function renderChannelContent(channelName, push = true) {
+
+    currentChannel = channelName;
+    gallery.innerHTML = "";
+
+    gallery.appendChild(
+        createBackButton(() => renderChannels(false))
+    );
+
+    if (push) setRoute(channelName.toLowerCase());
+
+    const file = `./data/channels/${channelName.toLowerCase()}.json`;
+
+    try {
+        const response = await fetch(file);
+        const items = await response.json();
+
+        items.forEach(item => {
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <div class="card-title">${item.title}</div>
+            `;
+
+            card.addEventListener("click", () => {
+
+                if (item.gallery) {
+                    renderSubGallery(item);
+                    return;
+                }
+
+                openVideo(item.embed, item.type);
+            });
+
+            gallery.appendChild(card);
+        });
+
+        animateGallery();
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/* =========================
+   CATEGORY (LEVEL 1 OLD)
 ========================= */
 
 async function renderCategory(category, push = true) {
@@ -179,7 +288,13 @@ function renderSubGallery(item) {
     gallery.innerHTML = "";
 
     gallery.appendChild(
-        createBackButton(() => renderCategory(currentCategory, false))
+        createBackButton(() => {
+            if (currentChannel) {
+                renderChannelContent(currentChannel, false);
+            } else {
+                renderCategory(currentCategory, false);
+            }
+        })
     );
 
     item.gallery.forEach(subItem => {
@@ -200,6 +315,16 @@ function renderSubGallery(item) {
     });
 
     animateGallery();
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function findChannel(name) {
+    const list = ["machine", "vib", "shib"];
+    if (list.includes(name)) return { name };
+    return null;
 }
 
 /* =========================
@@ -308,6 +433,11 @@ document.querySelectorAll('.nav-item').forEach(item => {
 
         if (category === "HOME") {
             renderHome(true);
+            return;
+        }
+
+        if (category === "CHANNELS") {
+            renderChannels(true);
             return;
         }
 
