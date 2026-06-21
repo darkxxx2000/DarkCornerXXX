@@ -1,31 +1,62 @@
-const channels = [
-{
-  title: "Maya Yang (Machine)",
-  mainImage: "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
-  mainLink: "https://es.pornhub.com/pornstar/masha-yang/videos",
-  gallery: [
-    "https://ei.phncdn.com/videos/202409/06/457455651/original/(m=eGNdHgaaaa)(mh=eb29UiXuWa1_4y2R)6.jpg",
-    "https://sitio.com/2.jpg",
-    "https://sitio.com/3.jpg",
-    "https://sitio.com/4.jpg"
-  ]
-},
-{
-  title: "Canal 2",
-  mainImage: "https://sitio.com/main2.jpg",
-  mainLink: "https://otro-sitio.com",
-  gallery: [
-    "https://sitio.com/a.jpg",
-    "https://sitio.com/b.jpg"
-  ]
+const container = document.getElementById("channels");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+
+async function loadChannels() {
+
+    const res = await fetch("./data/channels.json");
+    const data = await res.json();
+
+    renderChannels(data);
 }
-];
 
-const container = document.getElementById("container");
+function renderChannels(channels) {
 
-container.innerHTML = channels.map(c => `
-<a class="card" href="${c.mainLink}">
-    <img src="${c.mainImage}">
-    <h3>${c.title}</h3>
-</a>
-`).join("");
+    container.innerHTML = "";
+
+    channels.forEach(channel => {
+
+        const section = document.createElement("section");
+        section.className = "channel";
+
+        section.innerHTML = `
+            <h2 class="channel-title">${channel.title}</h2>
+
+            <div class="channel-layout">
+
+                <div class="main">
+                    <img src="${channel.mainImage}" class="main-img">
+                </div>
+
+                <div class="gallery">
+                    ${channel.gallery.map(img => `
+                        <img src="${img.thumb}" class="thumb">
+                    `).join("")}
+                </div>
+
+            </div>
+        `;
+
+        // CLICK MAIN IMAGE → LINK
+        section.querySelector(".main-img").addEventListener("click", () => {
+            window.open(channel.mainLink, "_blank");
+        });
+
+        // CLICK THUMBS → LIGHTBOX
+        section.querySelectorAll(".thumb").forEach((img, index) => {
+            img.addEventListener("click", () => {
+                lightboxImg.src = channel.gallery[index].full;
+                lightbox.classList.add("active");
+            });
+        });
+
+        container.appendChild(section);
+    });
+}
+
+// LIGHTBOX CLOSE
+lightbox.addEventListener("click", () => {
+    lightbox.classList.remove("active");
+});
+
+loadChannels();
