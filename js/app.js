@@ -299,9 +299,9 @@ function animateGallery() {
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', e => {
 
-        // PERMITIR LINKS EXTERNOS O PÁGINAS
-        if (!item.dataset.category) {
-            return;
+        // SI ES LINK EXTERNO (CHANNELS u otros)
+        if (item.dataset.external === "true") {
+            return; // deja navegar normal
         }
 
         e.preventDefault();
