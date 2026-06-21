@@ -7,15 +7,16 @@ let categories = [];
 let currentCategory = null;
 
 /* =========================
-   ROUTING (URL HASH)
+   ROUTING (CLEAN URL)
 ========================= */
 
 function setRoute(route) {
-    history.pushState({}, "", `#${route}`);
+    history.pushState({}, "", `/${route}`);
 }
 
 function getRoute() {
-    return location.hash.replace("#", "") || "home";
+    const path = location.pathname.replace("/", "");
+    return path || "home";
 }
 
 /* =========================
@@ -28,6 +29,7 @@ async function loadVideos() {
         categories = await response.json();
 
         handleRoute();
+
     } catch (error) {
         console.error(error);
         gallery.innerHTML = `
@@ -46,7 +48,7 @@ function handleRoute() {
     const route = getRoute();
 
     if (route === "home") {
-        renderHome();
+        renderHome(false);
         return;
     }
 
@@ -59,7 +61,7 @@ function handleRoute() {
         return;
     }
 
-    renderHome();
+    renderHome(false);
 }
 
 /* =========================
@@ -79,10 +81,7 @@ function renderHome(push = true) {
 
     if (push) setRoute("home");
 
-    /* =========================
-       CHANNELS CARD (SOLO 1)
-    ========================= */
-
+    /* CHANNELS CARD */
     const channelsCard = document.createElement("div");
     channelsCard.className = "card";
 
@@ -97,10 +96,7 @@ function renderHome(push = true) {
 
     gallery.appendChild(channelsCard);
 
-    /* =========================
-       CATEGORÍAS
-    ========================= */
-
+    /* CATEGORIES */
     categories.forEach(category => {
 
         const card = document.createElement("div");
@@ -127,21 +123,14 @@ function renderHome(push = true) {
 
 async function renderCategory(category, push = true) {
 
-    if (!category || !category.file) {
-        gallery.innerHTML = `
-            <div class="error-message">
-                Categoría no encontrada.
-            </div>
-        `;
-        return;
-    }
+    if (!category || !category.file) return;
 
     currentCategory = category;
     gallery.innerHTML = "";
 
     setActiveMenu(category.name);
 
-    if (push) setRoute(category.name);
+    if (push) setRoute(category.name.toLowerCase());
 
     gallery.appendChild(
         createBackButton(renderHome)
@@ -178,16 +167,11 @@ async function renderCategory(category, push = true) {
 
     } catch (error) {
         console.error(error);
-        gallery.innerHTML = `
-            <div class="error-message">
-                Error cargando categoría.
-            </div>
-        `;
     }
 }
 
 /* =========================
-   SUB GALERÍA
+   SUB GALLERY
 ========================= */
 
 function renderSubGallery(item) {
@@ -234,38 +218,24 @@ function createBackButton(action) {
 }
 
 /* =========================
-   VIDEO PLAYER
+   VIDEO
 ========================= */
 
 function openVideo(url, type = "embed") {
 
     if (!url) return;
 
-    switch (type) {
-
-        case "link":
-            window.open(url, "_blank", "noopener,noreferrer");
-            return;
-
-        case "mp4":
-            videoContainer.innerHTML = `
-                <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
-                    <source src="${url}" type="video/mp4">
-                </video>
-            `;
-            break;
-
-        default:
-            videoContainer.innerHTML = `
-                <iframe src="${url}" allowfullscreen loading="lazy"></iframe>
-            `;
+    if (type === "link") {
+        window.open(url, "_blank");
+        return;
     }
 
-    modal.style.display = "flex";
+    videoContainer.innerHTML = `
+        <iframe src="${url}" allowfullscreen></iframe>
+    `;
 
-    setTimeout(() => {
-        modal.classList.add("show");
-    }, 10);
+    modal.style.display = "flex";
+    setTimeout(() => modal.classList.add("show"), 10);
 }
 
 /* =========================
@@ -273,54 +243,50 @@ function openVideo(url, type = "embed") {
 ========================= */
 
 function closeVideo() {
-
     modal.classList.remove("show");
 
     setTimeout(() => {
         modal.style.display = "none";
         videoContainer.innerHTML = "";
-    }, 250);
+    }, 200);
 }
 
 /* =========================
-   MENU ACTIVE
+   MENU
 ========================= */
 
 function clearActiveMenu() {
     document.querySelectorAll("nav a")
-        .forEach(link => link.classList.remove("active-link"));
+        .forEach(l => l.classList.remove("active-link"));
 }
 
-function setActiveMenu(categoryName) {
+function setActiveMenu(name) {
 
     clearActiveMenu();
 
     document.querySelectorAll("nav a")
         .forEach(link => {
-            if (link.dataset.category === categoryName) {
+            if (link.dataset.category === name) {
                 link.classList.add("active-link");
             }
         });
 }
 
 /* =========================
-   ANIMACIÓN
+   ANIMATION
 ========================= */
 
 function animateGallery() {
 
-    const cards = document.querySelectorAll(".card");
-
-    cards.forEach((card, index) => {
-
-        card.style.opacity = "0";
+    document.querySelectorAll(".card").forEach((card, i) => {
+        card.style.opacity = 0;
         card.style.transform = "translateY(20px)";
 
         setTimeout(() => {
-            card.style.transition = "all .4s ease";
-            card.style.opacity = "1";
+            card.style.transition = "0.4s ease";
+            card.style.opacity = 1;
             card.style.transform = "translateY(0)";
-        }, index * 50);
+        }, i * 50);
     });
 }
 
@@ -329,28 +295,27 @@ function animateGallery() {
 ========================= */
 
 document.querySelectorAll('.nav-item').forEach(item => {
+
     item.addEventListener('click', e => {
 
         if (item.dataset.external === "true") return;
 
         e.preventDefault();
 
-        const categoryName = item.dataset.category;
+        const category = item.dataset.category;
 
-        if (!categoryName) return;
+        if (!category) return;
 
-        if (categoryName === "HOME") {
-            renderHome();
+        if (category === "HOME") {
+            renderHome(true);
             return;
         }
 
-        const category = categories.find(
-            c => c.name === categoryName
+        const found = categories.find(
+            c => c.name === category
         );
 
-        if (category) {
-            renderCategory(category);
-        }
+        if (found) renderCategory(found, true);
     });
 });
 
@@ -364,19 +329,12 @@ window.addEventListener("click", e => {
     if (e.target === modal) closeVideo();
 });
 
-/* ESC KEY */
 window.addEventListener("keydown", e => {
     if (e.key === "Escape") closeVideo();
 });
 
-/* =========================
-   BACK BUTTON BROWSER
-========================= */
-
+/* BACK BUTTON */
 window.addEventListener("popstate", handleRoute);
 
-/* =========================
-   INIT
-========================= */
-
+/* INIT */
 loadVideos();
