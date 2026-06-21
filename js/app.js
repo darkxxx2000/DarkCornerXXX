@@ -7,15 +7,27 @@ let categories = [];
 let currentCategory = null;
 
 /* =========================
-   CARGA CATEGORÍAS
+   ROUTING (URL HASH)
+========================= */
+
+function setRoute(route) {
+    history.pushState({}, "", `#${route}`);
+}
+
+function getRoute() {
+    return location.hash.replace("#", "") || "home";
+}
+
+/* =========================
+   INIT
 ========================= */
 
 async function loadVideos() {
-
     try {
         const response = await fetch("./data/categories.json");
         categories = await response.json();
-        renderHome();
+
+        handleRoute();
     } catch (error) {
         console.error(error);
         gallery.innerHTML = `
@@ -27,10 +39,34 @@ async function loadVideos() {
 }
 
 /* =========================
+   ROUTE HANDLER
+========================= */
+
+function handleRoute() {
+    const route = getRoute();
+
+    if (route === "home") {
+        renderHome();
+        return;
+    }
+
+    const category = categories.find(
+        c => c.name.toLowerCase() === route.toLowerCase()
+    );
+
+    if (category) {
+        renderCategory(category, false);
+        return;
+    }
+
+    renderHome();
+}
+
+/* =========================
    HOME
 ========================= */
 
-function renderHome() {
+function renderHome(push = true) {
 
     currentCategory = null;
     gallery.innerHTML = "";
@@ -41,8 +77,10 @@ function renderHome() {
         .querySelector('[data-category="HOME"]')
         ?.classList.add("active-link");
 
+    if (push) setRoute("home");
+
     /* =========================
-       🔥 CARD CHANNELS (NUEVO)
+       CHANNELS CARD (SOLO 1)
     ========================= */
 
     const channelsCard = document.createElement("div");
@@ -60,7 +98,7 @@ function renderHome() {
     gallery.appendChild(channelsCard);
 
     /* =========================
-       CATEGORÍAS NORMALES
+       CATEGORÍAS
     ========================= */
 
     categories.forEach(category => {
@@ -70,13 +108,11 @@ function renderHome() {
 
         card.innerHTML = `
             <img src="${category.cover}" alt="${category.name}">
-            <div class="card-title">
-                ${category.name}
-            </div>
+            <div class="card-title">${category.name}</div>
         `;
 
         card.addEventListener("click", () => {
-            renderCategory(category);
+            renderCategory(category, true);
         });
 
         gallery.appendChild(card);
@@ -86,15 +122,10 @@ function renderHome() {
 }
 
 /* =========================
-   CATEGORÍA (CARGA DINÁMICA JSON)
+   CATEGORY
 ========================= */
 
-async function renderCategory(category) {
-
-    currentCategory = category;
-    gallery.innerHTML = "";
-
-    setActiveMenu(category.name);
+async function renderCategory(category, push = true) {
 
     if (!category || !category.file) {
         gallery.innerHTML = `
@@ -105,17 +136,20 @@ async function renderCategory(category) {
         return;
     }
 
+    currentCategory = category;
+    gallery.innerHTML = "";
+
+    setActiveMenu(category.name);
+
+    if (push) setRoute(category.name);
+
+    gallery.appendChild(
+        createBackButton(renderHome)
+    );
+
     try {
         const response = await fetch(category.file);
         const items = await response.json();
-
-        const backButton = document.createElement("div");
-        backButton.className = "back-button";
-        backButton.innerHTML = "← Volver";
-
-        backButton.addEventListener("click", renderHome);
-
-        gallery.appendChild(backButton);
 
         items.forEach(item => {
 
@@ -124,9 +158,7 @@ async function renderCategory(category) {
 
             card.innerHTML = `
                 <img src="${item.image}" alt="${item.title}">
-                <div class="card-title">
-                    ${item.title}
-                </div>
+                <div class="card-title">${item.title}</div>
             `;
 
             card.addEventListener("click", () => {
@@ -162,15 +194,9 @@ function renderSubGallery(item) {
 
     gallery.innerHTML = "";
 
-    const backButton = document.createElement("div");
-    backButton.className = "back-button";
-    backButton.innerHTML = "← Volver";
-
-    backButton.addEventListener("click", () => {
-        renderCategory(currentCategory);
-    });
-
-    gallery.appendChild(backButton);
+    gallery.appendChild(
+        createBackButton(() => renderCategory(currentCategory, false))
+    );
 
     item.gallery.forEach(subItem => {
 
@@ -193,6 +219,21 @@ function renderSubGallery(item) {
 }
 
 /* =========================
+   BACK BUTTON
+========================= */
+
+function createBackButton(action) {
+
+    const btn = document.createElement("div");
+    btn.className = "back-button";
+    btn.innerHTML = "← Volver";
+
+    btn.addEventListener("click", action);
+
+    return btn;
+}
+
+/* =========================
    VIDEO PLAYER
 ========================= */
 
@@ -203,7 +244,7 @@ function openVideo(url, type = "embed") {
     switch (type) {
 
         case "link":
-            window.open(url, "_blank");
+            window.open(url, "_blank", "noopener,noreferrer");
             return;
 
         case "mp4":
@@ -214,19 +255,10 @@ function openVideo(url, type = "embed") {
             `;
             break;
 
-        case "embed":
-            videoContainer.innerHTML = `
-                <iframe
-                    src="${url}"
-                    allowfullscreen
-                    loading="lazy">
-                </iframe>
-            `;
-            break;
-
         default:
-            console.error("Tipo no soportado:", type);
-            return;
+            videoContainer.innerHTML = `
+                <iframe src="${url}" allowfullscreen loading="lazy"></iframe>
+            `;
     }
 
     modal.style.display = "flex";
@@ -237,7 +269,7 @@ function openVideo(url, type = "embed") {
 }
 
 /* =========================
-   CERRAR MODAL
+   CLOSE MODAL
 ========================= */
 
 function closeVideo() {
@@ -251,7 +283,7 @@ function closeVideo() {
 }
 
 /* =========================
-   MENU
+   MENU ACTIVE
 ========================= */
 
 function clearActiveMenu() {
@@ -299,10 +331,7 @@ function animateGallery() {
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', e => {
 
-        // 🔥 LINKS EXTERNOS (channels.html)
-        if (item.dataset.external === "true") {
-            return; // navegación normal
-        }
+        if (item.dataset.external === "true") return;
 
         e.preventDefault();
 
@@ -315,7 +344,9 @@ document.querySelectorAll('.nav-item').forEach(item => {
             return;
         }
 
-        const category = categories.find(c => c.name === categoryName);
+        const category = categories.find(
+            c => c.name === categoryName
+        );
 
         if (category) {
             renderCategory(category);
@@ -332,6 +363,17 @@ closeModal.addEventListener("click", closeVideo);
 window.addEventListener("click", e => {
     if (e.target === modal) closeVideo();
 });
+
+/* ESC KEY */
+window.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeVideo();
+});
+
+/* =========================
+   BACK BUTTON BROWSER
+========================= */
+
+window.addEventListener("popstate", handleRoute);
 
 /* =========================
    INIT
