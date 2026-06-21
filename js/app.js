@@ -41,6 +41,28 @@ function renderHome() {
         .querySelector('[data-category="HOME"]')
         ?.classList.add("active-link");
 
+    /* =========================
+       🔥 CARD CHANNELS (NUEVO)
+    ========================= */
+
+    const channelsCard = document.createElement("div");
+    channelsCard.className = "card";
+
+    channelsCard.innerHTML = `
+        <img src="images/channels-cover.jpg" alt="CHANNELS">
+        <div class="card-title">CHANNELS</div>
+    `;
+
+    channelsCard.addEventListener("click", () => {
+        window.location.href = "channels.html";
+    });
+
+    gallery.appendChild(channelsCard);
+
+    /* =========================
+       CATEGORÍAS NORMALES
+    ========================= */
+
     categories.forEach(category => {
 
         const card = document.createElement("div");
@@ -279,7 +301,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
 
         // PERMITIR LINKS EXTERNOS O PÁGINAS
         if (!item.dataset.category) {
-            return; // deja navegar normal (channels.html)
+            return;
         }
 
         e.preventDefault();
