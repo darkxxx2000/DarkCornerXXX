@@ -9,11 +9,14 @@ let channelCategories = [];
 ========================= */
 
 async function loadChannelCategories() {
-
     try {
         const res = await fetch("./data/channelCategories.json");
-        channelCategories = await res.json();
 
+        if (!res.ok) {
+            throw new Error("Failed to load channelCategories.json");
+        }
+
+        channelCategories = await res.json();
         renderChannelCategories(channelCategories);
 
     } catch (err) {
@@ -22,6 +25,7 @@ async function loadChannelCategories() {
 }
 
 loadChannelCategories();
+
 
 /* =========================
    LEVEL 2: CHANNEL CATEGORIES
@@ -37,7 +41,7 @@ function renderChannelCategories(data) {
         card.className = "channel-card";
 
         card.innerHTML = `
-            <img src="${cat.cover}">
+            <img src="${cat.cover}" alt="${cat.name}">
             <h2>${cat.name}</h2>
         `;
 
@@ -48,6 +52,7 @@ function renderChannelCategories(data) {
         container.appendChild(card);
     });
 }
+
 
 /* =========================
    LEVEL 3: LOAD CATEGORY CONTENT
@@ -69,6 +74,11 @@ async function loadChannelCategory(slug) {
 
     try {
         const res = await fetch(`./data/channels/${slug}.json`);
+
+        if (!res.ok) {
+            throw new Error(`Failed to load category: ${slug}`);
+        }
+
         const artists = await res.json();
 
         artists.forEach(artist => {
@@ -82,12 +92,12 @@ async function loadChannelCategory(slug) {
                 <div class="artist-layout">
 
                     <div class="main">
-                        <img src="${artist.mainImage.src}">
+                        <img src="${artist.mainImage.src}" alt="${artist.title}">
                     </div>
 
                     <div class="thumbs">
                         ${artist.items.map((img, i) => `
-                            <img src="${img.image}" data-index="${i}">
+                            <img src="${img.image}" data-index="${i}" alt="thumb ${i}">
                         `).join("")}
                     </div>
 
@@ -95,32 +105,40 @@ async function loadChannelCategory(slug) {
             `;
 
             /* MAIN CLICK → LINK */
-            section.querySelector(".main img")
-                .addEventListener("click", () => {
+            const mainImg = section.querySelector(".main img");
+
+            if (mainImg && artist.mainImage?.link) {
+                mainImg.addEventListener("click", () => {
                     window.open(artist.mainImage.link, "_blank");
                 });
+            }
 
             /* THUMBS → LIGHTBOX */
-            section.querySelectorAll(".thumbs img")
-                .forEach((img, index) => {
-                    img.addEventListener("click", () => {
-                        openLightbox(artist.items, index);
-                    });
+            const thumbs = section.querySelectorAll(".thumbs img");
+
+            thumbs.forEach((img, index) => {
+                img.addEventListener("click", (e) => {
+                    e.stopPropagation(); // evita conflictos
+                    openLightbox(artist.items, index);
                 });
+            });
 
             container.appendChild(section);
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Error loading category content:", err);
     }
 }
+
 
 /* =========================
    LIGHTBOX (GALERÍA)
 ========================= */
 
 function openLightbox(images, start = 0) {
+
+    if (!images || images.length === 0) return;
 
     let current = start;
 
@@ -132,8 +150,12 @@ function openLightbox(images, start = 0) {
 
     render();
 
-    lightbox.onclick = () => {
+    /* cerrar lightbox */
+    const closeLightbox = () => {
         lightbox.classList.remove("active");
         lightboxImg.src = "";
+        lightbox.removeEventListener("click", closeLightbox);
     };
+
+    lightbox.addEventListener("click", closeLightbox);
 }
