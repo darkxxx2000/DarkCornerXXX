@@ -207,56 +207,70 @@ function renderSubGallery(item) {
 /* =========================
    VIDEO PLAYER
 ========================= */
+function normalizeEmbed(url) {
+
+    // PORNHUB
+    if (url.includes("pornhub.com/view_video.php")) {
+        const match = url.match(/viewkey=([a-zA-Z0-9]+)/);
+        if (match) {
+            return `https://www.pornhub.com/embed/${match[1]}`;
+        }
+    }
+
+    // XCAVY (muchos casos ya vienen embed, si no, fallback)
+    if (url.includes("xcavy.com/videos/")) {
+        return url; // normalmente funciona directo
+    }
+
+    return url;
+}
 
 function openVideo(url, type = "embed") {
 
-   console.log("Reproduciendo:", url, type);
-   
-    if (!url) return;
+    console.log("Reproduciendo:", url, type);
+
+    const finalUrl = normalizeEmbed(url);
+
+    if (!finalUrl) return;
 
     switch (type) {
 
         case "link":
-            window.open(url, "_blank");
+            window.open(finalUrl, "_blank");
             return;
 
         case "mp4":
             videoContainer.innerHTML = `
                 <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
-                    <source src="${url}" type="video/mp4">
+                    <source src="${finalUrl}" type="video/mp4">
                 </video>
             `;
             break;
 
         case "embed":
 
-    if (url.includes("xhamster")) {
-        videoContainer.innerHTML = `
-            <div style="color:white;text-align:center;padding:20px;">
-                Este sitio no permite reproducción embebida estable.
-            </div>
+            if (finalUrl.includes("xhamster")) {
+                videoContainer.innerHTML = `
+                    <div style="color:white;text-align:center;padding:20px;">
+                        Este sitio no permite reproducción embebida estable.
+                    </div>
 
-            <button onclick="window.open('${url}', '_blank')"
-                style="padding:10px 15px;margin-top:10px;cursor:pointer;">
-                Abrir video
-            </button>
-        `;
-        break;
-    }
+                    <button onclick="window.open('${finalUrl}', '_blank')">
+                        Abrir video
+                    </button>
+                `;
+                break;
+            }
 
-    videoContainer.innerHTML = `
-        <iframe
-            src="${url}"
-            allow="autoplay; fullscreen"
-            allowfullscreen
-            style="width:100%;height:80vh;border:0;">
-        </iframe>
-    `;
-    break;
-
-        default:
-            console.error("Tipo no soportado:", type);
-            return;
+            videoContainer.innerHTML = `
+                <iframe
+                    src="${finalUrl}"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen
+                    style="width:100%;height:80vh;border:0;">
+                </iframe>
+            `;
+            break;
     }
 
     modal.style.display = "flex";
