@@ -13,17 +13,29 @@ let currentCategory = null;
 async function loadVideos() {
 
     try {
-        const response = await fetch("/data/categories.json");
+
+        const response = await fetch("data/categories.json");
+
+        if (!response.ok) {
+            throw new Error(`No se pudo cargar categories.json (${response.status})`);
+        }
+
         categories = await response.json();
+
         renderHome();
+
     } catch (error) {
+
         console.error(error);
+
         gallery.innerHTML = `
             <div class="error-message">
-                Error cargando contenido.
+                ${error.message}
             </div>
         `;
+
     }
+
 }
 
 /* =========================
