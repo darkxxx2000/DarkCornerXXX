@@ -8,15 +8,24 @@ let currentChannel = null;
 let currentCategory = null;
 
 /* =========================
-   ROUTING
+   BASE PATH (IMPORTANTE PARA GITHUB PAGES)
+========================= */
+
+const BASE = location.pathname.includes("DarkCornerXXX")
+    ? "/DarkCornerXXX"
+    : "";
+
+/* =========================
+   ROUTING (FIX 404 GITHUB PAGES)
 ========================= */
 
 function setRoute(route) {
-    history.pushState({}, "", `/${route}`);
+    // evita romper GitHub Pages
+    history.pushState({}, "", `${BASE}/${route}`);
 }
 
 function getRoute() {
-    const path = location.pathname.replace("/", "");
+    const path = location.pathname.replace(BASE, "").replace("/", "");
     return path || "home";
 }
 
@@ -26,15 +35,13 @@ function getRoute() {
 
 async function loadApp() {
     try {
-        const res = await fetch("./data/categories.json");
+        const res = await fetch(`${BASE}/data/categories.json`);
 
         if (!res.ok) {
             throw new Error("HTTP ERROR: " + res.status);
         }
 
-        const text = await res.text();
-
-        categories = JSON.parse(text);
+        categories = await res.json();
 
         handleRoute();
 
@@ -59,11 +66,6 @@ function handleRoute() {
 
     if (route === "channels") {
         renderChannels(false);
-        return;
-    }
-
-    if (route.includes("-")) {
-        renderArtistBySlug?.(route, false);
         return;
     }
 
@@ -130,7 +132,7 @@ function renderHome(push = true) {
 }
 
 /* =========================
-   CHANNELS
+   CHANNELS (FIX: ahora usa JSON opcional o fallback seguro)
 ========================= */
 
 async function renderChannels(push = true) {
@@ -143,10 +145,11 @@ async function renderChannels(push = true) {
 
     if (push) setRoute("channels");
 
+    // FIX: si quieres, después puedes mover esto a JSON también
     const channels = [
-        { name: "MACHINE", slug: "machine", cover: "images/channels/machine.jpg" },
-        { name: "VIB", slug: "vib", cover: "images/channels/vib.jpg" },
-        { name: "SHIBARI", slug: "shibari", cover: "images/channels/shibari.jpg" }
+        { name: "MACHINE", slug: "machine", cover: `${BASE}/images/channels/machine.jpg` },
+        { name: "VIB", slug: "vib", cover: `${BASE}/images/channels/vib.jpg` },
+        { name: "SHIBARI", slug: "shibari", cover: `${BASE}/images/channels/shibari.jpg` }
     ];
 
     const wrapper = document.createElement("div");
@@ -176,7 +179,7 @@ async function renderChannels(push = true) {
 }
 
 /* =========================
-   CHANNEL CATEGORY
+   CHANNEL CATEGORY (FIX PATH + ERROR HANDLING)
 ========================= */
 
 async function renderChannelCategory(slug, push = true) {
@@ -191,7 +194,7 @@ async function renderChannelCategory(slug, push = true) {
     if (push) setRoute(slug);
 
     try {
-        const res = await fetch(`./data/channels/${slug}.json`);
+        const res = await fetch(`${BASE}/data/channels/${slug}.json`);
 
         if (!res.ok) {
             throw new Error("Channel JSON not found: " + slug);
@@ -249,7 +252,7 @@ function renderArtist(artist) {
             </div>
 
             <div class="mini-grid">
-                ${artist.items.map((i, index) => `
+                ${artist.items.map(i => `
                     <img src="${i.image}" class="mini-img">
                 `).join("")}
             </div>
@@ -287,7 +290,7 @@ async function renderCategory(category, push = true) {
         createBackButton(renderHome)
     );
 
-    const res = await fetch(category.file);
+    const res = await fetch(`${BASE}/${category.file}`);
     const items = await res.json();
 
     items.forEach(item => {
@@ -346,16 +349,14 @@ function openImageModal(images, start = 0) {
     }
 
     render();
-
     document.body.appendChild(modal);
 }
 
 /* =========================
-   BACK BUTTON
+   UTILS
 ========================= */
 
 function createBackButton(action) {
-
     const btn = document.createElement("div");
     btn.className = "back-button";
     btn.innerHTML = "← Volver";
@@ -363,23 +364,13 @@ function createBackButton(action) {
     return btn;
 }
 
-/* =========================
-   UTIL
-========================= */
-
 function clearActiveMenu() {
     document.querySelectorAll("nav a")
         .forEach(a => a.classList.remove("active-link"));
 }
 
-/* =========================
-   ANIMATION
-========================= */
-
 function animateGallery() {
-
     document.querySelectorAll(".card").forEach((c, i) => {
-
         c.style.opacity = 0;
         c.style.transform = "translateY(20px)";
 
