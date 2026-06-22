@@ -26,18 +26,15 @@ function getRoute() {
 
 async function loadApp() {
     try {
-        const res = await fetch("/data/categories.json");
+        const res = await fetch("./data/categories.json");
 
         if (!res.ok) {
             throw new Error("HTTP ERROR: " + res.status);
         }
 
         const text = await res.text();
-        console.log("RAW JSON:", text);
 
         categories = JSON.parse(text);
-
-        console.log("CATEGORIES PARSED:", categories);
 
         handleRoute();
 
@@ -66,7 +63,7 @@ function handleRoute() {
     }
 
     if (route.includes("-")) {
-        renderArtistBySlug(route, false);
+        renderArtistBySlug?.(route, false);
         return;
     }
 
@@ -96,7 +93,6 @@ function renderHome(push = true) {
 
     if (push) setRoute("home");
 
-    /* CHANNELS CARD */
     const channelsCard = document.createElement("div");
 
     channelsCard.className = "card";
@@ -112,7 +108,6 @@ function renderHome(push = true) {
 
     gallery.appendChild(channelsCard);
 
-    /* CATEGORIES */
     categories.forEach(cat => {
 
         const card = document.createElement("div");
@@ -135,7 +130,7 @@ function renderHome(push = true) {
 }
 
 /* =========================
-   CHANNELS (LEVEL 2)
+   CHANNELS
 ========================= */
 
 async function renderChannels(push = true) {
@@ -149,21 +144,9 @@ async function renderChannels(push = true) {
     if (push) setRoute("channels");
 
     const channels = [
-        {
-            name: "MACHINE",
-            slug: "machine",
-            cover: "images/channels/machine.jpg"
-        },
-        {
-            name: "VIB",
-            slug: "vib",
-            cover: "images/channels/vib.jpg"
-        },
-        {
-            name: "SHIBARI",
-            slug: "shibari",
-            cover: "images/channels/shibari.jpg"
-        }
+        { name: "MACHINE", slug: "machine", cover: "images/channels/machine.jpg" },
+        { name: "VIB", slug: "vib", cover: "images/channels/vib.jpg" },
+        { name: "SHIBARI", slug: "shibari", cover: "images/channels/shibari.jpg" }
     ];
 
     const wrapper = document.createElement("div");
@@ -193,7 +176,7 @@ async function renderChannels(push = true) {
 }
 
 /* =========================
-   CHANNEL CATEGORY (LEVEL 3)
+   CHANNEL CATEGORY
 ========================= */
 
 async function renderChannelCategory(slug, push = true) {
@@ -208,7 +191,12 @@ async function renderChannelCategory(slug, push = true) {
     if (push) setRoute(slug);
 
     try {
-        const res = await fetch(`/data/channels/${slug}.json`);
+        const res = await fetch(`./data/channels/${slug}.json`);
+
+        if (!res.ok) {
+            throw new Error("Channel JSON not found: " + slug);
+        }
+
         const artists = await res.json();
 
         artists.forEach(artist => {
@@ -233,11 +221,12 @@ async function renderChannelCategory(slug, push = true) {
 
     } catch (err) {
         console.error(err);
+        gallery.innerHTML = `<div class="error-message">Error loading channel</div>`;
     }
 }
 
 /* =========================
-   ARTIST VIEW (LEVEL 4)
+   ARTIST
 ========================= */
 
 function renderArtist(artist) {
@@ -261,7 +250,7 @@ function renderArtist(artist) {
 
             <div class="mini-grid">
                 ${artist.items.map((i, index) => `
-                    <img src="${i.image}" data-index="${index}" class="mini-img">
+                    <img src="${i.image}" class="mini-img">
                 `).join("")}
             </div>
 
@@ -270,13 +259,11 @@ function renderArtist(artist) {
 
     gallery.appendChild(block);
 
-    /* LINK PRINCIPAL */
     block.querySelector(".main-link")
         .addEventListener("click", () => {
             window.open(artist.mainImage.link, "_blank");
         });
 
-    /* MINI GALERÍA */
     block.querySelectorAll(".mini-img")
         .forEach((img, index) => {
             img.addEventListener("click", () => {
@@ -286,7 +273,7 @@ function renderArtist(artist) {
 }
 
 /* =========================
-   CATEGORY NORMAL (HOME LEVEL)
+   CATEGORY
 ========================= */
 
 async function renderCategory(category, push = true) {
@@ -321,7 +308,7 @@ async function renderCategory(category, push = true) {
 }
 
 /* =========================
-   MODAL IMAGE (LIGHTBOX)
+   LIGHTBOX
 ========================= */
 
 function openImageModal(images, start = 0) {
@@ -332,7 +319,6 @@ function openImageModal(images, start = 0) {
     modal.className = "img-modal";
 
     function render() {
-
         modal.innerHTML = `
             <div class="img-modal-content">
                 <span class="close">&times;</span>
@@ -371,13 +357,9 @@ function openImageModal(images, start = 0) {
 function createBackButton(action) {
 
     const btn = document.createElement("div");
-
     btn.className = "back-button";
-
     btn.innerHTML = "← Volver";
-
     btn.addEventListener("click", action);
-
     return btn;
 }
 
