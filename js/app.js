@@ -212,40 +212,41 @@ function openVideo(url, type = "embed") {
 
     if (!url) return;
 
-    switch (type) {
-
-        case "link":
-            window.open(url, "_blank");
-            return;
-
-        case "mp4":
-            videoContainer.innerHTML = `
-                <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
-                    <source src="${url}" type="video/mp4">
-                </video>
-            `;
-            break;
-
-        case "embed":
-            videoContainer.innerHTML = `
-                <iframe
-                    src="${url}"
-                    allowfullscreen
-                    loading="lazy">
-                </iframe>
-            `;
-            break;
-
-        default:
-            console.error("Tipo no soportado:", type);
-            return;
+    // LINKS: siempre nueva pestaña
+    if (type === "link") {
+        window.open(url, "_blank");
+        return;
     }
 
-    modal.style.display = "flex";
+    // MP4: reproducir interno
+    if (type === "mp4") {
+        videoContainer.innerHTML = `
+            <video controls autoplay style="width:100%;max-height:80vh;background:black;">
+                <source src="${url}">
+            </video>
+        `;
+        modal.style.display = "flex";
+        return;
+    }
 
-    setTimeout(() => {
-        modal.classList.add("show");
-    }, 10);
+    // EMBED: SOLO si es iframe seguro
+    if (url.includes("xhamster")) {
+        // fallback estable
+        window.open(url, "_blank");
+        return;
+    }
+
+    // embed normal
+    videoContainer.innerHTML = `
+        <iframe
+            src="${url}"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+            style="width:100%;height:80vh;border:0;">
+        </iframe>
+    `;
+
+    modal.style.display = "flex";
 }
 
 /* =========================
