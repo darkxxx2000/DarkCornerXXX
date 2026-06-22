@@ -27,13 +27,23 @@ function getRoute() {
 async function loadApp() {
     try {
         const res = await fetch("/data/categories.json");
-        categories = await res.json();
+
+        if (!res.ok) {
+            throw new Error("HTTP ERROR: " + res.status);
+        }
+
+        const text = await res.text();
+        console.log("RAW JSON:", text);
+
+        categories = JSON.parse(text);
+
+        console.log("CATEGORIES PARSED:", categories);
 
         handleRoute();
 
     } catch (err) {
-        console.error(err);
-        gallery.innerHTML = `<div class="error-message">Error cargando datos</div>`;
+        console.error("LOAD APP ERROR:", err);
+        gallery.innerHTML = `<div class="error-message">Error cargando categorías</div>`;
     }
 }
 
