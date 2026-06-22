@@ -4,118 +4,79 @@ const closeModal = document.getElementById("closeModal");
 const videoContainer = document.getElementById("videoContainer");
 
 let categories = [];
-let currentChannel = null;
 let currentCategory = null;
 
 /* =========================
-   ROUTING
+   CARGA CATEGORÍAS
 ========================= */
 
-function setRoute(route) {
-    history.pushState({}, "", `/${route}`);
-}
+async function loadVideos() {
 
-function getRoute() {
-    const path = location.pathname.replace("/", "");
-    return path || "home";
-}
-
-/* =========================
-   INIT
-========================= */
-
-async function loadApp() {
     try {
-        const res = await fetch("./data/categories.json");
-        categories = await res.json();
-
-        handleRoute();
-
-    } catch (err) {
-        console.error(err);
-        gallery.innerHTML = `<div class="error-message">Error cargando datos</div>`;
+        const response = await fetch("./data/categories.json");
+        categories = await response.json();
+        renderHome();
+    } catch (error) {
+        console.error(error);
+        gallery.innerHTML = `
+            <div class="error-message">
+                Error cargando contenido.
+            </div>
+        `;
     }
-}
-
-/* =========================
-   ROUTE HANDLER
-========================= */
-
-function handleRoute() {
-
-    const route = getRoute();
-
-    if (route === "home") {
-        renderHome(false);
-        return;
-    }
-
-    if (route === "channels") {
-        renderChannels(false);
-        return;
-    }
-
-    if (route.includes("-")) {
-        renderArtistBySlug(route, false);
-        return;
-    }
-
-    const category = categories.find(
-        c => c.name.toLowerCase() === route.toLowerCase()
-    );
-
-    if (category) {
-        renderCategory(category, false);
-        return;
-    }
-
-    renderHome(false);
 }
 
 /* =========================
    HOME
 ========================= */
 
-function renderHome(push = true) {
+function renderHome() {
 
-    currentChannel = null;
     currentCategory = null;
-
     gallery.innerHTML = "";
+
     clearActiveMenu();
 
-    if (push) setRoute("home");
+    document
+        .querySelector('[data-category="HOME"]')
+        ?.classList.add("active-link");
 
-    /* CHANNELS CARD */
+    /* =========================
+       🔥 CARD CHANNELS (NUEVO)
+    ========================= */
+
     const channelsCard = document.createElement("div");
-
     channelsCard.className = "card";
 
     channelsCard.innerHTML = `
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWcrJaKXlGMfPIRmnTg5CVtzEdi8x4zbGAUh6L5STo67jObCz5EnkMDqs&s=10">
+        <img src="images/channels-cover.jpg" alt="CHANNELS">
         <div class="card-title">CHANNELS</div>
     `;
 
     channelsCard.addEventListener("click", () => {
-        renderChannels(true);
+        window.location.href = "channels.html";
     });
 
     gallery.appendChild(channelsCard);
 
-    /* CATEGORIES */
-    categories.forEach(cat => {
+    /* =========================
+       CATEGORÍAS NORMALES
+    ========================= */
+
+    categories.forEach(category => {
 
         const card = document.createElement("div");
-
         card.className = "card";
 
         card.innerHTML = `
-            <img src="${cat.cover}">
-            <div class="card-title">${cat.name}</div>
+            <img src="${category.cover}" alt="${category.name}">
+            <div class="card-title">
+                ${category.name}
+            </div>
         `;
 
         card.addEventListener("click", () => {
-            renderCategory(cat, true);
+            renderCategory(category);
         });
 
         gallery.appendChild(card);
@@ -125,95 +86,57 @@ function renderHome(push = true) {
 }
 
 /* =========================
-   CHANNELS (LEVEL 2)
+   CATEGORÍA (CARGA DINÁMICA JSON)
 ========================= */
 
-async function renderChannels(push = true) {
+async function renderCategory(category) {
 
-    currentChannel = "channels";
-    currentCategory = null;
-
+    currentCategory = category;
     gallery.innerHTML = "";
-    clearActiveMenu();
 
-    if (push) setRoute("channels");
+    setActiveMenu(category.name);
 
-    const channels = [
-        {
-            name: "MACHINE",
-            slug: "machine",
-            cover: "images/channels/machine.jpg"
-        },
-        {
-            name: "VIB",
-            slug: "vib",
-            cover: "images/channels/vib.jpg"
-        },
-        {
-            name: "SHIBARI",
-            slug: "shibari",
-            cover: "images/channels/shibari.jpg"
-        }
-    ];
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "channels-grid";
-
-    channels.forEach(ch => {
-
-        const item = document.createElement("div");
-
-        item.className = "channel-circle";
-
-        item.innerHTML = `
-            <img src="${ch.cover}">
-            <div class="channel-title">${ch.name}</div>
+    if (!category || !category.file) {
+        gallery.innerHTML = `
+            <div class="error-message">
+                Categoría no encontrada.
+            </div>
         `;
-
-        item.addEventListener("click", () => {
-            renderChannelCategory(ch.slug, true);
-        });
-
-        wrapper.appendChild(item);
-    });
-
-    gallery.appendChild(wrapper);
-
-    animateGallery();
-}
-
-/* =========================
-   CHANNEL CATEGORY (LEVEL 3)
-========================= */
-
-async function renderChannelCategory(slug, push = true) {
-
-    currentCategory = slug;
-    gallery.innerHTML = "";
-
-    gallery.appendChild(
-        createBackButton(() => renderChannels(true))
-    );
-
-    if (push) setRoute(slug);
+        return;
+    }
 
     try {
-        const res = await fetch(`./data/channels/${slug}.json`);
-        const artists = await res.json();
+        const response = await fetch(category.file);
+        const items = await response.json();
 
-        artists.forEach(artist => {
+        const backButton = document.createElement("div");
+        backButton.className = "back-button";
+        backButton.innerHTML = "← Volver";
+
+        backButton.addEventListener("click", renderHome);
+
+        gallery.appendChild(backButton);
+
+        items.forEach(item => {
 
             const card = document.createElement("div");
-
             card.className = "card";
 
             card.innerHTML = `
-                <img src="${artist.mainImage.src}">
-                <div class="card-title">${artist.title}</div>
+                <img src="${item.image}" alt="${item.title}">
+                <div class="card-title">
+                    ${item.title}
+                </div>
             `;
 
             card.addEventListener("click", () => {
-                renderArtist(artist);
+
+                if (item.gallery) {
+                    renderSubGallery(item);
+                    return;
+                }
+
+                openVideo(item.embed, item.type);
             });
 
             gallery.appendChild(card);
@@ -221,88 +144,47 @@ async function renderChannelCategory(slug, push = true) {
 
         animateGallery();
 
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
+        gallery.innerHTML = `
+            <div class="error-message">
+                Error cargando categoría.
+            </div>
+        `;
     }
 }
 
 /* =========================
-   ARTIST VIEW (LEVEL 4)
+   SUB GALERÍA
 ========================= */
 
-function renderArtist(artist) {
+function renderSubGallery(item) {
 
     gallery.innerHTML = "";
 
-    gallery.appendChild(
-        createBackButton(() => renderChannels(true))
-    );
+    const backButton = document.createElement("div");
+    backButton.className = "back-button";
+    backButton.innerHTML = "← Volver";
 
-    const block = document.createElement("div");
+    backButton.addEventListener("click", () => {
+        renderCategory(currentCategory);
+    });
 
-    block.className = "artist-block";
+    gallery.appendChild(backButton);
 
-    block.innerHTML = `
-        <div class="channel-section">
-
-            <div class="big-image">
-                <img src="${artist.mainImage.src}" class="main-link">
-            </div>
-
-            <div class="mini-grid">
-                ${artist.items.map((i, index) => `
-                    <img src="${i.image}" data-index="${index}" class="mini-img">
-                `).join("")}
-            </div>
-
-        </div>
-    `;
-
-    gallery.appendChild(block);
-
-    /* LINK PRINCIPAL */
-    block.querySelector(".main-link")
-        .addEventListener("click", () => {
-            window.open(artist.mainImage.link, "_blank");
-        });
-
-    /* MINI GALERÍA */
-    block.querySelectorAll(".mini-img")
-        .forEach((img, index) => {
-            img.addEventListener("click", () => {
-                openImageModal(artist.items, index);
-            });
-        });
-}
-
-/* =========================
-   CATEGORY NORMAL (HOME LEVEL)
-========================= */
-
-async function renderCategory(category, push = true) {
-
-    currentCategory = category.name;
-    gallery.innerHTML = "";
-
-    if (push) setRoute(category.name.toLowerCase());
-
-    gallery.appendChild(
-        createBackButton(renderHome)
-    );
-
-    const res = await fetch(category.file);
-    const items = await res.json();
-
-    items.forEach(item => {
+    item.gallery.forEach(subItem => {
 
         const card = document.createElement("div");
-
         card.className = "card";
 
         card.innerHTML = `
-            <img src="${item.image}">
-            <div class="card-title">${item.title}</div>
+            <img src="${subItem.image}" alt="${subItem.title}">
+            <div class="card-title">${subItem.title}</div>
         `;
+
+        card.addEventListener("click", () => {
+            openVideo(subItem.embed, subItem.type);
+        });
 
         gallery.appendChild(card);
     });
@@ -311,112 +193,148 @@ async function renderCategory(category, push = true) {
 }
 
 /* =========================
-   MODAL IMAGE (LIGHTBOX)
+   VIDEO PLAYER
 ========================= */
 
-function openImageModal(images, start = 0) {
+function openVideo(url, type = "embed") {
 
-    let current = start;
+    if (!url) return;
 
-    const modal = document.createElement("div");
-    modal.className = "img-modal";
+    switch (type) {
 
-    function render() {
+        case "link":
+            window.open(url, "_blank");
+            return;
 
-        modal.innerHTML = `
-            <div class="img-modal-content">
-                <span class="close">&times;</span>
+        case "mp4":
+            videoContainer.innerHTML = `
+                <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+            break;
 
-                <img src="${images[current].image}" class="modal-img">
+        case "embed":
+            videoContainer.innerHTML = `
+                <iframe
+                    src="${url}"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            `;
+            break;
 
-                <div class="nav">
-                    <button class="prev">←</button>
-                    <button class="next">→</button>
-                </div>
-            </div>
-        `;
-
-        modal.querySelector(".close").onclick = () => modal.remove();
-
-        modal.querySelector(".prev").onclick = () => {
-            current = (current - 1 + images.length) % images.length;
-            render();
-        };
-
-        modal.querySelector(".next").onclick = () => {
-            current = (current + 1) % images.length;
-            render();
-        };
+        default:
+            console.error("Tipo no soportado:", type);
+            return;
     }
 
-    render();
+    modal.style.display = "flex";
 
-    document.body.appendChild(modal);
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
 }
 
 /* =========================
-   BACK BUTTON
+   CERRAR MODAL
 ========================= */
 
-function createBackButton(action) {
+function closeVideo() {
 
-    const btn = document.createElement("div");
+    modal.classList.remove("show");
 
-    btn.className = "back-button";
-
-    btn.innerHTML = "← Volver";
-
-    btn.addEventListener("click", action);
-
-    return btn;
+    setTimeout(() => {
+        modal.style.display = "none";
+        videoContainer.innerHTML = "";
+    }, 250);
 }
 
 /* =========================
-   UTIL
+   MENU
 ========================= */
 
 function clearActiveMenu() {
     document.querySelectorAll("nav a")
-        .forEach(a => a.classList.remove("active-link"));
+        .forEach(link => link.classList.remove("active-link"));
+}
+
+function setActiveMenu(categoryName) {
+
+    clearActiveMenu();
+
+    document.querySelectorAll("nav a")
+        .forEach(link => {
+            if (link.dataset.category === categoryName) {
+                link.classList.add("active-link");
+            }
+        });
 }
 
 /* =========================
-   ANIMATION
+   ANIMACIÓN
 ========================= */
 
 function animateGallery() {
 
-    document.querySelectorAll(".card").forEach((c, i) => {
+    const cards = document.querySelectorAll(".card");
 
-        c.style.opacity = 0;
-        c.style.transform = "translateY(20px)";
+    cards.forEach((card, index) => {
+
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
 
         setTimeout(() => {
-            c.style.transition = "0.4s ease";
-            c.style.opacity = 1;
-            c.style.transform = "translateY(0)";
-        }, i * 50);
+            card.style.transition = "all .4s ease";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }, index * 50);
     });
 }
 
 /* =========================
-   EVENTS
+   NAV EVENTS
 ========================= */
 
-window.addEventListener("popstate", handleRoute);
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
 
-document.querySelectorAll(".nav-item").forEach(item => {
-
-    item.addEventListener("click", e => {
+        // PERMITIR LINKS EXTERNOS O PÁGINAS
+        if (!item.dataset.category) {
+            return;
+        }
 
         e.preventDefault();
 
-        const cat = item.dataset.category;
+        const categoryName = item.dataset.category;
 
-        if (cat === "HOME") renderHome(true);
-        if (cat === "CHANNELS") renderChannels(true);
+        if (!categoryName) return;
+
+        if (categoryName === "HOME") {
+            renderHome();
+            return;
+        }
+
+        const category = categories.find(c => c.name === categoryName);
+
+        if (category) {
+            renderCategory(category);
+        }
     });
 });
 
-/* INIT */
-loadApp();
+/* =========================
+   MODAL EVENTS
+========================= */
+
+closeModal.addEventListener("click", closeVideo);
+
+window.addEventListener("click", e => {
+    if (e.target === modal) closeVideo();
+});
+
+/* =========================
+   INIT
+========================= */
+
+loadVideos();
