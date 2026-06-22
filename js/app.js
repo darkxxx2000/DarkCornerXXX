@@ -13,7 +13,7 @@ let currentCategory = null;
 async function loadVideos() {
 
     try {
-        const response = await fetch("./data/categories.json");
+        const response = await fetch("/data/categories.json");
         categories = await response.json();
         renderHome();
     } catch (error) {
