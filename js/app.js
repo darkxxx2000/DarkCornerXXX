@@ -212,41 +212,40 @@ function openVideo(url, type = "embed") {
 
     if (!url) return;
 
-    // LINKS: siempre nueva pestaña
-    if (type === "link") {
-        window.open(url, "_blank");
-        return;
-    }
+    switch (type) {
 
-    // MP4: reproducir interno
-    if (type === "mp4") {
-        videoContainer.innerHTML = `
-            <video controls autoplay style="width:100%;max-height:80vh;background:black;">
-                <source src="${url}">
-            </video>
-        `;
-        modal.style.display = "flex";
-        return;
-    }
+        case "link":
+            window.open(url, "_blank");
+            return;
 
-    // EMBED: SOLO si es iframe seguro
-    if (url.includes("xhamster")) {
-        // fallback estable
-        window.open(url, "_blank");
-        return;
-    }
+        case "mp4":
+            videoContainer.innerHTML = `
+                <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+            break;
 
-    // embed normal
-    videoContainer.innerHTML = `
-        <iframe
-            src="${url}"
-            allow="autoplay; fullscreen"
-            allowfullscreen
-            style="width:100%;height:80vh;border:0;">
-        </iframe>
-    `;
+        case "embed":
+            videoContainer.innerHTML = `
+                <iframe
+                    src="${url}"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            `;
+            break;
+
+        default:
+            console.error("Tipo no soportado:", type);
+            return;
+    }
 
     modal.style.display = "flex";
+
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
 }
 
 /* =========================
