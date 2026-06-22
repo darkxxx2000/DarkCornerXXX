@@ -7,375 +7,236 @@
 }
 
 body{
-
     background:#050505;
-
     color:white;
-
     font-family:Arial, Helvetica, sans-serif;
-
 }
-
 
 /* HEADER */
 
 header{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     padding:25px 40px;
-
     border-bottom:1px solid #222;
-
 }
-
 
 .logo{
-
     font-size:40px;
-
     font-weight:900;
-
     letter-spacing:2px;
-
 }
 
-
 .back{
-
     color:white;
-
     text-decoration:none;
-
     opacity:.8;
-
 }
 
 .back:hover{
-
     opacity:1;
-
 }
-
 
 /* CONTAINER */
 
 #channels{
-
     max-width:1400px;
-
     margin:auto;
-
     padding:40px;
-
 }
-
 
 /* CATEGORY CARDS */
 
 .channel-card{
-
     width:280px;
-
     display:inline-block;
-
     margin:15px;
-
     background:#111;
-
     border-radius:10px;
-
     overflow:hidden;
-
     cursor:pointer;
-
-    transition:.2s;
-
+    transition:.25s ease;
     border:1px solid #222;
-
 }
-
 
 .channel-card:hover{
-
-    transform:scale(1.04);
-
+    transform:scale(1.06);
+    border-color:#3a0000;
 }
-
 
 .channel-card img{
-
     width:100%;
-
     height:180px;
-
     object-fit:cover;
-
+    display:block;
 }
-
 
 .channel-card h2{
-
     padding:15px;
-
     font-size:18px;
-
+    letter-spacing:1px;
 }
-
 
 /* BACK BUTTON */
 
 .back-btn{
-
     background:#111;
-
     color:white;
-
     border:none;
-
     padding:12px 20px;
-
     border-radius:8px;
-
     margin-bottom:30px;
-
     cursor:pointer;
-
 }
-
 
 .back-btn:hover{
-
     background:#222;
-
 }
-
 
 /* ARTIST CARD */
 
 .artist-card{
-
     background:#470000;
-
     padding:35px;
-
     border-radius:15px;
-
     margin-bottom:35px;
-
     box-shadow:
-
-    0 0 30px rgba(0,0,0,.5),
-
-    inset 0 0 20px rgba(255,255,255,.04);
-
+        0 0 30px rgba(0,0,0,.5),
+        inset 0 0 20px rgba(255,255,255,.04);
 }
 
-
 .artist-card h2{
-
     font-size:56px;
-
     font-weight:900;
-
     margin-bottom:25px;
-
     text-transform:uppercase;
-
     letter-spacing:2px;
-
 }
 
 
 /* LAYOUT */
 
 .artist-layout{
-
     display:flex;
-
     gap:20px;
-
 }
-
 
 /* MAIN IMAGE */
 
 .main{
-
     flex:2;
-
 }
-
 
 .main img{
-
     width:100%;
-
     height:420px;
-
     object-fit:cover;
-
     border:2px solid white;
-
     border-radius:4px;
-
     cursor:pointer;
-
-    transition:.2s;
-
+    transition:.25s ease;
 }
-
 
 .main img:hover{
-
-    transform:scale(1.01);
-
+    transform:scale(1.03);
 }
-
 
 /* THUMBS */
 
 .thumbs{
-
     flex:1;
-
     display:grid;
-
-    grid-template-columns:
-
-    repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:10px;
-
     align-content:start;
-
 }
-
 
 .thumbs img{
-
     width:100%;
-
     aspect-ratio:1/1;
-
     object-fit:cover;
-
     border:2px solid white;
-
     border-radius:4px;
-
     cursor:pointer;
-
     transition:.2s;
-
 }
-
 
 .thumbs img:hover{
-
-    transform:scale(1.07);
-
+    transform:scale(1.08);
+    z-index:2;
 }
-
 
 /* LIGHTBOX */
 
 .lightbox{
-
     display:none;
-
     position:fixed;
-
     inset:0;
-
     background:rgba(0,0,0,.95);
-
     justify-content:center;
-
     align-items:center;
-
     z-index:999;
 
+    /* mejora mínima UX */
+    opacity:0;
+    transition:opacity .2s ease;
 }
-
 
 .lightbox.active{
-
     display:flex;
-
+    opacity:1;
 }
-
 
 .lightbox img{
-
     max-width:90vw;
-
     max-height:90vh;
-
     border:2px solid white;
-
 }
-
 
 /* CLOSE */
 
 .close{
-
     position:absolute;
-
     top:20px;
-
     right:35px;
-
     font-size:50px;
-
     cursor:pointer;
-
+    color:white;
+    text-shadow:0 0 10px black;
 }
 
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:900px){
 
     .artist-layout{
-
         flex-direction:column;
-
     }
 
     .thumbs{
-
-        grid-template-columns:
-
-        repeat(4,1fr);
-
+        grid-template-columns:repeat(3,1fr);
     }
-
 }
-
 
 @media(max-width:600px){
 
     .artist-card h2{
-
         font-size:36px;
-
     }
 
     .thumbs{
-
-        grid-template-columns:
-
-        repeat(3,1fr);
-
+        grid-template-columns:repeat(2,1fr);
     }
-
 }
+
+/* =========================
+   VARIANTES ARTIST CARD
+========================= */
+
 .artist-card.red{
     background:#650000;
 }
@@ -386,4 +247,52 @@ header{
 
 .artist-card.green{
     background:#014b20;
+}
+
+/* =========================
+   CHANNEL CARD IMAGE FIX
+========================= */
+
+.channel-card img {
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    display:block;
+}
+
+/* =========================
+   THEME (BODY + HEADER + LOGO)
+   ⚠️ SOLO DEJAR UNA VEZ EN TODO EL CSS
+========================= */
+
+body{
+    background: radial-gradient(circle at top, #2a0000, #050505 60%, #000);
+    font-family: 'Arial Black', Arial, sans-serif;
+    color:white;
+}
+
+header{
+    background: linear-gradient(90deg, #2a0000, #0a0a0a);
+    border-bottom: 1px solid #3a0000;
+}
+
+.logo{
+    font-family: Impact, Arial Black, sans-serif;
+    letter-spacing: 4px;
+    color: #ff3b00;
+}
+
+/* =========================
+   CHANNEL CARD OVERRIDE FINAL
+========================= */
+
+.channel-card{
+    background: linear-gradient(145deg, #1a0000, #0a0a0a);
+    border: 1px solid #3a0000;
+    transition:.25s ease;
+}
+
+.channel-card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 60, 0, 0.2);
 }
