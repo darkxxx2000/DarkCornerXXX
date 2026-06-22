@@ -212,32 +212,40 @@ function openVideo(url, type = "embed") {
 
     if (!url) return;
 
-    if (type === "link") {
-        window.open(url, "_blank");
-        return;
-    }
+    switch (type) {
 
-    if (type === "mp4") {
-        videoContainer.innerHTML = `
-            <video controls autoplay style="width:100%;max-height:80vh;">
-                <source src="${url}">
-            </video>
-        `;
-        modal.style.display = "flex";
-        return;
-    }
+        case "link":
+            window.open(url, "_blank");
+            return;
 
-    // embed seguro
-    videoContainer.innerHTML = `
-        <iframe
-            src="${url}"
-            allow="autoplay; fullscreen"
-            allowfullscreen
-            style="width:100%; height:80vh; border:0;">
-        </iframe>
-    `;
+        case "mp4":
+            videoContainer.innerHTML = `
+                <video controls autoplay playsinline style="width:100%;max-height:80vh;background:black;">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+            break;
+
+        case "embed":
+            videoContainer.innerHTML = `
+                <iframe
+                    src="${url}"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            `;
+            break;
+
+        default:
+            console.error("Tipo no soportado:", type);
+            return;
+    }
 
     modal.style.display = "flex";
+
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
 }
 
 /* =========================
