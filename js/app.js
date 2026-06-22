@@ -209,6 +209,8 @@ function renderSubGallery(item) {
 ========================= */
 function normalizeEmbed(url) {
 
+    if (!url) return url;
+
     // PORNHUB
     if (url.includes("pornhub.com/view_video.php")) {
         const match = url.match(/viewkey=([a-zA-Z0-9]+)/);
@@ -217,9 +219,23 @@ function normalizeEmbed(url) {
         }
     }
 
-    // XCAVY (muchos casos ya vienen embed, si no, fallback)
+    // XVIDEOS (muy común)
+    if (url.includes("xvideos.com")) {
+        const match = url.match(/video([0-9]+)/);
+        if (match) {
+            return `https://www.xvideos.com/embedframe/${match[1]}`;
+        }
+    }
+
+    // YOUTUBE (por si acaso en el futuro)
+    if (url.includes("watch?v=")) {
+        const id = url.split("v=")[1];
+        return `https://www.youtube.com/embed/${id}`;
+    }
+
+    // XCAVY
     if (url.includes("xcavy.com/videos/")) {
-        return url; // normalmente funciona directo
+        return url;
     }
 
     return url;
