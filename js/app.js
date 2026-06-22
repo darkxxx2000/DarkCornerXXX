@@ -144,37 +144,43 @@ async function renderChannels(push = true) {
 
     if (push) setRoute("channels");
 
-    // FIX: si quieres, después puedes mover esto a JSON también
-    const channels = [
-        { name: "MACHINE", slug: "machine", cover: `${BASE}/images/channels/machine.jpg` },
-        { name: "VIB", slug: "vib", cover: `${BASE}/images/channels/vib.jpg` },
-        { name: "SHIBARI", slug: "shibari", cover: `${BASE}/images/channels/shibari.jpg` }
-    ];
+    try {
+        const res = await fetch("./data/channelCategories.json");
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "channels-grid";
+        if (!res.ok) {
+            throw new Error("No se pudo cargar channelCategories");
+        }
 
-    channels.forEach(ch => {
+        const channels = await res.json();
 
-        const item = document.createElement("div");
+        const wrapper = document.createElement("div");
+        wrapper.className = "channels-grid";
 
-        item.className = "channel-circle";
+        channels.forEach(ch => {
 
-        item.innerHTML = `
-            <img src="${ch.cover}">
-            <div class="channel-title">${ch.name}</div>
-        `;
+            const item = document.createElement("div");
+            item.className = "card channel-card";
 
-        item.addEventListener("click", () => {
-            renderChannelCategory(ch.slug, true);
+            item.innerHTML = `
+                <img src="${ch.cover}" loading="lazy">
+                <div class="card-title">${ch.name}</div>
+            `;
+
+            item.addEventListener("click", () => {
+                renderChannelCategory(ch.slug, true);
+            });
+
+            wrapper.appendChild(item);
         });
 
-        wrapper.appendChild(item);
-    });
+        gallery.appendChild(wrapper);
 
-    gallery.appendChild(wrapper);
+        animateGallery();
 
-    animateGallery();
+    } catch (err) {
+        console.error(err);
+        gallery.innerHTML = `<div class="error-message">Error loading channels</div>`;
+    }
 }
 
 /* =========================
