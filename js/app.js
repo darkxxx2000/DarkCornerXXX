@@ -20,13 +20,12 @@ const BASE = location.pathname.includes("DarkCornerXXX")
 ========================= */
 
 function setRoute(route) {
-    // evita romper GitHub Pages
-    history.pushState({}, "", `${BASE}/${route}`);
+    history.pushState({}, "", `./?route=${route}`);
 }
 
 function getRoute() {
-    const path = location.pathname.replace(BASE, "").replace("/", "");
-    return path || "home";
+    const params = new URLSearchParams(location.search);
+    return params.get("route") || "home";
 }
 
 /* =========================
