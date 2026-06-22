@@ -210,6 +210,8 @@ function renderSubGallery(item) {
 
 function openVideo(url, type = "embed") {
 
+   console.log("Reproduciendo:", url, type);
+   
     if (!url) return;
 
     switch (type) {
@@ -227,14 +229,30 @@ function openVideo(url, type = "embed") {
             break;
 
         case "embed":
-            videoContainer.innerHTML = `
-                <iframe
-                    src="${url}"
-                    allowfullscreen
-                    loading="lazy">
-                </iframe>
-            `;
-            break;
+
+    if (url.includes("xhamster")) {
+        videoContainer.innerHTML = `
+            <div style="color:white;text-align:center;padding:20px;">
+                Este sitio no permite reproducción embebida estable.
+            </div>
+
+            <button onclick="window.open('${url}', '_blank')"
+                style="padding:10px 15px;margin-top:10px;cursor:pointer;">
+                Abrir video
+            </button>
+        `;
+        break;
+    }
+
+    videoContainer.innerHTML = `
+        <iframe
+            src="${url}"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+            style="width:100%;height:80vh;border:0;">
+        </iframe>
+    `;
+    break;
 
         default:
             console.error("Tipo no soportado:", type);
