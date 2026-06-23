@@ -142,18 +142,41 @@ function openLightbox(images, start = 0) {
 
     let current = start;
 
+    // quitar zoom previo si quedó activo
+    lightboxImg.classList.remove("zoomed");
+
     lightbox.classList.add("active");
 
     function render() {
+
         lightboxImg.src = images[current].image;
+
+        // cada vez que cambia imagen vuelve a tamaño normal
+        lightboxImg.classList.remove("zoomed");
     }
 
     render();
 
-    /* cerrar lightbox */
+    /* CLICK SOBRE IMAGEN = ZOOM */
+
+    lightboxImg.onclick = (e) => {
+
+        e.stopPropagation();
+
+        lightboxImg.classList.toggle("zoomed");
+    };
+
+
+    /* CLICK FUERA = CERRAR */
+
     const closeLightbox = () => {
+
         lightbox.classList.remove("active");
+
         lightboxImg.src = "";
+
+        lightboxImg.classList.remove("zoomed");
+
         lightbox.removeEventListener("click", closeLightbox);
     };
 
