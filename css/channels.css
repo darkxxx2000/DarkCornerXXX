@@ -138,27 +138,42 @@ header{
 ========================= */
 
 .artist-card{
+
     width:100%;
-    background: rgba(40,0,0,0.65);
+
+    background: rgba(40,0,0,0.55); /* un poco más transparente */
+
     backdrop-filter: blur(10px);
 
     border-radius:14px;
+
     padding:18px;
+
+    margin-top:-6px;      /* NUEVO: sube ligeramente la franja */
 
     margin-bottom:16px;
 
     border:1px solid rgba(255,60,0,0.12);
+
 }
 
+
 .artist-card h2{
-    font-size:26px;        /* antes 38-56 */
+
+    font-size:24px;       /* un poco menor */
+
     font-weight:800;
+
     letter-spacing:1px;
-    margin-bottom:14px;
+
+    margin-bottom:12px;
 
     color:#fff;
+
     text-transform:uppercase;
-    opacity:0.95;
+
+    opacity:.95;
+
 }
 
 /* =========================
