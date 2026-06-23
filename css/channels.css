@@ -189,40 +189,51 @@ header{
 ========================= */
 
 .artist-layout{
-    display:grid;
-    grid-template-columns: 2fr 1fr;
+    display:flex;
     gap:16px;
+    align-items:flex-start;
 }
 
-/* =========================
-   MAIN IMAGE (PLAYER STYLE)
-========================= */
+/* Imagen principal */
+
+.main{
+    flex:0 0 52%;      /* antes ocupaba muchísimo */
+    max-width:520px;   /* límite máximo */
+}
 
 .main img{
+
     width:100%;
-    height:300px;   /* antes 360-420 */
+
+    height:320px;      /* antes 420 */
+
     object-fit:cover;
 
     border-radius:10px;
-    border:1px solid rgba(255,255,255,0.85);
+
+    border:1px solid rgba(255,255,255,.08);
 
     cursor:pointer;
+
     transition:.25s ease;
 }
 
 .main img:hover{
-    transform: scale(1.02);
+
+    transform:scale(1.02);
+
 }
 
-/* =========================
-   THUMB GRID
-========================= */
+
+/* Galería lateral */
 
 .thumbs{
 
+    flex:1;
+
     display:grid;
 
-    grid-template-columns: repeat(5, 70px);
+    grid-template-columns:repeat(4,1fr);
 
     gap:8px;
 
@@ -230,24 +241,22 @@ header{
 
 }
 
-
 .thumbs img{
 
-    width:70px;
+    width:100%;
 
-    height:70px;
+    aspect-ratio:1/1;
 
     object-fit:cover;
 
-    border-radius:6px;
+    border-radius:8px;
 
-    border:1px solid rgba(255,255,255,.7);
+    border:1px solid rgba(255,255,255,.06);
 
     cursor:pointer;
 
-    transition:.15s ease;
+    transition:.2s;
 }
-
 
 .thumbs img:hover{
 
