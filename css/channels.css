@@ -1,4 +1,6 @@
-/* RESET */
+/* =========================
+   RESET
+========================= */
 
 *{
     margin:0;
@@ -7,25 +9,36 @@
 }
 
 body{
-    background:#050505;
+    background: radial-gradient(circle at top,
+        rgba(42,0,0,0.9),
+        #050505 55%,
+        #000
+    );
+
     color:white;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: 'Arial Black', Arial, sans-serif;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:25px 40px;
-    border-bottom:1px solid #222;
+
+    background: linear-gradient(90deg, #2a0000, #0a0a0a);
+    border-bottom: 1px solid #3a0000;
 }
 
 .logo{
     font-size:40px;
     font-weight:900;
-    letter-spacing:2px;
+    letter-spacing:4px;
+    font-family: Impact, Arial Black, sans-serif;
+    color:#ff3b00;
 }
 
 .back{
@@ -38,7 +51,9 @@ header{
     opacity:1;
 }
 
-/* CONTAINER */
+/* =========================
+   CONTAINER
+========================= */
 
 #channels{
     max-width:1400px;
@@ -46,28 +61,32 @@ header{
     padding:40px;
 }
 
-/* CATEGORY CARDS */
+/* =========================
+   CHANNEL CARDS
+========================= */
 
 .channel-card{
-    width:280px;
+    width:220px;
     display:inline-block;
-    margin:15px;
-    background:#111;
+    margin:12px;
+
+    background: linear-gradient(145deg, #1a0000, #0a0a0a);
+    border: 1px solid #3a0000;
+
     border-radius:10px;
     overflow:hidden;
     cursor:pointer;
     transition:.25s ease;
-    border:1px solid #222;
 }
 
 .channel-card:hover{
-    transform:scale(1.06);
-    border-color:#3a0000;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 60, 0, 0.2);
 }
 
 .channel-card img{
     width:100%;
-    height:180px;
+    height:160px;
     object-fit:cover;
     display:block;
 }
@@ -78,7 +97,9 @@ header{
     letter-spacing:1px;
 }
 
-/* BACK BUTTON */
+/* =========================
+   BACK BUTTON
+========================= */
 
 .back-btn{
     background:#111;
@@ -94,13 +115,15 @@ header{
     background:#222;
 }
 
-/* ARTIST CARD */
+/* =========================
+   ARTIST CARD
+========================= */
 
 .artist-card{
-    background:#470000;
     padding:35px;
     border-radius:15px;
     margin-bottom:35px;
+
     box-shadow:
         0 0 30px rgba(0,0,0,.5),
         inset 0 0 20px rgba(255,255,255,.04);
@@ -114,8 +137,14 @@ header{
     letter-spacing:2px;
 }
 
+/* VARIANTS */
+.artist-card.red{ background:#650000; }
+.artist-card.purple{ background:#25104d; }
+.artist-card.green{ background:#014b20; }
 
-/* LAYOUT */
+/* =========================
+   LAYOUT
+========================= */
 
 .artist-layout{
     display:flex;
@@ -123,7 +152,6 @@ header{
 }
 
 /* MAIN IMAGE */
-
 .main{
     flex:2;
 }
@@ -143,7 +171,6 @@ header{
 }
 
 /* THUMBS */
-
 .thumbs{
     flex:1;
     display:grid;
@@ -164,10 +191,11 @@ header{
 
 .thumbs img:hover{
     transform:scale(1.08);
-    z-index:2;
 }
 
-/* LIGHTBOX */
+/* =========================
+   LIGHTBOX
+========================= */
 
 .lightbox{
     display:none;
@@ -178,7 +206,6 @@ header{
     align-items:center;
     z-index:999;
 
-    /* mejora mínima UX */
     opacity:0;
     transition:opacity .2s ease;
 }
@@ -189,13 +216,13 @@ header{
 }
 
 .lightbox img{
-    max-width:90vw;
-    max-height:90vh;
-    border:2px solid white;
+    max-width:95vw;
+    max-height:95vh;
+    border:2px solid rgba(255,255,255,0.8);
+    box-shadow:0 0 40px rgba(0,0,0,0.8);
 }
 
-/* CLOSE */
-
+/* CLOSE BUTTON */
 .close{
     position:absolute;
     top:20px;
@@ -206,13 +233,11 @@ header{
     text-shadow:0 0 10px black;
 }
 
-
 /* =========================
    RESPONSIVE
 ========================= */
 
 @media(max-width:900px){
-
     .artist-layout{
         flex-direction:column;
     }
@@ -223,7 +248,6 @@ header{
 }
 
 @media(max-width:600px){
-
     .artist-card h2{
         font-size:36px;
     }
@@ -231,68 +255,4 @@ header{
     .thumbs{
         grid-template-columns:repeat(2,1fr);
     }
-}
-
-/* =========================
-   VARIANTES ARTIST CARD
-========================= */
-
-.artist-card.red{
-    background:#650000;
-}
-
-.artist-card.purple{
-    background:#25104d;
-}
-
-.artist-card.green{
-    background:#014b20;
-}
-
-/* =========================
-   CHANNEL CARD IMAGE FIX
-========================= */
-
-.channel-card img {
-    width:100%;
-    height:180px;
-    object-fit:cover;
-    display:block;
-}
-
-/* =========================
-   THEME (BODY + HEADER + LOGO)
-   ⚠️ SOLO DEJAR UNA VEZ EN TODO EL CSS
-========================= */
-
-body{
-    background: radial-gradient(circle at top, #2a0000, #050505 60%, #000);
-    font-family: 'Arial Black', Arial, sans-serif;
-    color:white;
-}
-
-header{
-    background: linear-gradient(90deg, #2a0000, #0a0a0a);
-    border-bottom: 1px solid #3a0000;
-}
-
-.logo{
-    font-family: Impact, Arial Black, sans-serif;
-    letter-spacing: 4px;
-    color: #ff3b00;
-}
-
-/* =========================
-   CHANNEL CARD OVERRIDE FINAL
-========================= */
-
-.channel-card{
-    background: linear-gradient(145deg, #1a0000, #0a0a0a);
-    border: 1px solid #3a0000;
-    transition:.25s ease;
-}
-
-.channel-card:hover{
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 60, 0, 0.2);
 }
