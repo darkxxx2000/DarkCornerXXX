@@ -1,5 +1,5 @@
 /* =========================
-   RESET
+   RESET + BASE SYSTEM
 ========================= */
 
 *{
@@ -11,33 +11,39 @@
 body{
     min-height:100vh;
     color:white;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 
-    background: radial-gradient(circle at top,
-        rgba(60,0,0,0.85),
-        #050505 55%,
-        #000
-    );
+    background:
+        radial-gradient(circle at top,
+            rgba(80,0,0,0.75),
+            #050505 55%,
+            #000
+        );
 }
 
 /* =========================
-   HEADER
+   HEADER (PLATFORM STYLE)
 ========================= */
 
 header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:22px 40px;
 
-    background: linear-gradient(90deg, #2a0000, #0a0a0a);
-    border-bottom:1px solid rgba(255,60,0,0.2);
+    padding:18px 32px;
+
+    background: linear-gradient(90deg, #1a0000, #0a0a0a);
+    border-bottom:1px solid rgba(255,60,0,0.18);
+
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
-    font-size:38px;
+    font-size:34px;
     font-weight:900;
-    letter-spacing:4px;
+    letter-spacing:5px;
     font-family: Impact, Arial Black, sans-serif;
     color:#ff3b00;
 }
@@ -45,7 +51,7 @@ header{
 .back{
     color:white;
     text-decoration:none;
-    opacity:.75;
+    opacity:.7;
     transition:.2s;
 }
 
@@ -54,51 +60,55 @@ header{
 }
 
 /* =========================
-   CONTAINER
+   MAIN CONTAINER
 ========================= */
 
 #channels{
-    max-width:1400px;
+    max-width:1300px;
     margin:auto;
-    padding:35px;
+    padding:28px;
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    justify-content:flex-start;
 }
 
 /* =========================
-   CHANNEL CARDS (HOME LEVEL)
+   CHANNEL GRID CARD (HOME LEVEL)
 ========================= */
 
 .channel-card{
-    width:210px;              /* más compacto */
-    display:inline-block;
-    margin:10px;
-
-    background: rgba(20,20,20,0.55);
-    backdrop-filter: blur(8px);
+    width:190px;
+    background: rgba(18,18,18,0.55);
+    backdrop-filter: blur(10px);
 
     border-radius:12px;
     overflow:hidden;
-    cursor:pointer;
-    transition:.25s ease;
 
-    border:1px solid rgba(255,60,0,0.25);
+    cursor:pointer;
+    transition: .2s ease;
+
+    border:1px solid rgba(255,60,0,0.18);
 }
 
 .channel-card:hover{
-    transform:scale(1.04);
-    box-shadow:0 0 22px rgba(255,60,0,0.18);
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(255,60,0,0.12);
 }
 
 .channel-card img{
     width:100%;
-    height:150px;
+    height:140px;
     object-fit:cover;
     display:block;
 }
 
 .channel-card h2{
-    padding:12px;
-    font-size:16px;
+    padding:10px 12px;
+    font-size:15px;
     letter-spacing:1px;
+    font-weight:600;
 }
 
 /* =========================
@@ -106,84 +116,87 @@ header{
 ========================= */
 
 .back-btn{
+    padding:10px 14px;
+    border:none;
+    border-radius:8px;
+
     background:#111;
     color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:8px;
-    margin-bottom:25px;
+
     cursor:pointer;
     transition:.2s;
+
+    margin-bottom:20px;
 }
 
 .back-btn:hover{
-    background:#222;
+    background:#1a1a1a;
 }
 
 /* =========================
-   ARTIST CARD (LEVEL 3)
+   ARTIST CARD (LEVEL 3 CONTENT)
 ========================= */
 
 .artist-card{
-    background: rgba(60,0,0,0.75);
-    backdrop-filter: blur(6px);
+    width:100%;
+    background: rgba(60,0,0,0.6);
+    backdrop-filter: blur(8px);
 
-    padding:28px;
     border-radius:16px;
-    margin-bottom:28px;
+    padding:22px;
 
-    border:1px solid rgba(255,60,0,0.15);
+    margin-bottom:18px;
 
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.6),
-        inset 0 0 20px rgba(255,255,255,0.03);
+    border:1px solid rgba(255,60,0,0.12);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
 }
 
 .artist-card h2{
-    font-size:48px;
+    font-size:38px;
     font-weight:900;
-    margin-bottom:20px;
-    text-transform:uppercase;
     letter-spacing:2px;
+    margin-bottom:16px;
+    text-transform:uppercase;
 }
 
 /* =========================
-   LAYOUT
+   LAYOUT (REAL PLATFORM GRID)
 ========================= */
 
 .artist-layout{
-    display:flex;
-    gap:18px;
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+    gap:16px;
 }
 
-/* MAIN IMAGE */
-
-.main{
-    flex:2;
-}
+/* =========================
+   MAIN IMAGE (PLAYER STYLE)
+========================= */
 
 .main img{
     width:100%;
-    height:380px;
+    height:360px;
     object-fit:cover;
 
-    border-radius:6px;
-    border:2px solid rgba(255,255,255,0.9);
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.9);
 
     cursor:pointer;
     transition:.25s ease;
 }
 
 .main img:hover{
-    transform:scale(1.02);
+    transform: scale(1.02);
 }
 
-/* THUMBS */
+/* =========================
+   THUMB GRID
+========================= */
 
 .thumbs{
-    flex:1;
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap:8px;
 }
 
@@ -192,27 +205,27 @@ header{
     aspect-ratio:1/1;
     object-fit:cover;
 
-    border-radius:6px;
-    border:2px solid rgba(255,255,255,0.85);
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.8);
 
     cursor:pointer;
     transition:.2s ease;
 }
 
 .thumbs img:hover{
-    transform:scale(1.08);
-    z-index:2;
+    transform: scale(1.08);
 }
 
 /* =========================
-   LIGHTBOX (IMPORTANTE)
+   LIGHTBOX (REAL VIEWER STYLE)
 ========================= */
 
 .lightbox{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.96);
+
+    background: rgba(0,0,0,0.97);
 
     justify-content:center;
     align-items:center;
@@ -225,69 +238,63 @@ header{
 }
 
 .lightbox img{
-    max-width:95vw;
-    max-height:95vh;
+    max-width:96vw;
+    max-height:96vh;
 
-    border:2px solid rgba(255,255,255,0.8);
-    box-shadow:0 0 50px rgba(0,0,0,0.9);
+    border-radius:8px;
+
+    border:1px solid rgba(255,255,255,0.85);
+
+    box-shadow: 0 0 60px rgba(0,0,0,0.9);
 }
 
 /* CLOSE */
 
 .close{
     position:absolute;
-    top:18px;
-    right:28px;
+    top:16px;
+    right:22px;
 
-    font-size:48px;
+    font-size:44px;
     cursor:pointer;
-
     color:white;
-    text-shadow:0 0 10px black;
+    opacity:.8;
+}
+
+.close:hover{
+    opacity:1;
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (PLATFORM BEHAVIOR)
 ========================= */
 
 @media(max-width:900px){
 
+    #channels{
+        justify-content:center;
+    }
+
     .artist-layout{
-        flex-direction:column;
+        grid-template-columns:1fr;
     }
 
     .thumbs{
-        grid-template-columns:repeat(3,1fr);
+        grid-template-columns:repeat(4,1fr);
     }
 }
 
 @media(max-width:600px){
 
+    .channel-card{
+        width:45%;
+    }
+
     .artist-card h2{
-        font-size:32px;
+        font-size:28px;
     }
 
     .thumbs{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:repeat(3,1fr);
     }
-
-    .channel-card{
-        width:160px;
-    }
-}
-
-/* =========================
-   VARIANT COLORS
-========================= */
-
-.artist-card.red{
-    background: rgba(90,0,0,0.75);
-}
-
-.artist-card.purple{
-    background: rgba(40,10,80,0.75);
-}
-
-.artist-card.green{
-    background: rgba(0,70,30,0.75);
 }
