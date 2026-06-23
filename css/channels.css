@@ -116,21 +116,29 @@ header{
 ========================= */
 
 .back-btn{
+
     padding:10px 14px;
+
     border:none;
+
     border-radius:8px;
 
     background:#111;
+
     color:white;
 
     cursor:pointer;
+
     transition:.2s;
 
-    margin-bottom:20px;
+    margin-bottom:8px;   /* antes 20px */
+
 }
 
 .back-btn:hover{
+
     background:#1a1a1a;
+
 }
 
 /* =========================
