@@ -189,9 +189,9 @@ header{
 
     position:absolute;
 
-    right:-40px;   /* más a la derecha */
+    right:20px;   /* más a la derecha */
 
-    top:-5px;      /* más abajo */
+    top:0px;      /* más abajo */
 
     width:140px;   /* más grande */
 
