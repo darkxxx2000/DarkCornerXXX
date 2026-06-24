@@ -146,23 +146,21 @@ header{
 ========================= */
 
 .artist-card{
+    position:relative;
+    overflow:visible;
 
     width:100%;
-
-    background: rgba(40,0,0,0.55); /* un poco más transparente */
+    background: rgba(40,0,0,0.55);
 
     backdrop-filter: blur(10px);
 
     border-radius:14px;
-
     padding:18px;
 
-    margin-top:-4px;      /* NUEVO: sube ligeramente la franja */
-
+    margin-top:-4px;
     margin-bottom:16px;
 
     border:1px solid rgba(255,60,0,0.12);
-
 }
 
 
