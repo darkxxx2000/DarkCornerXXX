@@ -220,8 +220,8 @@ header{
 
     position:absolute;
 
-    top:-65px;      /* MÁS ARRIBA */
-    right:-30px;    /* MÁS A LA IZQUIERDA (menos negativo = se mueve izquierda) */
+    top:-75px;   /* MÁS ARRIBA */
+    right:-35px;
 
     width:200px;
     height:200px;
