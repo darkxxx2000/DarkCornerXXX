@@ -146,50 +146,54 @@ header{
 ========================= */
 
 .artist-card{
-    position:relative;
-    overflow:visible;
 
     width:100%;
+
     background: rgba(40,0,0,0.55);
 
     backdrop-filter: blur(10px);
 
     border-radius:14px;
+
     padding:18px;
 
     margin-top:-4px;
+
     margin-bottom:16px;
 
     border:1px solid rgba(255,60,0,0.12);
-}
 
+}
 
 .artist-card h2{
 
-    position:relative; /* IMPORTANTE */
-
     font-size:24px;
+
     font-weight:800;
+
     letter-spacing:1px;
+
     margin-bottom:12px;
 
     color:#fff;
+
     text-transform:uppercase;
+
     opacity:.95;
 
 }
 
-/* personaje */
+/* Personaje */
 
-.artist-card h2::after{
+.main::after{
 
     content:"";
 
     position:absolute;
 
-    top:70px;
+    top:-35px;
 
-    right:10px;
+    right:-55px;
 
     width:180px;
 
@@ -201,22 +205,23 @@ header{
 
     pointer-events:none;
 
+    z-index:20;
+
 }
 
+/* Texto comic */
 
-/* texto comic */
-
-.artist-card h2::before{
+.main::before{
 
     content:"CLICK HERE";
 
     position:absolute;
 
-    right:55px;
+    top:25px;
 
-    top:30px;
+    right:20px;
 
-    font-size:16px;
+    font-size:18px;
 
     font-family:"Comic Sans MS", cursive;
 
@@ -225,12 +230,12 @@ header{
     font-weight:bold;
 
     text-shadow:
-
-        0 0 6px rgba(0,191,255,.7),
-
+        0 0 6px rgba(0,191,255,.8),
         2px 2px 0 #000;
 
     transform:rotate(-8deg);
+
+    z-index:21;
 
 }
 
