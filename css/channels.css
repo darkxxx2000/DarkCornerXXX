@@ -168,24 +168,15 @@ header{
 
 .artist-card h2{
 
-    position:relative;
-
-    display:inline-block;
-
-    padding-right:120px;
+    position:relative; /* IMPORTANTE */
 
     font-size:24px;
-
     font-weight:800;
-
     letter-spacing:1px;
-
     margin-bottom:12px;
 
     color:#fff;
-
     text-transform:uppercase;
-
     opacity:.95;
 
 }
@@ -198,19 +189,19 @@ header{
 
     position:absolute;
 
-    right:-50px;     /* más a la derecha */
+    right:-40px;   /* más a la derecha */
 
-    top:-20px;        /* más abajo */
+    top:-5px;      /* más abajo */
 
-    width:230px;     /* más grande */
+    width:140px;   /* más grande */
 
-    height:130px;
+    height:140px;
 
-    background:url("../images/click-here.png");
+    background:url("../images/click-here.png") no-repeat center;
 
     background-size:contain;
 
-    background-repeat:no-repeat;
+    pointer-events:none;
 
 }
 
