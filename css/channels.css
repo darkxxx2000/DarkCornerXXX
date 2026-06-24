@@ -75,7 +75,7 @@ header{
 }
 
 /* =========================
-   CHANNEL GRID CARD (HOME LEVEL)
+   CHANNEL GRID CARD
 ========================= */
 
 .channel-card{
@@ -116,225 +116,179 @@ header{
 ========================= */
 
 .back-btn{
-
     padding:10px 14px;
-
     border:none;
-
     border-radius:8px;
 
     background:#111;
-
     color:white;
 
     cursor:pointer;
-
     transition:.2s;
 
-    margin-bottom:8px;   /* antes 20px */
-
+    margin-bottom:8px;
 }
 
 .back-btn:hover{
-
     background:#1a1a1a;
-
 }
 
 /* =========================
-   ARTIST CARD (LEVEL 3 CONTENT)
+   ARTIST CARD
 ========================= */
 
 .artist-card{
-
     width:100%;
-
     background: rgba(40,0,0,0.55);
-
     backdrop-filter: blur(10px);
 
     border-radius:14px;
-
     padding:18px;
 
     margin-top:-4px;
-
     margin-bottom:16px;
 
     border:1px solid rgba(255,60,0,0.12);
-
 }
 
 .artist-card h2{
-
     font-size:24px;
-
     font-weight:800;
-
     letter-spacing:1px;
-
     margin-bottom:12px;
 
     color:#fff;
-
     text-transform:uppercase;
-
     opacity:.95;
-
 }
 
-/* Personaje */
+/* =========================
+   LAYOUT
+========================= */
+
+.artist-layout{
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+}
+
+/* =========================
+   MAIN IMAGE WRAPPER (FIX CLAVE)
+========================= */
+
+.main{
+    flex:0 0 52%;
+    max-width:520px;
+
+    position:relative; /* 🔥 FIX IMPORTANTE */
+}
+
+/* =========================
+   MAIN IMAGE
+========================= */
+
+.main img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+
+    border-radius:12px;
+    border:2px solid rgba(0,170,255,.75);
+
+    box-shadow:
+        0 0 8px rgba(0,170,255,.5),
+        0 0 18px rgba(0,170,255,.35),
+        inset 0 0 12px rgba(0,170,255,.15);
+
+    cursor:pointer;
+    transition:.25s ease;
+}
+
+.main img:hover{
+    transform:scale(1.02);
+    box-shadow:
+        0 0 12px rgba(0,170,255,.8),
+        0 0 28px rgba(0,170,255,.45);
+}
+
+/* =========================
+   PERSONAJE
+========================= */
 
 .main::after{
-
     content:"";
 
     position:absolute;
 
-    top:-35px;
+    top:-30px;
+    right:-70px;
 
-    right:-55px;
+    width:200px;
+    height:200px;
 
-    width:180px;
-
-    height:180px;
-
-    background:url("../images/click-here.png") center no-repeat;
-
+    background:url("../images/click-here.png") no-repeat center;
     background-size:contain;
 
     pointer-events:none;
-
     z-index:20;
-
 }
 
-/* Texto comic */
+/* =========================
+   TEXTO COMIC
+========================= */
 
 .main::before{
-
     content:"CLICK HERE";
 
     position:absolute;
 
-    top:25px;
-
-    right:20px;
+    top:40px;
+    right:10px;
 
     font-size:18px;
-
     font-family:"Comic Sans MS", cursive;
 
     color:#00bfff;
-
     font-weight:bold;
 
     text-shadow:
         0 0 6px rgba(0,191,255,.8),
         2px 2px 0 #000;
 
-    transform:rotate(-8deg);
+    transform:rotate(-10deg);
 
     z-index:21;
-
 }
 
 /* =========================
-   LAYOUT (REAL PLATFORM GRID)
+   THUMBS
 ========================= */
 
-.artist-layout{
-    display:flex;
-    gap:28px;   /* antes 16 */
-    align-items:flex-start;
-}
-
-/* Imagen principal */
-
-.main{
-    flex:0 0 52%;      /* antes ocupaba muchísimo */
-    max-width:520px;   /* límite máximo */
-}
-
-.main img{
-
-    width:100%;
-
-    height:320px;
-
-    object-fit:cover;
-
-    border-radius:12px;
-
-    border:2px solid rgba(0,170,255,.75);
-
-    box-shadow:
-
-        0 0 8px rgba(0,170,255,.5),
-
-        0 0 18px rgba(0,170,255,.35),
-
-        inset 0 0 12px rgba(0,170,255,.15);
-
-    cursor:pointer;
-
-    transition:.25s ease;
-
-}
-
-.main img:hover{
-
-    transform:scale(1.02);
-
-    box-shadow:
-
-        0 0 12px rgba(0,170,255,.8),
-
-        0 0 28px rgba(0,170,255,.45);
-
-}
-
-/* Galería lateral */
-
 .thumbs{
-
     flex:1;
-
     display:grid;
-
     grid-template-columns:repeat(4,1fr);
-
     gap:8px;
-
-    align-content:start;
-
 }
 
 .thumbs img{
-
     width:100%;
-
     aspect-ratio:1/1;
-
     object-fit:cover;
 
     border-radius:8px;
-
     border:1px solid rgba(255,255,255,.06);
 
     cursor:pointer;
-
     transition:.2s;
 }
 
 .thumbs img:hover{
-
     transform:scale(1.08);
-
 }
 
 /* =========================
-   LIGHTBOX (REAL VIEWER STYLE)
+   LIGHTBOX
 ========================= */
 
 .lightbox{
@@ -348,31 +302,30 @@ header{
     align-items:center;
 
     z-index:999;
-    overflow:hidden;
 }
 
 .lightbox.active{
     display:flex;
 }
 
-/* 🔥 zoom control */
 .lightbox img{
     max-width:95vw;
     max-height:95vh;
 
     border-radius:8px;
-
     cursor:zoom-in;
+
     transition:transform .2s ease;
 }
 
-/* zoom state */
 .lightbox img.zoomed{
     transform:scale(1.8);
     cursor:zoom-out;
 }
 
-/* CLOSE */
+/* =========================
+   CLOSE
+========================= */
 
 .close{
     position:absolute;
@@ -381,6 +334,7 @@ header{
 
     font-size:44px;
     cursor:pointer;
+
     color:white;
     opacity:.8;
 }
@@ -390,7 +344,7 @@ header{
 }
 
 /* =========================
-   RESPONSIVE (PLATFORM BEHAVIOR)
+   RESPONSIVE
 ========================= */
 
 @media(max-width:900px){
@@ -400,7 +354,7 @@ header{
     }
 
     .artist-layout{
-        grid-template-columns:1fr;
+        flex-direction:column;
     }
 
     .thumbs{
