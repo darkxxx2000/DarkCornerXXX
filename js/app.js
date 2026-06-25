@@ -61,7 +61,7 @@ function renderHome() {
     channelsCard.className = "card";
 
     channelsCard.innerHTML = `
-        <img src="https://ei.phncdn.com/videos/202501/16/463282075/original/(m=q7HP04ZbeaSaaTbaAaaaa)(mh=ME8jczewDwSh-29o)0.jpg" alt="CHANNELS">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0mRDmROR86nOd3D5leDfVb6ckyxr3YR00JbvYaW7evQB5hTRXKid0t29I&s=10" alt="CHANNELS">
         <div class="card-title">CHANNELS</div>
     `;
 
