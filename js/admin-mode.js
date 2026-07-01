@@ -1,87 +1,77 @@
-// =========================================
-// DARK CORNER - ADMIN MODE + LOGIN + EDITOR
-// =========================================
-
 window.addEventListener("DOMContentLoaded", () => {
 
     let adminMode = false;
 
-    // =============================
-    // CREDENCIALES ADMIN
-    // =============================
     const ADMIN_USER = "guyana";
     const ADMIN_PASS = "gaviotah15";
 
     // =============================
-    // CREAR ADMIN BAR
+    // OVERLAY LOGIN
+    // =============================
+    const loginBox = document.createElement("div");
+    loginBox.id = "loginBox";
+
+    loginBox.innerHTML = `
+        <div class="loginCard">
+            <h2>ADMIN LOGIN</h2>
+
+            <input id="user" placeholder="Usuario">
+            <input id="pass" type="password" placeholder="Contraseña">
+
+            <button id="loginBtn">Entrar</button>
+
+            <p id="msg"></p>
+        </div>
+    `;
+
+    document.body.appendChild(loginBox);
+
+    // =============================
+    // ADMIN BAR
     // =============================
     const adminBar = document.createElement("div");
     adminBar.id = "adminBar";
 
     adminBar.innerHTML = `
         <button id="adminExit">✖ Salir</button>
-        <span class="adminTitle">🔒 MODO ADMIN</span>
+        <span>🔒 ADMIN MODE</span>
 
         <hr>
 
-        <label>Editar logo</label>
-        <input id="editLogo" placeholder="Nuevo texto del logo">
-        <button id="saveLogo">💾 Guardar Logo</button>
-
-        <hr>
-
-        <button id="btnEdit">✏ Editar (modo futuro)</button>
-        <button id="btnNew">➕ Nuevo</button>
+        <input id="editLogo" placeholder="Editar logo">
+        <button id="saveLogo">Guardar</button>
     `;
 
     document.body.appendChild(adminBar);
 
     // =============================
-    // TOGGLE ADMIN (CON LOGIN)
+    // LOGIN
     // =============================
-    function toggleAdmin(){
+    document.getElementById("loginBtn").addEventListener("click", () => {
 
-        if(!adminMode){
+        const user = document.getElementById("user").value;
+        const pass = document.getElementById("pass").value;
 
-            const user = prompt("Usuario admin:");
-            const pass = prompt("Contraseña:");
+        if(user === ADMIN_USER && pass === ADMIN_PASS){
 
-            if(user === ADMIN_USER && pass === ADMIN_PASS){
+            adminMode = true;
 
-                adminMode = true;
-                adminBar.classList.add("show");
-                console.log("Admin ON");
-
-            } else {
-                alert("Acceso denegado ❌");
-            }
+            loginBox.style.display = "none";
+            adminBar.classList.add("show");
 
         } else {
-
-            adminMode = false;
-            adminBar.classList.remove("show");
-            console.log("Admin OFF");
-        }
-    }
-
-    // =============================
-    // TECLA SECRETA
-    // CTRL + SHIFT + A
-    // =============================
-    document.addEventListener("keydown",(e)=>{
-        if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==="a"){
-            e.preventDefault();
-            toggleAdmin();
+            document.getElementById("msg").innerText = "Credenciales incorrectas";
         }
     });
 
     // =============================
-    // CERRAR ADMIN
+    // LOGOUT
     // =============================
     document.addEventListener("click",(e)=>{
-        if(e.target && e.target.id === "adminExit"){
+        if(e.target.id === "adminExit"){
             adminMode = false;
             adminBar.classList.remove("show");
+            loginBox.style.display = "flex";
         }
     });
 
@@ -89,41 +79,23 @@ window.addEventListener("DOMContentLoaded", () => {
     // GUARDAR LOGO
     // =============================
     document.addEventListener("click",(e)=>{
-        if(e.target && e.target.id === "saveLogo"){
+        if(e.target.id === "saveLogo"){
 
             const value = document.getElementById("editLogo").value;
 
-            if(value && value.trim() !== ""){
-
+            if(value.trim() !== ""){
                 localStorage.setItem("logoText", value);
-
-                applySavedData();
-
-                const input = document.getElementById("editLogo");
-                if(input) input.value = "";
-
-                alert("Logo guardado ✔");
+                document.querySelector(".logo").innerHTML = value;
             }
         }
     });
 
     // =============================
-    // APLICAR DATOS GUARDADOS
+    // CARGAR DATOS
     // =============================
-    function applySavedData(){
-
-        const logo = localStorage.getItem("logoText");
-
-        const logoEl = document.querySelector(".logo");
-
-        if(logoEl && logo){
-            logoEl.innerHTML = logo;
-        }
+    const saved = localStorage.getItem("logoText");
+    if(saved){
+        document.querySelector(".logo").innerHTML = saved;
     }
-
-    // =============================
-    // INICIALIZAR AL CARGAR
-    // =============================
-    applySavedData();
 
 });
