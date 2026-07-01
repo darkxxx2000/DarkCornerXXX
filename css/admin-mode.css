@@ -1,122 +1,8 @@
 /* =========================================
-   ADMIN MODE
+   ADMIN MODE - CLEAN VERSION
 ========================================= */
 
-#adminBar{
-
-    position:fixed;
-
-    top:-80px;
-
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:95%;
-
-    max-width:1200px;
-
-    height:60px;
-
-    background:#111;
-
-    border:2px solid #ff2b55;
-
-    border-radius:12px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:10px;
-
-    z-index:999999;
-
-    transition:.35s;
-
-    box-shadow:0 0 25px rgba(255,43,85,.35);
-
-}
-
-#adminBar.show{
-
-    top:15px;
-
-}
-
-#adminBar button{
-
-    background:#ff2b55;
-
-    color:white;
-
-    border:none;
-
-    border-radius:6px;
-
-    padding:10px 16px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-}
-
-#adminBar button:hover{
-
-    background:#ff5378;
-
-}
-
-.adminTitle{
-
-    font-weight:bold;
-
-    color:white;
-
-    margin:0 15px;
-
-}
-
-#adminBar {
-    position: fixed;
-    top: 0;
-    right: -300px;
-    width: 260px;
-    height: 100vh;
-    background: #000;
-    color: white;
-    padding: 15px;
-    transition: 0.3s;
-    z-index: 9999;
-    overflow-y: auto;
-    border-left: 2px solid red;
-}
-
-#adminBar.show {
-    right: 0;
-}
-
-#adminBar input {
-    width: 100%;
-    margin: 5px 0;
-    padding: 5px;
-}
-
-#adminBar button {
-    width: 100%;
-    margin: 5px 0;
-    padding: 8px;
-    cursor: pointer;
-}
-
-.adminTitle {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
+/* LOGIN */
 #loginBox{
     position: fixed;
     inset: 0;
@@ -142,19 +28,60 @@
     padding: 8px;
 }
 
+/* =========================================
+   ADMIN BAR (SIDEBAR LIMPIO)
+========================================= */
+
 #adminBar{
     position: fixed;
     top: 0;
     right: -300px;
     width: 260px;
-    height: 100%;
-    background: black;
+    height: 100vh;
+    background: #000;
     color: white;
-    transition: 0.3s;
     padding: 15px;
     z-index: 9999;
+    transition: 0.3s;
+    overflow-y: auto;
+    border-left: 2px solid #ff2b55;
 }
 
+/* SHOW */
 #adminBar.show{
     right: 0;
+}
+
+/* TITULO */
+.adminTitle{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* INPUTS */
+#adminBar input{
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+    background: #111;
+    border: 1px solid #333;
+    color: white;
+}
+
+/* BOTONES */
+#adminBar button{
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+    cursor: pointer;
+    background: #ff2b55;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#adminBar button:hover{
+    background: #ff5378;
 }
