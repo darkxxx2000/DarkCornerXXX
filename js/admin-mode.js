@@ -1,8 +1,14 @@
 // =========================================
-// DARK CORNER - ADMIN MODE + EDITOR
+// DARK CORNER - ADMIN MODE + LOGIN + EDITOR
 // =========================================
 
 let adminMode = false;
+
+// =============================
+// CREDENCIALES ADMIN
+// =============================
+const ADMIN_USER = "guyana";
+const ADMIN_PASS = "gaviotah15";
 
 // =============================
 // CREAR ADMIN BAR
@@ -18,7 +24,6 @@ adminBar.innerHTML = `
 
     <label>Editar logo</label>
     <input id="editLogo" placeholder="Nuevo texto del logo">
-
     <button id="saveLogo">💾 Guardar Logo</button>
 
     <hr>
@@ -30,15 +35,28 @@ adminBar.innerHTML = `
 document.body.appendChild(adminBar);
 
 // =============================
-// TOGGLE ADMIN
+// TOGGLE ADMIN (CON LOGIN)
 // =============================
 function toggleAdmin(){
-    adminMode = !adminMode;
 
-    if(adminMode){
-        adminBar.classList.add("show");
-        console.log("Admin ON");
+    if(!adminMode){
+
+        const user = prompt("Usuario admin:");
+        const pass = prompt("Contraseña:");
+
+        if(user === ADMIN_USER && pass === ADMIN_PASS){
+
+            adminMode = true;
+            adminBar.classList.add("show");
+            console.log("Admin ON");
+
+        } else {
+            alert("Acceso denegado ❌");
+        }
+
     } else {
+
+        adminMode = false;
         adminBar.classList.remove("show");
         console.log("Admin OFF");
     }
@@ -76,7 +94,7 @@ document.addEventListener("click",(e)=>{
         if(value.trim() !== ""){
             localStorage.setItem("logoText", value);
             applySavedData();
-            alert("Logo guardado");
+            alert("Logo guardado ✔");
         }
     }
 });
@@ -89,7 +107,10 @@ function applySavedData(){
     const logo = localStorage.getItem("logoText");
 
     if(logo){
-        document.querySelector(".logo").innerHTML = logo;
+        const logoEl = document.querySelector(".logo");
+        if(logoEl){
+            logoEl.innerHTML = logo;
+        }
     }
 
 }
