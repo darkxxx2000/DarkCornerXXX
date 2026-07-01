@@ -449,3 +449,10 @@ iframe{
 .channel-card {
     cursor: pointer;
 }
+
+.nav-scroll {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
