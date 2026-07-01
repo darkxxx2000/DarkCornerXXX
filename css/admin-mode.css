@@ -117,3 +117,44 @@
     margin-bottom: 10px;
     font-weight: bold;
 }
+#loginBox{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.loginCard{
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white;
+}
+
+.loginCard input{
+    padding: 8px;
+}
+
+#adminBar{
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 260px;
+    height: 100%;
+    background: black;
+    color: white;
+    transition: 0.3s;
+    padding: 15px;
+    z-index: 9999;
+}
+
+#adminBar.show{
+    right: 0;
+}
