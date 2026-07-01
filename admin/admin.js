@@ -6,7 +6,7 @@ document
 
     const pass=document.getElementById("pass").value;
 
-    if(user==="admin" && pass==="1234"){
+    if(user==="guyana" && pass==="gaviotah99"){
 
         window.location="dashboard.html";
 
