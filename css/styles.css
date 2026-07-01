@@ -456,3 +456,8 @@ iframe{
     overflow-x: auto;
     white-space: nowrap;
 }
+.nav-item {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+}
