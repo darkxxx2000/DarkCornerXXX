@@ -461,3 +461,6 @@ iframe{
     color: white;
     text-decoration: none;
 }
+.admin-link {
+    display: none;
+}
