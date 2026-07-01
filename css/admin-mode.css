@@ -1,35 +1,41 @@
 /* =========================================
-   ADMIN MODE - CLEAN VERSION
+   ADMIN MODE - CLEAN VERSION (FIXED)
 ========================================= */
 
-/* LOGIN */
+/* LOGIN OVERLAY */
 #loginBox{
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.92);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 99999;
 }
 
+/* LOGIN CARD */
 .loginCard{
     background: #111;
-    padding: 20px;
-    border-radius: 10px;
-    width: 280px;
+    padding: 22px;
+    border-radius: 12px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     color: white;
+    border: 1px solid #222;
 }
 
 .loginCard input{
-    padding: 8px;
+    padding: 10px;
+    background: #0d0d0d;
+    border: 1px solid #333;
+    color: white;
+    outline: none;
 }
 
 /* =========================================
-   ADMIN BAR (SIDEBAR LIMPIO)
+   ADMIN PANEL (SIDEBAR)
 ========================================= */
 
 #adminBar{
@@ -42,17 +48,17 @@
     color: white;
     padding: 15px;
     z-index: 9999;
-    transition: 0.3s;
+    transition: right 0.3s ease;
     overflow-y: auto;
     border-left: 2px solid #ff2b55;
 }
 
-/* SHOW */
+/* SHOW STATE */
 #adminBar.show{
     right: 0;
 }
 
-/* TITULO */
+/* TITLE */
 .adminTitle{
     display: block;
     margin-bottom: 10px;
@@ -62,24 +68,25 @@
 /* INPUTS */
 #adminBar input{
     width: 100%;
-    margin: 5px 0;
+    margin: 6px 0;
     padding: 8px;
     background: #111;
     border: 1px solid #333;
     color: white;
 }
 
-/* BOTONES */
+/* BUTTONS */
 #adminBar button{
     width: 100%;
-    margin: 5px 0;
-    padding: 8px;
+    margin: 6px 0;
+    padding: 9px;
     cursor: pointer;
     background: #ff2b55;
     color: white;
     border: none;
     border-radius: 5px;
     font-weight: bold;
+    transition: 0.2s;
 }
 
 #adminBar button:hover{
